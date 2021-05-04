@@ -6,9 +6,8 @@ class Food {
   String image;
   String rating;
   String numberOfRating;
-  double price;
+  int price;
   String slug;
-
 
   Food(
       {@required this.id,

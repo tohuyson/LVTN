@@ -18,11 +18,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.2.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  get:
+  font_awesome_flutter: ^9.0.0
+  ff_navigation_bar: ^0.1.4
+#  simple_slider: ^0.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,6 +56,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
       - assets/images/Com_suon.jpg
+      - assets/images/
+      - assets/icons_menu/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

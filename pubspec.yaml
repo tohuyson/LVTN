@@ -23,10 +23,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get:
-  font_awesome_flutter: ^9.0.0
+
+  #  use routes/snackbars/dialogs/bottomsheets
+  get: ^4.1.4
+
+  #A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
+  flutter_screenutil: ^5.0.0+2
+
+  #A highly configurable navigation bar with emphasis for the selected item.
   ff_navigation_bar: ^0.1.4
-#  simple_slider: ^0.0.2
+
+  #A simple image slideshow widget. Mainly intended for image widget, but other widgets can also be used.
+  flutter_image_slideshow: ^0.0.4
+
+  #A powerful extension library of Sliver, which include SliverPinnedPersistentHeader, SliverPinnedToBoxAdapter and ExtendedSliverAppbar.
+  extended_sliver: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,9 +66,10 @@ flutter:
   #      - images/Com_suon.jpg
   #   - images/a_dot_ham.jpeg
   assets:
-      - assets/images/Com_suon.jpg
-      - assets/images/
-      - assets/icons_menu/
+    - assets/images/Com_suon.jpg
+    - assets/images/
+    - assets/icons_menu/
+    - assets/logos/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

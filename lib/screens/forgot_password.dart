@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/screens/signin.dart';
-import 'package:fooddelivery/screens/signup.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ForgotPassword extends StatelessWidget {
   @override
@@ -19,13 +19,13 @@ class ForgotPassword extends StatelessWidget {
           'Quên mật khẩu',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
+        padding: EdgeInsets.only(top: 60.h, left: 40.w, right: 40.w),
         color: Colors.white,
         child: ListView(
           children: <Widget>[
@@ -64,9 +64,9 @@ class ForgotPassword extends StatelessWidget {
                       // ),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.2,
-                        height: 45,
+                        height: 45.h,
                         padding: EdgeInsets.only(
-                            top: 4, left: 16, right: 16, bottom: 4),
+                            top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(50)),
                             color: Colors.white,
@@ -85,14 +85,14 @@ class ForgotPassword extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 30.h,
                       ),
                       InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, '/');
                         },
                         child: Container(
-                          height: 45,
+                          height: 45.h,
                           width: MediaQuery.of(context).size.width / 1.2,
                           decoration: BoxDecoration(
                               color: Theme.of(context).primaryColor,
@@ -109,7 +109,7 @@ class ForgotPassword extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 20.h,
                       ),
                     ],
                   ),

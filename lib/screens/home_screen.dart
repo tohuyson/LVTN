@@ -1,86 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/components/food_card.dart';
-import 'package:fooddelivery/components/list_food.dart';
-import 'package:fooddelivery/components/menus.dart';
-import 'package:fooddelivery/model/FakeData.dart';
-import 'package:fooddelivery/screens/food_detail.dart';
-import 'package:fooddelivery/screens/food_listview.dart';
 import 'package:flutter/services.dart';
+import 'package:fooddelivery/components/food_card.dart';
+import 'package:fooddelivery/components/menus.dart';
+import 'package:fooddelivery/components/slider_banner.dart';
+import 'package:fooddelivery/model/FakeData.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
-
-import 'bottom_navbar_widgetstate.dart';
-import 'latest_feeds.dart';
+import 'package:fooddelivery/screens/latest_feeds.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatelessWidget {
+  final int selectedIndex;
+
+  HomeScreen(this.selectedIndex);
+
+  ScrollController _scrollController = new ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      // backgroundColor: Colors.cyan,
+      backgroundColor: Colors.black12,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
-          child: SafeArea(
-            child: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
-              title: Text(
-                "Hôm nay, bạn ăn gì?",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+        preferredSize: Size.fromHeight(50.h),
+        child: AppBar(
+          // backgroundColor: Theme.of(context).primaryColor,
+          title: Padding(
+            padding: EdgeInsets.only(left: 5.w, right: 0.w, bottom: 5.h, top: 5.h),
+            child: Column(
+              children: [
+                Container(
+                  height: 35.h,
+                  child: TextField(
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(2.0)),
+                          borderSide: BorderSide(color: Colors.black12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(2.0)),
+                          borderSide: BorderSide(color: Colors.black12),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: Colors.black26,
+                        ),
+                        hintStyle: new TextStyle(
+                            color: Colors.black38, fontSize: 14.sp),
+                        hintText: "Tìm quán ăn, món ăn",
+                        contentPadding: EdgeInsets.all(10.h)),
+                  ),
                 ),
-              ),
-              actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.card_giftcard_sharp,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                    onPressed: () {
-                      print("Thông báo");
-                    }),
               ],
-              bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(50),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            borderSide: BorderSide(
-                              width: 5,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          // prefixIcon: Icon(
-                          //   Icons.search,
-                          //   color: Colors.black,
-                          // ),
-                          fillColor: Colors.white,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Colors.black,
-                          ),
-                          hintStyle: new TextStyle(
-                              color: Color(0xFF485148), fontSize: 16),
-                          hintText: "Tìm quán ăn, món ăn",
-                          contentPadding: EdgeInsets.all(15)),
-                    ),
-                  )),
             ),
-          )),
-      body: Column(
+          ),
+          actions: [
+            Center(
+              child: IconButton(
+                  icon: Icon(
+                    Icons.card_giftcard,
+                    color: Colors.white,
+                    size: 32.h,
+                  ),
+                  onPressed: () {
+                    print("Thông báo");
+                  }),
+            )
+          ],
+        ),
+      ),
+      body: ListView(
+        // shrinkWrap: true,
         children: [
+          SlideBanner(),
           Menu(),
-          // Menu(),
-          Expanded(
-            child: LatestFeeds(),
-          )
+          LatestFeeds(),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 }

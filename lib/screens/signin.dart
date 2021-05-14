@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fooddelivery/screens/forgot_password.dart';
 import 'package:fooddelivery/screens/signup.dart';
 import 'package:get/get.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignIn extends StatelessWidget {
   @override
@@ -36,14 +36,14 @@ class SignIn extends StatelessWidget {
               ),
               // height: MediaQuery.of(context).size.height / 2.4,
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 60),
+              padding: EdgeInsets.only(top: 60.h),
               child: Column(
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -63,11 +63,11 @@ class SignIn extends StatelessWidget {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     // margin: EdgeInsets.only(top: 32),
-                    margin: EdgeInsets.only(top: 15),
+                    margin: EdgeInsets.only(top: 15.h),
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -90,7 +90,7 @@ class SignIn extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 16, right: 32),
+                          padding: EdgeInsets.only(top: 16.h, right: 32.w),
                           child: Text(
                             'Quên mật khẩu ?',
                             style: TextStyle(color: Colors.grey),
@@ -109,7 +109,7 @@ class SignIn extends StatelessWidget {
                       Navigator.pushNamed(context, '/');
                     },
                     child: Container(
-                      height: 45,
+                      height: 45.h,
                       width: MediaQuery.of(context).size.width / 1.2,
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -124,7 +124,7 @@ class SignIn extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   InkWell(
                     child: Row(
@@ -145,12 +145,13 @@ class SignIn extends StatelessWidget {
               ),
             ),
             Container(
-              constraints: BoxConstraints(
-                minHeight: 20,
-                maxHeight: 30,
-              ),
+              height: 30.h,
+              // constraints: BoxConstraints(
+              //   minHeight: 20,
+              //   maxHeight: 30,
+              // ),
               child:   SizedBox(
-                height: 30,
+                height: 30.h,
               ),
             ),
 
@@ -159,34 +160,34 @@ class SignIn extends StatelessWidget {
               children: <Widget>[
                 Container(
                   color: Color(0xffDFDFDF),
-                  height: 2,
-                  width: 100,
+                  height: 2.h,
+                  width: 100.w,
                 ),
                 SizedBox(
-                  width: 10,
+                  height: 10.h,
                 ),
                 Text(
                   'Hoặc',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 16.sp,
                     color: Colors.grey,
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 10.h,
                 ),
                 Container(
-                  width: 100,
+                  width: 100.w,
                   color: Color(0xffDFDFDF),
-                  height: 2,
+                  height: 2.h,
                 )
               ],
             ),
             Container(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height / 7,
-                maxHeight: MediaQuery.of(context).size.height / 6,
-              ),
+              // constraints: BoxConstraints(
+              //   minHeight: MediaQuery.of(context).size.height / 7,
+              //   maxHeight: MediaQuery.of(context).size.height / 6,
+              // ),
               height: MediaQuery.of(context).size.height / 6.5,
               width: MediaQuery.of(context).size.width,
               // padding: EdgeInsets.only(top: 60),
@@ -195,45 +196,49 @@ class SignIn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      constraints: BoxConstraints(
-                        minHeight: 20,
-                        maxHeight: 50,
-                      ),
-                      width: 50,
-                      // height: 50,
+                      // constraints: BoxConstraints(
+                      //   minHeight: 20,
+                      //   maxHeight: 50,
+                      // ),
+                      width: 50.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xff1346b4),
-                            Color(0xff0cb2eb),
-                          ],
-                        ),
+                        // gradient: LinearGradient(
+                        //   // colors: [
+                        //   //   Color(0xff1346b4),
+                        //   //   Color(0xff0cb2eb),
+                        //   // ],
+                        // ),
+                        color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
+                        border: Border.all(width: 1, color: Theme.of(context).primaryColor,),
                       ),
                       child: Center(
-                        child: Icon(
-                          FontAwesomeIcons.facebookF,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                        child: Image.asset('assets/logos/Facebook_Logo.png'),
+                        // child: Icon(
+                        //   FontAwesomeIcons.facebookF,
+                        //   color: Colors.white,
+                        //   size: 20,
+                        // ),
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 20.h,
                     ),
                     Container(
-                      width: 50,
-                      height: 50,
+                      width: 50.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
-                        color: Color(0xffff4645),
+                        // color: Color(0xffff4645),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
-                        child: Icon(
-                          FontAwesomeIcons.google,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                        child: Image.asset('assets/logos/Google_Logo.png',),
+                        // child: Icon(
+                        //   FontAwesomeIcons.google,
+                        //   color: Colors.white,
+                        //   size: 20,
+                        // ),
                       ),
                     ),
                   ],

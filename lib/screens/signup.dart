@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/screens/signin.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class SignUp extends StatelessWidget {
@@ -19,7 +20,7 @@ class SignUp extends StatelessWidget {
           "Đăng ký",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -44,14 +45,14 @@ class SignUp extends StatelessWidget {
             Container(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 40),
+              padding: EdgeInsets.only(top: 40.h),
               child: Column(
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -70,13 +71,13 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -96,13 +97,13 @@ class SignUp extends StatelessWidget {
                   ),
 
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -121,13 +122,13 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 45.h,
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
@@ -151,11 +152,11 @@ class SignUp extends StatelessWidget {
                       Navigator.pushNamed(context, '/');
                     },
                     child: Container(
-                      constraints: BoxConstraints(
-                        minHeight: 30,
-                        maxHeight: 45,
-                      ),
-                      height: 45,
+                      // constraints: BoxConstraints(
+                      //   minHeight: 30,
+                      //   maxHeight: 45,
+                      // ),
+                      height: 45.h,
                       width: MediaQuery.of(context).size.width / 1.2,
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -173,7 +174,7 @@ class SignUp extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 30.h,
             ),
             InkWell(
               child: Row(

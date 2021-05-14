@@ -1,24 +1,37 @@
+import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/screens/forgot_password.dart';
-import 'package:fooddelivery/screens/signin.dart';
-import 'package:fooddelivery/screens/signup.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/screens/home_screen.dart';
+import 'package:fooddelivery/screens/order.dart';
 import 'package:get/get.dart';
-import 'screens/home_screen.dart';
+import 'package:flutter/services.dart';
+
+import 'components/bottom_navigation_bar.dart';
+import 'components/slider_banner.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Food Delivery',
-      theme: ThemeData(
-        primaryColor: Color(0xff1e90ff),
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+      statusBarIconBrightness: Brightness.dark, // status bar icons' color
+      systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icons' color
+    ));
+    return ScreenUtilInit(
+      designSize: Size(414,896),
+      builder :() => GetMaterialApp(
+        title: 'Food Delivery',
+        theme: ThemeData(
+          primaryColor: Color(0xff1e90ff),
+        ),
+        home: BottomNavigation(),
       ),
-      home: HomeScreen(),
     );
   }
 }

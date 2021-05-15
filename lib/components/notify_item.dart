@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotifyItem extends StatelessWidget {
-  String title;
-  String content;
+  final String title;
+  final String content;
 
   NotifyItem({this.title, this.content});
 

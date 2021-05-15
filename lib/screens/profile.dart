@@ -48,7 +48,6 @@ class Profile extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 10.h, bottom: 10.h, left: 12.w, right: 12.w),

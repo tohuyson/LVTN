@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/components/food_card.dart';
-import 'package:fooddelivery/components/list_food.dart';
 import 'package:fooddelivery/model/FakeData.dart';
-import 'package:fooddelivery/model/store.dart';
 
 class LatestFeeds extends StatelessWidget {
   @override

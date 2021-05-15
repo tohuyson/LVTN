@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:fooddelivery/components/menus.dart';
 import 'package:fooddelivery/model/categories.dart';
 import 'package:fooddelivery/model/food.dart';
 import 'package:fooddelivery/model/store.dart';
 
 Store store = new Store(1, "Số 1", "DHNL", Fake_Foods);
 
+// ignore: non_constant_identifier_names
 var Fake_Foods = [
   Food(
       id: 1,

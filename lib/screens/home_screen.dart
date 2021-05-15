@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fooddelivery/components/food_card.dart';
 import 'package:fooddelivery/components/menus.dart';
 import 'package:fooddelivery/components/slider_banner.dart';
-import 'package:fooddelivery/model/FakeData.dart';
-import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/screens/latest_feeds.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,8 +8,6 @@ class HomeScreen extends StatelessWidget {
   final int selectedIndex;
 
   HomeScreen(this.selectedIndex);
-
-  ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {

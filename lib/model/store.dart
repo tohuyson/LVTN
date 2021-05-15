@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:fooddelivery/model/food.dart';
 
 class Store {
@@ -6,10 +5,11 @@ class Store {
   String name;
   String address;
   List<Food> list;
+
   Store(
-      @required this.id,
-      @required this.name,
-      @required this.address,
-      this.list,
-      );
+    this.id,
+    this.name,
+    this.address,
+    this.list,
+  );
 }

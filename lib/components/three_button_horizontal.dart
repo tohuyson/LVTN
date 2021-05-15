@@ -11,7 +11,7 @@ class ButtonHorizontal extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return  Container(
-      color: Color(0xFFEEEEEE),
+      // color: Color(0xFFEEEEEE),
       padding: EdgeInsets.only(top: 6.h, bottom: 6.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

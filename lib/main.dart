@@ -1,14 +1,9 @@
-import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/screens/home_screen.dart';
-import 'package:fooddelivery/screens/order.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 
 import 'components/bottom_navigation_bar.dart';
-import 'components/slider_banner.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(MyApp());

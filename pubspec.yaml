@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: '>=2.2.2 <3.0.0'
 
 dependencies:
   flutter:
@@ -38,6 +38,9 @@ dependencies:
 
   #A powerful extension library of Sliver, which include SliverPinnedPersistentHeader, SliverPinnedToBoxAdapter and ExtendedSliverAppbar.
   extended_sliver: ^2.0.0
+
+  #Flutter widget that automatically resizes text to fit perfectly within its bounds.
+  auto_size_text: ^2.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

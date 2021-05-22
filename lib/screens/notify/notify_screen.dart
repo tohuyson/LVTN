@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/components/list_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/components/notify_item.dart';
 import 'package:fooddelivery/components/three_button_horizontal.dart';
+import 'package:fooddelivery/model/notify.dart';
+import 'package:fooddelivery/screens/notify/notify_item.dart';
 
-class Notify extends StatelessWidget {
-  final int selectedIndex;
-  Notify(this.selectedIndex);
-
+class NotifyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<NotifyItem> list = [
-      NotifyItem(
+    List<Notify> list = [
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
-      NotifyItem(
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
-      NotifyItem(
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
-      NotifyItem(
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
-      NotifyItem(
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
-      NotifyItem(
+      Notify(
         title: 'Giao hàng',
         content: 'Giao đơn hàng thành công',
       ),
@@ -39,22 +36,19 @@ class Notify extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: Center(
-          child: Text(
-            'Thông báo',
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 22.sp,
-                color: Colors.black),
-          ),
+        backgroundColor: Theme.of(context).primaryColor,
+        centerTitle: true,
+        title: Text(
+          'Thông báo',
+          style: TextStyle(
+              color: Colors.white),
         ),
         actions: [
           IconButton(
               icon: Icon(
                 Icons.settings,
-                color: Colors.black,
-                size: 28.sp,
+                color: Colors.white,
+                size: 24.sp,
               ),
               onPressed: () {
                 print("Map");
@@ -63,6 +57,7 @@ class Notify extends StatelessWidget {
       ),
       body: Container(
         color: Color(0xFFEEEEEE),
+        height: 834.h,
         child: Column(
           children: [
             ButtonHorizontal(
@@ -70,7 +65,11 @@ class Notify extends StatelessWidget {
               txtbt2: 'Đơn hàng',
               txtbt3: 'Tất cả',
             ),
-            ListWidget(list),
+            Expanded(child: ListView(
+              children: [
+                for( Notify n in list) NotifyItem(notify: n,)
+              ],
+            )),
           ],
         ),
       ),

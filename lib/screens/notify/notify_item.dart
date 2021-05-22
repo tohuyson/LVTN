@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/model/notify.dart';
 
 class NotifyItem extends StatelessWidget {
-  final String title;
-  final String content;
+  final Notify notify;
 
-  NotifyItem({this.title, this.content});
+  NotifyItem({this.notify});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,9 @@ class NotifyItem extends StatelessWidget {
       width: double.infinity,
       height: 130.h,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black12, width: 1),
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.white
-      ),
+          border: Border.all(color: Colors.black12, width: 1),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color: Colors.white),
       child: Column(
         children: [
           Container(
@@ -40,9 +39,9 @@ class NotifyItem extends StatelessWidget {
                           print("Map");
                         }),
                     Text(
-                      title,
-                      style:
-                          TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
+                      notify.title,
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -50,8 +49,8 @@ class NotifyItem extends StatelessWidget {
                   children: [
                     Text(
                       '10 phút',
-                      style:
-                          TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w300),
+                      style: TextStyle(
+                          fontSize: 14.sp, fontWeight: FontWeight.w300),
                     ),
                     IconButton(
                         icon: Icon(
@@ -69,9 +68,10 @@ class NotifyItem extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
+            padding:
+                EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
             child: Text(
-              content,
+             notify.content,
               style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14.sp),
             ),
           )

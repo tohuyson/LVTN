@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/screens/forgot_password.dart';
-import 'package:fooddelivery/screens/signup.dart';
+import 'file:///D:/flutter/LVTN/lib/screens/auth/forgot_password.dart';
+import 'file:///D:/flutter/LVTN/lib/screens/auth/signup.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

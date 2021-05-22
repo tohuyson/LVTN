@@ -34,7 +34,7 @@ dependencies:
   ff_navigation_bar: ^0.1.4
 
   #A simple image slideshow widget. Mainly intended for image widget, but other widgets can also be used.
-  flutter_image_slideshow: ^0.0.4
+  flutter_image_slideshow: ^0.1.0
 
   #A powerful extension library of Sliver, which include SliverPinnedPersistentHeader, SliverPinnedToBoxAdapter and ExtendedSliverAppbar.
   extended_sliver: ^2.0.0
@@ -42,11 +42,15 @@ dependencies:
   #Flutter widget that automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^2.1.0
 
+  #A Flutter plugin that provides a Google Maps widget.
+  google_maps_flutter: ^2.0.4
+  geocoding: ^2.0.0
+  geolocator: ^7.0.3
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -84,12 +88,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+#  fonts:
+#     - family: Roboto
+#       fonts:
+#         - asset: assets/fonts/Roboto/
+#           style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

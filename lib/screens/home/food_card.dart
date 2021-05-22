@@ -14,22 +14,13 @@ class FoodCard extends StatelessWidget {
         shape: BeveledRectangleBorder(
           borderRadius: BorderRadius.circular(2.0),
         ),
-        // color: Colors.black38,
-        //
-        // decoration: BoxDecoration(s
-        //   color: Colors.orange,
-        //   border: Border.all(
-        //       color: Colors.pink[800], // Set border color
-        //       width: 3.0), // Set border width
-        //   //   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        // ),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(2.0),
-              child: Image.asset(
-                'assets/images/' + food.image,
+              child: Image.network(
+                'https://aphoto.vn/wp-content/uploads/2019/03/avata-19.jpg',
                 width: double.infinity,
               ),
             ),

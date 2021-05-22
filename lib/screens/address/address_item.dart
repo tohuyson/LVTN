@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fooddelivery/model/address.dart';
 
 class AddressItem extends StatelessWidget {
-  final String addressdetail;
-  final String address;
-  final String username;
-  final String phone;
+  final Address address;
 
-  AddressItem({this.addressdetail, this.address, this.username, this.phone});
+  AddressItem({this.address});
 
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 80.h,
-        margin: EdgeInsets.only(top: 3.h, bottom: 3.h),
-        padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
-        // color: Color(0xFFF1F1F1),
+        margin: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 10.w, right: 10.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(2)),
-          border: Border.all(width: 0, color: Colors.black12),
           color: Colors.white,
         ),
         child: Center(
@@ -30,25 +25,25 @@ class AddressItem extends StatelessWidget {
                   icon: Icon(
                     Icons.location_on,
                     color: Colors.black,
-                    size: 32.sp,
+                    size: 28.sp,
                   ),
                   onPressed: () {
                     print("Map");
                   }),
               Container(
-                // width: 295.w,
+                width: 290.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                     addressdetail,
+                      address.addressdetail,
                       overflow: TextOverflow.clip,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w400),
                     ),
                     AutoSizeText(
-                     address,
+                      address.address,
                       // overflow: TextOverflow.clip,
                       maxLines: 1,
                       style: TextStyle(
@@ -57,7 +52,7 @@ class AddressItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          username,
+                          address.username,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.w400),
@@ -65,7 +60,8 @@ class AddressItem extends StatelessWidget {
                         SizedBox(
                           width: 30.w,
                         ),
-                        Text(phone, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16.sp)),
+                        Text(address.phone, style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 16.sp)),
                       ],
                     )
                   ],

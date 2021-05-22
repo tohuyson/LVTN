@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       builder :() => GetMaterialApp(
         title: 'Food Delivery',
         theme: ThemeData(
-          primaryColor: Color(0xff1e90ff),
+          primaryColor: Color(0xFF0992E8),
         ),
         home: BottomNavigation(),
       ),

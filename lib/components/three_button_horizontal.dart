@@ -12,7 +12,8 @@ class ButtonHorizontal extends StatelessWidget{
   Widget build(BuildContext context) {
     return  Container(
       // color: Color(0xFFEEEEEE),
-      padding: EdgeInsets.only(top: 6.h, bottom: 6.h),
+      height: 50.h,
+      padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -21,7 +22,7 @@ class ButtonHorizontal extends StatelessWidget{
             },
             child: Container(
               height: 40.h,
-              width: MediaQuery.of(context).size.width / 4,
+              width: 120.w,
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -40,7 +41,7 @@ class ButtonHorizontal extends StatelessWidget{
             },
             child: Container(
               height: 40.h,
-              width: MediaQuery.of(context).size.width / 4,
+              width: 120.w,
               decoration: BoxDecoration(
                   color: Colors.black12,
                   borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -59,7 +60,7 @@ class ButtonHorizontal extends StatelessWidget{
             },
             child: Container(
               height: 40.h,
-              width: MediaQuery.of(context).size.width / 4,
+              width: 120.w,
               decoration: BoxDecoration(
                   color: Colors.black12,
                   borderRadius: BorderRadius.all(Radius.circular(5))),

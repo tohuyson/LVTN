@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/components/menus.dart';
-import 'package:fooddelivery/components/slider_banner.dart';
-import 'package:fooddelivery/screens/latest_feeds.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/screens/home/slider_banner.dart';
+
+import 'latest_feeds.dart';
+import 'menus.dart';
 
 class HomeScreen extends StatelessWidget {
-  final int selectedIndex;
-
-  HomeScreen(this.selectedIndex);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +65,7 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         // shrinkWrap: true,
         children: [
-          SlideBanner(),
+          SlideBannerWidget(),
           Menu(),
           LatestFeeds(),
         ],

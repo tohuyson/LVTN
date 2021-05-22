@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/components/food_card.dart';
+import 'file:///D:/flutter/LVTN/lib/screens/home/food_card.dart';
 import 'package:fooddelivery/model/FakeData.dart';
 
 class ListFood extends StatelessWidget {

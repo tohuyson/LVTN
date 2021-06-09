@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/function_profile.dart';
-import 'package:fooddelivery/model/users.dart';
+import 'package:fooddelivery/screens/profile/avatar.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
 
-import 'avatar.dart';
-
-class Profile extends StatelessWidget {
-  static List<FunctionProfile> list_function;
-
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Users users = new Users(name: 'Huy Sơn', list_function: list_function);
-    list_function = [
-      FunctionProfile(name: 'Thanh toán'),
-      FunctionProfile(name: 'Địa chỉ'),
-      FunctionProfile(name: 'Người giao hàng'),
-      FunctionProfile(name: 'Đơn hàng của tôi'),
-      FunctionProfile(name: 'Trung tâm hỗ trợ'),
-      FunctionProfile(name: 'Chính sách và quy định'),
-      FunctionProfile(name: 'Cài đặt'),
-    ];
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('Tôi'),
+      ),
       body: Column(
         children: [
           Avatar(
@@ -31,9 +23,9 @@ class Profile extends StatelessWidget {
             shrinkWrap: true,
             padding: EdgeInsets.only(top: 20.h),
             children: [
-              for (FunctionProfile f in users.list_function)
+              for (FunctionProfile f in users.listFunction)
                 ItemProfile(
-                  name_function: f.name,
+                  functionProfile: f,
                 ),
               InkWell(
                 onTap: () {},

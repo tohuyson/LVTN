@@ -1,74 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/screens/home/slider_banner.dart';
-
-import 'latest_feeds.dart';
-import 'menus.dart';
+import 'package:fooddelivery/constants.dart';
+import 'package:fooddelivery/screens/home/components/menus.dart';
+import 'package:fooddelivery/screens/home/components/popular_food.dart';
+import 'package:fooddelivery/screens/home/components/slider_banner.dart';
+import 'package:fooddelivery/screens/search/search_screens.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
+      backgroundColor: kPrimaryColorBackground,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(119.h),
         child: AppBar(
-          // backgroundColor: Theme.of(context).primaryColor,
-          title: Padding(
-            padding: EdgeInsets.only(left: 5.w, right: 0.w, bottom: 5.h, top: 5.h),
+          // backflutter pub global run devtools   # If you have `flutter` on your path.groundColor: Theme.of(context).primaryColor,
+          flexibleSpace: Padding(
+            padding:
+                EdgeInsets.only(left: 5.w, right: 0.w, bottom: 5.h, top: 5.h),
             child: Column(
               children: [
                 Container(
-                  height: 35.h,
-                  child: TextField(
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(2.0)),
-                          borderSide: BorderSide(color: Colors.black12),
+                  padding: EdgeInsets.only(top: 30.h, bottom: 16.h, left: 12.w),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Hôm nay, bạn ăn gì?',
+                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  height: 42.h,
+                  width: 386.w,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Get.to(SearchScreen());
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Tìm nhà hàng món ăn',
+                          style: TextStyle(color: Colors.black38),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(2.0)),
-                          borderSide: BorderSide(color: Colors.black12),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
+                        Icon(
                           Icons.search,
-                          color: Colors.black26,
-                        ),
-                        hintStyle: new TextStyle(
-                            color: Colors.black38, fontSize: 14.sp),
-                        hintText: "Tìm quán ăn, món ăn",
-                        contentPadding: EdgeInsets.all(10.h)),
+                          color: Colors.black38,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          actions: [
-            Center(
-              child: IconButton(
-                  icon: Icon(
-                    Icons.card_giftcard,
-                    color: Colors.white,
-                    size: 32.h,
-                  ),
-                  onPressed: () {
-                    print("Thông báo");
-                  }),
-            )
-          ],
         ),
       ),
-      body: ListView(
-        // shrinkWrap: true,
-        children: [
-          SlideBannerWidget(),
-          Menu(),
-          LatestFeeds(),
-        ],
+      body: Container(
+        width: double.infinity,
+        height: 834.h,
+        child: ListView(
+          // shrinkWrap: true,
+          children: [
+            SlideBannerWidget(),
+            Menu(),
+            PopularFood(),
+          ],
+        ),
       ),
     );
   }

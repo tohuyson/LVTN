@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/notify/notify_screen.dart';
-import 'package:fooddelivery/screens/order/order.dart';
-import 'package:fooddelivery/screens/profile/profile.dart';
+import 'package:fooddelivery/screens/order/order_screen.dart';
+import 'package:fooddelivery/screens/profile/profile_screen.dart';
 
 
 class BottomNavigation extends StatefulWidget {
@@ -21,7 +21,7 @@ class _MyStatefulWidgetState extends State<BottomNavigation> {
     AddressScreen(),
     HomeScreen(),
     NotifyScreen(),
-    Profile(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -43,7 +43,7 @@ class _MyStatefulWidgetState extends State<BottomNavigation> {
             label: 'Đơn hàng',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_location_alt_rounded),
+            icon: Icon(Icons.location_on),
             label: 'Địa chỉ',
           ),
           BottomNavigationBarItem(

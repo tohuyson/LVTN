@@ -1,8 +1,9 @@
 class Address {
-  final String addressdetail;
+  final id;
+  final String addressDetail;
   final String address;
-  final String username;
-  final String phone;
+  final double long;
+  final double lat;
 
-  Address({this.addressdetail, this.address, this.username, this.phone});
+  Address({this.id, this.addressDetail, this.address, this.long, this.lat});
 }

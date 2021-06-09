@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///D:/flutter/LVTN/lib/screens/auth/signin.dart';
+import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

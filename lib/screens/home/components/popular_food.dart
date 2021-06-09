@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/model/FakeData.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/model/data_fake.dart';
+import 'package:fooddelivery/model/food.dart';
+import 'package:fooddelivery/screens/home/components/food_card.dart';
 
-import 'food_card.dart';
 
-class LatestFeeds extends StatelessWidget {
+class PopularFood extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      margin: EdgeInsets.only(top: 10),
-      // height: 270,
-      // constraints: BoxConstraints(
-      //   minHeight: 150,
-      //   // maxHeight: 464,
-      // ),
+      // color: Colors.white,
+      margin: EdgeInsets.only(top: 6.h),
+      width: double.infinity,
       child: Column(
         children: [
           LatestFeedsTitle(),
-          FoodCard(food: store.list[3]),
-          FoodCard(food: store.list[3]),
-
+          for (Food f in listFoodOrder.values) FoodCard(food: f),
         ],
       ),
     );
@@ -30,14 +26,15 @@ class LatestFeedsTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+      color: Colors.white,
+      padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 6.h,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
             "Thức ăn phổ biến",
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: Color(0xFF3a3a3b),
                 fontWeight: FontWeight.w400),
           ),

@@ -1,90 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/order.dart';
-import 'package:get/get.dart';
-
-import 'order_detail.dart';
 
 class OrderItem extends StatelessWidget {
-  final Order order;
+  final List<Order> listOrder;
 
-  OrderItem({this.order});
+  OrderItem({this.listOrder});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        await Get.to(() => OrderDetail(
-              order: order,
-            ));
-      },
-      child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 4.h, bottom: 4.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.white,
-        ),
-        width: double.infinity,
-        height: 120.h,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding:
-                  EdgeInsets.only(left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-              child: Text(
-                order.category,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  child: Image.network(
-                    order.namefood.image,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Expanded(
+    return ListView(
+      children: [
+        for (Order order in listOrder)
+          order.status
+              ? InkWell(
+                  onTap: () {},
                   child: Container(
-                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                    height: 92.h,
+                    padding: EdgeInsets.only(
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 4, color: kPrimaryColorBackground)),
+                      color: Colors.white,
+                    ),
+                    width: double.infinity,
+                    height: 130.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          order.namefood.name,
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.w400),
-                        ),
-                        AutoSizeText(
-                          order.address,
-                          overflow: TextOverflow.clip,
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black38,
+                        Container(
+                          height: 24.h,
+                          padding: EdgeInsets.only(
+                              left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                          child: Text(
+                            order.category,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                        Text(order.price.toString() + 'đ'),
+                        Container(
+                          height: 100.h,
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                child: Image.network(
+                                  order.restaurant.listImage[0].url,
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.only(left: 10.w, right: 10.w),
+                                  height: 106.h,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        order.restaurant.name,
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      AutoSizeText(
+                                        order.restaurant.address,
+                                        overflow: TextOverflow.clip,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                      Text(order.price.toString() +
+                                          'đ' +
+                                          '(' +
+                                          order.listFood.length.toString() +
+                                          ' phần)'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 )
-              ],
-            )
-          ],
-        ),
-      ),
+              : SizedBox(),
+      ],
     );
   }
 }

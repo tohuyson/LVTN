@@ -1,28 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/model/categories.dart';
+import 'package:fooddelivery/model/data_fake.dart';
 
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Category> categorys = [
-      Category(name: 'Cơm', url: 'healthy-eating.png'),
-      Category(name: 'Phở', url: 'ramen.png'),
-      Category(name: 'Hủ Tiếu', url: 'noodles.png'),
-      Category(name: 'Bánh Canh', url: 'noodles_c.png'),
-      Category(name: 'Nước Mía', url: 'ice-coffee.png'),
-      Category(name: 'Coffee', url: 'hot-cup.png'),
-      Category(name: 'Trà Sữa', url: 'iced-tea.png'),
-      Category(name: 'Voucher', url: 'voucher.png'),
-      Category(name: 'Quán yêu thích', url: 'like.png'),
-      Category(name: 'Giao Hàng', url: 'delivery-man.png'),
-    ];
-
     return Container(
       color: Colors.white,
       width: double.infinity,
-      height: 175.h,
+      height: 176.h,
+      padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -57,7 +45,7 @@ class Menu extends StatelessWidget {
                           'assets/icons_menu/' + categorys[index].url),
                     ),
                     Container(
-                      height:30.h,
+                      height: 30.h,
                       child: Center(
                           child: AutoSizeText(
                         categorys[index].name,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
-
-import 'components/bottom_navigation_bar.dart';
 
 void main() {
   runApp(MyApp());

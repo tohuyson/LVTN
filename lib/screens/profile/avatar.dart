@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/model/users.dart';
 
 class Avatar extends StatelessWidget {
   final String username;

@@ -1,5 +1,5 @@
-name: fooddelivery
-description: A new Flutter application.
+name: app_delivery
+description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -18,25 +18,39 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  get:
-  font_awesome_flutter: ^9.0.0
-  ff_navigation_bar: ^0.1.4
-#  simple_slider: ^0.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.1
+  cupertino_icons: ^1.0.2
+  badges: ^2.0.1
+  auto_size_text: ^2.1.0
+  #A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
+  flutter_screenutil: ^5.0.0+2
+  #  getx
+  get: ^4.1.4
+  dialog: ^0.7.2+1
+  http: ^0.13.3
+  image_picker: ^0.7.5+2
+  multi_image_picker2: ^5.0.0
+  animated_text_kit: ^2.4.0
+  flutter_slidable: ^0.6.0
+  #  rating
+  flutter_rating_bar: ^4.0.0
+  syncfusion_flutter_datepicker: ^19.1.66-beta
+  multi_select_flutter: ^4.0.0
+#  address_picker_vn
+  address_picker_vn: ^0.3.2
+#  chart
+  fl_chart: ^0.36.1
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  integration_test:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the
@@ -51,13 +65,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  #    assets:
-  #      - images/Com_suon.jpg
-  #   - images/a_dot_ham.jpeg
   assets:
-      - assets/images/Com_suon.jpg
-      - assets/images/
-      - assets/icons_menu/
+    - assets/images/
+  #     - images/a_dot_ham.jpeg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

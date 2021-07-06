@@ -4,7 +4,7 @@ import 'package:fooddelivery/model/function_profile.dart';
 import 'package:get/get.dart';
 
 class ItemProfile extends StatelessWidget {
-  final FunctionProfile functionProfile;
+  final FunctionProfile? functionProfile;
 
   ItemProfile({this.functionProfile});
 
@@ -12,7 +12,7 @@ class ItemProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await Get.to(functionProfile.widget);
+        await Get.to(functionProfile!.widget);
       },
       child: Container(
         margin: EdgeInsets.only(left: 12.w),
@@ -26,7 +26,7 @@ class ItemProfile extends StatelessWidget {
             Container(
               child: Center(
                 child: Text(
-                  functionProfile.name,
+                  functionProfile!.name,
                   style:
                       TextStyle(fontWeight: FontWeight.w400, fontSize: 18.sp),
                 ),
@@ -34,7 +34,7 @@ class ItemProfile extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () async {
-                  await Get.to(functionProfile.widget);
+                  await Get.to(functionProfile!.widget);
                 },
                 icon: Icon(
                   Icons.arrow_forward_ios,

@@ -10,7 +10,9 @@ import 'package:fooddelivery/model/slide_banner.dart';
 import 'package:fooddelivery/model/toppings.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/order/order_delivery.dart';
+import 'package:fooddelivery/screens/restaurant/payment.dart';
 import 'package:fooddelivery/screens/restaurant/restaurant_screen.dart';
+import 'package:fooddelivery/screens/restaurant/review.dart';
 
 Address address_1 = new Address(
   id: 1,
@@ -36,7 +38,7 @@ List<Address> listAddress = [
 
 List<FunctionProfile> listFunction = [
   FunctionProfile(name: 'Thanh toán', widget: RestaurantsScreen()),
-  FunctionProfile(name: 'Địa chỉ', widget: null),
+  FunctionProfile(name: 'Địa chỉ', widget: Review()),
   FunctionProfile(name: 'Người giao hàng', widget: OrderDelivery()),
   FunctionProfile(name: 'Đơn hàng của tôi', widget: null),
   FunctionProfile(name: 'Trung tâm hỗ trợ', widget: null),
@@ -46,11 +48,11 @@ List<FunctionProfile> listFunction = [
 
 Users users = new Users(
   id: 1,
-  name: "Huy Sơn",
+  username: "Huy Sơn",
   phone: '0986937275',
-  token: '',
   listAddress: listAddress,
   listFunction: listFunction,
+
 );
 
 Images image_1 = new Images(
@@ -79,7 +81,7 @@ Food food_1 = new Food(
       'https://phunuvietnam.mediacdn.vn/179072216278405120/2020/12/2/base64-16068949492551901667229.png',
   price: 20000,
   restaurantId: 1,
-  listTopping: null,
+  listTopping: listTopping,
   size: null,
 );
 Food food_2 = new Food(

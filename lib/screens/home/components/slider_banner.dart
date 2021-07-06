@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/controllers/home_controller.dart';
 import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/slide_banner.dart';
+import 'package:fooddelivery/model/sliders.dart';
+import 'package:get/get.dart';
 
-
-class SlideBannerWidget extends StatelessWidget {
+class SlideBannerWidget extends GetView<HomeController> {
+  HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 1.h),
-      child: ImageSlideshow(
+    return Obx(
+      () => ImageSlideshow(
         width: double.infinity,
-        height: 130.h,
+        height: 140.h,
         initialPage: 0,
         indicatorColor: Theme.of(context).primaryColor,
         indicatorBackgroundColor: Colors.white,
         children: [
-          for (SlideBanner b in banners)
+          for (Sliders slider in controller.listSliders)
             Image.network(
-              b.url,
+              slider.url!,
               fit: BoxFit.fill,
             ),
         ],

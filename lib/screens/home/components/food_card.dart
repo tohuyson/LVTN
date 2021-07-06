@@ -4,7 +4,7 @@ import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FoodCard extends StatelessWidget {
-  final Food food;
+  final Food? food;
 
   FoodCard({this.food});
 
@@ -27,7 +27,7 @@ class FoodCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(2.0),
             child: Image.network(
-              food.image,
+              food!.image!,
               fit: BoxFit.cover,
               width: double.infinity,
               height: 250.h,

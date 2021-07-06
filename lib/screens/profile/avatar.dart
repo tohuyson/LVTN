@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Avatar extends StatelessWidget {
-  final String username;
+  final String? username;
 
   Avatar({this.username});
 
@@ -20,7 +20,7 @@ class Avatar extends StatelessWidget {
               size: 100.sp,
             ),
             Text(
-              username,
+              username!,
               style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w500),
             )
           ],

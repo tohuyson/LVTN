@@ -42,13 +42,13 @@ class Menu extends StatelessWidget {
                       height: 40.h,
                       width: 40.w,
                       child: Image.asset(
-                          'assets/icons_menu/' + categorys[index].url),
+                          'assets/icons_menu/' + categorys[index].url!),
                     ),
                     Container(
                       height: 30.h,
                       child: Center(
                           child: AutoSizeText(
-                        categorys[index].name,
+                        categorys[index].name!,
                         style: TextStyle(
                           fontSize: 14.sp,
                         ),

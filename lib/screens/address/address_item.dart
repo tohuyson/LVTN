@@ -6,7 +6,7 @@ import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/users.dart';
 
 class AddressItem extends StatelessWidget {
-  final Users users;
+  final Users? users;
 
   AddressItem({this.users});
 
@@ -14,7 +14,7 @@ class AddressItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (Address address in users.listAddress)
+        for (Address address in users!.listAddress!)
           Container(
             height: 80.h,
             padding:
@@ -44,13 +44,13 @@ class AddressItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          address.addressDetail,
+                          address.addressDetail!,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.w400),
                         ),
                         AutoSizeText(
-                          address.address,
+                          address.address!,
                           // overflow: TextOverflow.clip,
                           maxLines: 1,
                           style: TextStyle(
@@ -59,7 +59,7 @@ class AddressItem extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              users.name,
+                              users!.username!,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
                                   fontSize: 16.sp, fontWeight: FontWeight.w400),
@@ -68,7 +68,7 @@ class AddressItem extends StatelessWidget {
                               width: 30.w,
                             ),
                             Text(
-                              users.phone,
+                              users!.phone!,
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 16.sp),
                             ),

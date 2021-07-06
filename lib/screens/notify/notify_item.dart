@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/notify.dart';
 
 class NotifyItem extends StatelessWidget {
-  final Notify notify;
+  final Notify? notify;
 
   NotifyItem({this.notify});
 
@@ -39,7 +39,7 @@ class NotifyItem extends StatelessWidget {
                           print("Map");
                         }),
                     Text(
-                      notify.title,
+                      notify!.title!,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w400),
                     ),
@@ -71,7 +71,7 @@ class NotifyItem extends StatelessWidget {
             padding:
                 EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
             child: Text(
-             notify.content,
+             notify!.content!,
               style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14.sp),
             ),
           )

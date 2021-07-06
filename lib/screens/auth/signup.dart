@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/controllers/auth_controller.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
+import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+class SignUp extends GetWidget<AuthController> {
+  AuthController controller = Get.put(AuthController());
 
-class SignUp extends StatelessWidget {
+  // TextEditingController username = TextEditingController();
+  //
+  // TextEditingController email = TextEditingController();
+
+  // TextEditingController phone = TextEditingController();
+  var confirmPass = null;
+
+  // TextEditingController re_password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black38,
-          onPressed: () => Get.to(SignIn()),
+        leading: BackButton(
+          color: Colors.black,
         ),
         centerTitle: true,
         title: Text(
@@ -26,172 +37,153 @@ class SignUp extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: ListView(
-          children: <Widget>[
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 4,
+        padding: EdgeInsets.only(left: 24.w, right: 24.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: 414.w,
+                height: 160.h,
                 child: Center(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Image(
-                        image: ResizeImage(
-                      AssetImage('assets/images/logo-food-delivery.png'),
-                      width: 100,
-                      height: 100,
-                    )),
+                  child: Image(
+                    image: AssetImage('assets/images/logo-food-delivery.png'),
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
                   ),
-                )),
-            Container(
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 40.h),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45.h,
-                    padding:
-                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(
-                          Icons.person,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        hintText: 'Tên người dùng',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45.h,
-                    padding:
-                    EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(
-                          Icons.phone_android,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        hintText: 'Số điện thoại',
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45.h,
-                    padding:
-                    EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(
-                          Icons.email,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        hintText: 'Email',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45.h,
-                    padding:
-                        EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w, bottom: 4.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(
-                          Icons.lock,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        hintText: 'Mật khẩu',
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/');
-                    },
-                    child: Container(
-                      // constraints: BoxConstraints(
-                      //   minHeight: 30,
-                      //   maxHeight: 45,
-                      // ),
-                      height: 45.h,
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Đăng Ký'.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            InkWell(
-              child: Row(
+              Form(
+                // key: controller.formKeySignUp,
+                // autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Builder(
+                  builder: (BuildContext ctx) => Column(
+                    children: [
+                      InputField(
+                        validator: (val) {
+                          if (val!.length == 0) return "Vui lòng nhập tên";
+                        },
+                        hintText: 'Tên người dùng',
+                        icon: Icons.person,
+                        controller: controller.username,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      InputField(
+                        validator: (val) {
+                          if (val!.length == 0)
+                            return "Vui lòng nhập Email";
+                          else if (!controller.isEmail(val))
+                            return "Sai định dạng Email";
+                          else
+                            return null;
+                        },
+                        controller: controller.email,
+                        hintText: 'Email',
+                        icon: Icons.email,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      InputField(
+                        validator: (val) {
+                          if (val!.length == 0)
+                            return "Vui lòng nhập số điện thoại";
+                          else if (!val.isNum) {
+                            return 'Vui lòng nhập số điện thoại';
+                          }
+                          return null;
+                        },
+                        controller: controller.phone,
+                        hintText: 'Số điện thoại',
+                        icon: Icons.phone,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      InputField(
+                        obscureText: true,
+                        validator: (val) {
+                          confirmPass = val!;
+                          if (val.length == 0)
+                            return "Vui lòng nhập mật khẩu";
+                          else if (val.length < 8)
+                            return "Mật khẩu lớn hơn 8 ký tự";
+                          else
+                            return null;
+                        },
+                        controller: controller.password,
+                        hintText: 'Mật khẩu',
+                        icon: Icons.vpn_key,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      InputField(
+                        obscureText: true,
+                        validator: (val) {
+                          if (val!.length == 0)
+                            return "Vui lòng nhập mật khẩu";
+                          else if (val.length < 8)
+                            return "Mật khẩu lớn hơn 8 ký tự";
+                          else if (confirmPass != val)
+                            return 'Không khớp mật khẩu';
+                          return null;
+                        },
+                        hintText: 'Xác nhận mật khẩu',
+                        icon: Icons.vpn_key,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      Container(
+                        height: 50.h,
+                        width: 414.w,
+                        padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: TextButton(
+                          onPressed: () {
+                            controller.register(ctx);
+                          },
+                          child: Text(
+                            'Đăng Ký'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Bạn đã có tài khoản? "),
-                  Text(
-                    "Đăng nhập",
-                    style: TextStyle(color: Color(0xff47A4FF)),
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "Đăng nhập",
+                      style: TextStyle(color: Color(0xff47A4FF)),
+                    ),
                   ),
                 ],
               ),
-              onTap: () {
-                Get.to(SignIn());
-              },
-            ),
-          ],
+              SizedBox(
+                height: 30.h,
+              )
+            ],
+          ),
         ),
       ),
     );

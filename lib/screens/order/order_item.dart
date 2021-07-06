@@ -5,7 +5,7 @@ import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/order.dart';
 
 class OrderItem extends StatelessWidget {
-  final List<Order> listOrder;
+  final List<Order>? listOrder;
 
   OrderItem({this.listOrder});
 
@@ -13,8 +13,8 @@ class OrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        for (Order order in listOrder)
-          order.status
+        for (Order order in listOrder!)
+          order.status!
               ? InkWell(
                   onTap: () {},
                   child: Container(
@@ -38,7 +38,7 @@ class OrderItem extends StatelessWidget {
                           padding: EdgeInsets.only(
                               left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                           child: Text(
-                            order.category,
+                            order.category!,
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w400,
@@ -53,7 +53,7 @@ class OrderItem extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4)),
                                 child: Image.network(
-                                  order.restaurant.listImage[0].url,
+                                  order.restaurant!.listImage![0].url,
                                   width: 80,
                                   height: 80,
                                   fit: BoxFit.cover,
@@ -71,13 +71,13 @@ class OrderItem extends StatelessWidget {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        order.restaurant.name,
+                                        order.restaurant!.name!,
                                         style: TextStyle(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.w400),
                                       ),
                                       AutoSizeText(
-                                        order.restaurant.address,
+                                        order.restaurant!.address!,
                                         overflow: TextOverflow.clip,
                                         maxLines: 2,
                                         style: TextStyle(
@@ -89,7 +89,7 @@ class OrderItem extends StatelessWidget {
                                       Text(order.price.toString() +
                                           'đ' +
                                           '(' +
-                                          order.listFood.length.toString() +
+                                          order.listFood!.length.toString() +
                                           ' phần)'),
                                     ],
                                   ),

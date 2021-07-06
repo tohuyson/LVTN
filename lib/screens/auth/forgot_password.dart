@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/controllers/auth_controller.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: true,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black38,
-            onPressed: () => Get.to(SignIn())),
+        leading: BackButton(
+          color: Colors.black,
+        ),
         centerTitle: true,
         title: Text(
           'Quên mật khẩu',

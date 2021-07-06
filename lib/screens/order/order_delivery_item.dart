@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
-import 'package:fooddelivery/screens/order/delivery.dart';
+import 'package:fooddelivery/screens/order/delivery_screen.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
-import 'package:fooddelivery/screens/order/order_detail.dart';
+import 'package:fooddelivery/screens/order/order_detail_delivered.dart';
 import 'package:get/get.dart';
 
 class OrderDeliveryItem extends StatelessWidget {
-  final Order order;
+  final Order? order;
 
   OrderDeliveryItem({this.order});
 
@@ -34,12 +34,12 @@ class OrderDeliveryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Order ID: ' + order.id.toString(),
+                  'Order ID: ' + order!.id.toString(),
                   style: TextStyle(fontSize: 15.sp),
                 ),
                 InkWell(
                     onTap: () async {
-                      await Get.to(() => OrderDetail(
+                      await Get.to(() => OrderDetailDelivered(
                             order: order,
                           ));
                     },
@@ -53,15 +53,15 @@ class OrderDeliveryItem extends StatelessWidget {
           DeliveryItem(
             deliveryModel: DeliveryModel(
               iconData: Icons.restaurant_menu,
-              name: order.restaurant.name,
-              address: order.restaurant.address,
+              name: order!.restaurant!.name,
+              address: order!.restaurant!.address,
             ),
           ),
           DeliveryItem(
             deliveryModel: DeliveryModel(
               iconData: Icons.home,
-              name: order.user.name,
-              address: order.user.listAddress[1].address,
+              name: order!.user!.username,
+              address: order!.user!.listAddress![1].address,
             ),
           ),
           Row(
@@ -114,7 +114,7 @@ class OrderDeliveryItem extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    await Get.to(Delivery(
+                    await Get.to(DeliveryScreen(
                       order: order,
                     ));
                   },

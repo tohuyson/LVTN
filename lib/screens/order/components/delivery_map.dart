@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DeliveryMap extends StatefulWidget {
-  final double height;
+  final double? height;
 
   DeliveryMap({this.height});
 
@@ -15,7 +15,7 @@ class DeliveryMap extends StatefulWidget {
 }
 
 class _DeliveryMap extends State<DeliveryMap> {
-  final double height;
+  final double? height;
 
   _DeliveryMap({this.height});
 
@@ -26,7 +26,7 @@ class _DeliveryMap extends State<DeliveryMap> {
   }
 
   static LatLng currentPostion = LatLng(10.873286, 106.7914436);
-  Position currentLocation;
+  late Position currentLocation;
 
   Future<Position> locateUser() async {
     return Geolocator.getCurrentPosition(
@@ -45,7 +45,7 @@ class _DeliveryMap extends State<DeliveryMap> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height.h,
+      height: height!.h,
       width: double.infinity,
       color: Colors.white,
       child: GoogleMap(

@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreen extends State<SearchScreen> {
  // static TextEditingController _controller = new TextEditingController();
   String query = '';
-  List<Food> foods;
+  List<Food>? foods;
 
   Widget buildSearch() => SearchWidget(
         text: query,
@@ -27,7 +27,7 @@ class _SearchScreen extends State<SearchScreen> {
   void searchFood(String query) {
     print(query);
     final foods = listFoodOrder.values.where((food) {
-      final titleLower = food.name.toLowerCase();
+      final titleLower = food.name!.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return titleLower.contains(searchLower);

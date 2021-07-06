@@ -1,6 +1,6 @@
 class Button {
-  bool isSelected;
-  String btText;
+  bool? isSelected;
+  String? btText;
 
   Button({this.isSelected, this.btText});
 }

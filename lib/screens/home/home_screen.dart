@@ -15,6 +15,8 @@ class HomeScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(119.h),
         child: AppBar(
+          elevation: 0,
+          automaticallyImplyLeading: false,
           // backflutter pub global run devtools   # If you have `flutter` on your path.groundColor: Theme.of(context).primaryColor,
           flexibleSpace: Padding(
             padding:

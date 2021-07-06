@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
+import 'package:get/get.dart';
 
 class DeliveryItem extends StatelessWidget {
-  final DeliveryModel deliveryModel;
-  final IconData iconData_1, iconData_2, iconData_3;
+  final DeliveryModel? deliveryModel;
+  final IconData? iconData_1, iconData_2, iconData_3, iconData_4;
+  final Widget? page;
 
   DeliveryItem(
-      {this.deliveryModel, this.iconData_1, this.iconData_2, this.iconData_3});
+      {this.deliveryModel,
+      this.iconData_1,
+      this.iconData_2,
+      this.iconData_3,
+      this.iconData_4,
+      this.page});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 52.h,
-      width: double.infinity,
+      width: 414.w,
       child: Row(
         children: [
-          Icon(
-            deliveryModel.iconData,
-            color: Colors.black,
-            size: 28.sp,
+          Container(
+            width: 28.w,
+            child: Icon(
+              deliveryModel!.iconData,
+              color: Colors.black,
+              size: 28.sp,
+            ),
           ),
           Container(
-            width: 364.w,
+            width: 328.w,
             padding: EdgeInsets.only(left: 10.w),
-            height: 46.h,
+            height: 50.h,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -34,11 +44,11 @@ class DeliveryItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryModel.name,
+                        deliveryModel!.name!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style:
-                            TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.w500),
                       ),
                       Container(
                         width: 65.w,
@@ -64,16 +74,30 @@ class DeliveryItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
-                  deliveryModel.address,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                Container(
+                  // width: 348.w,
+                  child: Text(
+                    deliveryModel!.address!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ),
               ],
             ),
+          ),
+          Container(
+            width: 28.w,
+            child: InkWell(
+                onTap: () {
+                  Get.to(page);
+                },
+                child: Icon(
+                  iconData_4,
+                  size: 28.sp,
+                )),
           )
         ],
       ),

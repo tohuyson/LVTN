@@ -6,10 +6,10 @@ import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
 
-class Delivery extends StatelessWidget {
-  final Order order;
+class DeliveryScreen extends StatelessWidget {
+  final Order? order;
 
-  Delivery({this.order});
+  DeliveryScreen({this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class Delivery extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Order ID: ' + order.id.toString(),
+                          'Order ID: ' + order!.id.toString(),
                           style: TextStyle(fontSize: 15.sp),
                         ),
                         InkWell(
@@ -56,15 +56,15 @@ class Delivery extends StatelessWidget {
                   DeliveryItem(
                     deliveryModel: DeliveryModel(
                       iconData: Icons.restaurant_menu,
-                      name: order.restaurant.name,
-                      address: order.restaurant.address,
+                      name: order!.restaurant!.name,
+                      address: order!.restaurant!.address,
                     ),
                   ),
                   DeliveryItem(
                     deliveryModel: DeliveryModel(
                       iconData: Icons.home,
-                      name: order.user.name,
-                      address: order.user.listAddress[1].address,
+                      name: order!.user!.username,
+                      address: order!.user!.listAddress![1].address,
                     ),
                   ),
                   Row(

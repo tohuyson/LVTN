@@ -14,12 +14,11 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreen extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
   int index = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print(index);
     _tabController = TabController(length: 3, vsync: this, initialIndex: index);

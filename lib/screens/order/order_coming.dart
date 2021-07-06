@@ -7,7 +7,7 @@ import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 
 class OrderComing extends StatefulWidget {
-  final Order order;
+  final Order? order;
 
   OrderComing({this.order});
 
@@ -16,7 +16,7 @@ class OrderComing extends StatefulWidget {
 }
 
 class _OrderDetail extends State<OrderComing> {
-  final Order order;
+  final Order? order;
 
   _OrderDetail({this.order});
 
@@ -26,9 +26,11 @@ class _OrderDetail extends State<OrderComing> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        DeliveryMap(height: 240,),
+        DeliveryMap(
+          height: 240,
+        ),
         Container(
-          height: 450.h,
+          // height: 450.h,
           width: double.infinity,
           color: Colors.white,
           child: Column(
@@ -44,20 +46,19 @@ class _OrderDetail extends State<OrderComing> {
                     color: Colors.white,
                     border: Border(
                         bottom: BorderSide(width: 1, color: Colors.black12))),
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                         child: Text(
-                          order.category,
-                          style: TextStyle(fontSize: 16.sp),
-                        )),
+                      order!.category!,
+                      style: TextStyle(fontSize: 16.sp),
+                    )),
                     Container(
                         child: Text(
-                          'Đang đến trong 20 phút',
-                          style: TextStyle(fontSize: 16.sp),
-                        )),
+                      'Đang đến trong 20 phút',
+                      style: TextStyle(fontSize: 16.sp),
+                    )),
                   ],
                 ),
               ),
@@ -68,7 +69,6 @@ class _OrderDetail extends State<OrderComing> {
                     color: Colors.white,
                     border: Border(
                         bottom: BorderSide(width: 1, color: Colors.black12))),
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -79,7 +79,7 @@ class _OrderDetail extends State<OrderComing> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AutoSizeText(
-                            order.listFood.values.elementAt(0).name,
+                            order!.listFood!.values.elementAt(0).name!,
                             style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(
@@ -87,9 +87,9 @@ class _OrderDetail extends State<OrderComing> {
                           ),
                           AutoSizeText(
                             'Tổng: ' +
-                                order.price.toString() +
+                                order!.price.toString() +
                                 ' - ' +
-                                order.method,
+                                order!.method!,
                             style: TextStyle(fontSize: 14),
                             maxLines: 1,
                           ),
@@ -102,9 +102,7 @@ class _OrderDetail extends State<OrderComing> {
                         height: 38.h,
                         width: 80.w,
                         decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .primaryColor,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: Center(
                           child: Text(
@@ -120,6 +118,7 @@ class _OrderDetail extends State<OrderComing> {
                 ),
               ),
               Stepper(
+                physics: ClampingScrollPhysics(),
                 steps: [
                   Step(
                     title: Row(
@@ -205,8 +204,8 @@ class _OrderDetail extends State<OrderComing> {
                   });
                 },
                 controlsBuilder: (BuildContext context,
-                    {VoidCallback onStepContinue,
-                      VoidCallback onStepCancel}) =>
+                        {VoidCallback? onStepContinue,
+                        VoidCallback? onStepCancel}) =>
                     Container(),
               ),
               InkWell(

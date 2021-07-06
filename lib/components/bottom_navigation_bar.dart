@@ -7,7 +7,7 @@ import 'package:fooddelivery/screens/profile/profile_screen.dart';
 
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key key}) : super(key: key);
+  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _MyStatefulWidgetState();

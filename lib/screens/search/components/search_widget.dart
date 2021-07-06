@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchWidget extends StatefulWidget {
-  final String text;
-  final ValueChanged<String> onChanged;
-  final String hintText;
-  final bool focus;
+  final String? text;
+  final ValueChanged<String>? onChanged;
+  final String? hintText;
+  final bool? focus;
 
-  const SearchWidget({Key key, this.text, this.onChanged, this.hintText, this.focus})
+  const SearchWidget({Key? key, this.text, this.onChanged, this.hintText, this.focus})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class _SearchWidget extends State<SearchWidget> {
       child: TextField(
         controller: controller,
         textCapitalization: TextCapitalization.sentences,
-        autofocus: widget.focus,
+        autofocus: widget.focus!,
         decoration: InputDecoration(
           filled: true,
           enabledBorder: OutlineInputBorder(
@@ -38,7 +38,7 @@ class _SearchWidget extends State<SearchWidget> {
             borderSide: BorderSide(color: Colors.blue),
           ),
           fillColor: Colors.white,
-          suffixIcon: widget.text.isNotEmpty
+          suffixIcon: widget.text!.isNotEmpty
               ? GestureDetector(
                   child: Icon(
                     Icons.close,
@@ -46,7 +46,7 @@ class _SearchWidget extends State<SearchWidget> {
                   ),
                   onTap: () {
                     controller.clear();
-                    widget.onChanged('');
+                    widget.onChanged!('');
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                 )
@@ -54,7 +54,7 @@ class _SearchWidget extends State<SearchWidget> {
                   child: Icon(Icons.search, color: Colors.black45),
                   onTap: () {
                     controller.clear();
-                    widget.onChanged('');
+                    widget.onChanged!('');
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                 ),

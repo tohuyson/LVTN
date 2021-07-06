@@ -1,361 +1,400 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/model/order.dart';
+import 'package:fooddelivery/model/data_fake.dart';
+import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
 import 'package:fooddelivery/screens/order/components/food_item.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/screens/restaurant/delivery.dart';
+import 'package:fooddelivery/screens/restaurant/payment.dart';
+import 'package:fooddelivery/screens/restaurant/voucher.dart';
 import 'package:get/get.dart';
 
-class OrderDetail extends StatefulWidget {
-  final Order order;
-
-  OrderDetail({this.order});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _OrderDetail(order: order);
-  }
-}
-
-class _OrderDetail extends State<OrderDetail> {
-  final Order order;
-  String note = 'Chưa có';
-  final myController = TextEditingController();
-
-  _OrderDetail({this.order});
-
-  @override
-  void dispose() {
-    myController.dispose();
-    super.dispose();
-  }
-
-  void changedtext() {
-    setState(() {
-      print(note);
-      note != 'Chưa có' ? myController.text = note : myController.text;
-    });
-  }
-
-  showPicker() {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xffffffff),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xff999999),
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      TextButton(
-                        child: Text(
-                          'Hủy',
-                          style:
-                              TextStyle(fontSize: 18.sp, color: Colors.black),
-                        ),
-                        onPressed: () {
-                          Get.back();
-                          myController.clear();
-                        },
-                      ),
-                      Text(
-                        'Thêm ghi chú',
-                        style: TextStyle(
-                            fontSize: 20.sp, fontWeight: FontWeight.w500),
-                      ),
-                      TextButton(
-                        child: Text(
-                          'Xong',
-                          style: TextStyle(fontSize: 18.sp),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            note = myController.text;
-                            myController.clear();
-                            Get.close(1);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 250.0,
-                  color: Color(0xfff7f7f7),
-                  padding: EdgeInsets.only(
-                      left: 24.w, right: 24.w, top: 12.h, bottom: 12.w),
-                  child: TextField(
-                    controller: myController,
-                    maxLines: 4,
-                    decoration:
-                        InputDecoration.collapsed(hintText: "Nhập ghi chú"),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
+class OrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chi tiết đơn hàng'),
+        title: Text('Đơn hàng của tôi'),
         centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: ListView(
+      body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            color: kPrimaryColorBackground,
-            child: Column(
+          Expanded(
+            child: ListView(
               children: [
                 Container(
-                  color: Colors.white,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 1.h),
-                  padding: EdgeInsets.only(
-                      left: 12.w, right: 12.w, top: 8.h, bottom: 8.h),
-                  child: Text('Giao hàng'),
-                ),
-                Container(
-                  height: 80.h,
-                  padding: EdgeInsets.only(
-                    left: 12.w,
-                    right: 12.w,
-                    top: 4.h,
-                  ),
-                  color: Colors.white,
-                  margin: EdgeInsets.only(bottom: 2.h),
-                  child: DeliveryItem(
-                    deliveryModel: DeliveryModel(
-                      iconData: Icons.restaurant_menu,
-                      name: order.restaurant.name,
-                      address: order.restaurant.address,
-                    ),
-                    iconData_1: Icons.my_location,
-                    iconData_2: Icons.call,
-                    iconData_3: Icons.message,
-                  ),
-                ),
-                Container(
-                  height: 80.h,
-                  padding: EdgeInsets.only(
-                    left: 12.w,
-                    right: 12.w,
-                    top: 4.h,
-                  ),
-                  color: Colors.white,
-                  margin: EdgeInsets.only(bottom: 8.h),
-                  child: DeliveryItem(
-                    deliveryModel: DeliveryModel(
-                      iconData: Icons.home,
-                      name: order.user.name,
-                      address: order.user.listAddress[1].address,
-                    ),
-                    iconData_1: Icons.my_location,
-                    iconData_2: Icons.call,
-                    iconData_3: Icons.message,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: kPrimaryColorBackground, width: 1))),
-                        padding: EdgeInsets.only(
-                            left: 12.w, right: 12.w, top: 8.h, bottom: 8.h),
-                        child: Text(
-                          'Chi tiết đơn hàng',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          FoodItem(
-                            map: order.listFood,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.all(8.w),
-                  margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
+                  height: 780.h,
+                  width: 414.w,
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(
-                          top: 4.h,
-                          bottom: 8.h,
-                        ),
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    color: kPrimaryColorBackground, width: 1))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    width: 8, color: kPrimaryColorBackground))),
+                        child: Column(
                           children: [
-                            Text(
-                              'Tổng (1 phần)',
-                              style: TextStyle(fontSize: 16.sp),
+                            Container(
+                              width: 414.w,
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                'Giao tới',
+                                style: TextStyle(fontSize: 18.sp),
+                              ),
                             ),
-                            Text(
-                              '30000đ',
-                              style: TextStyle(fontSize: 16.sp),
-                            )
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: kPrimaryColorBackground,
+                                          width: 2))),
+                              padding: EdgeInsets.only(
+                                  left: 12.w, right: 12.w, bottom: 4.h),
+                              child: DeliveryItem(
+                                iconData_4: Icons.edit,
+                                page: AddressScreen(),
+                                deliveryModel: DeliveryModel(
+                                    iconData: Icons.location_on,
+                                    name: users.username,
+                                    address: users.listAddress![1].address),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: kPrimaryColorBackground,
+                                          width: 2))),
+                              padding: EdgeInsets.only(
+                                  left: 12.w,
+                                  right: 12.w,
+                                  bottom: 4.h,
+                                  top: 8.h),
+                              child: DeliveryItem(
+                                page: AddressScreen(),
+                                deliveryModel: DeliveryModel(
+                                    iconData: Icons.timer_rounded,
+                                    name: 'Thời giao hàng dự kiến',
+                                    address: 'Trong 20 phút'),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 8.0.h, top: 8.h),
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: kPrimaryColorBackground))),
+                                    color: kPrimaryColorBackground, width: 8))),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(12.w),
+                              width: 414.w,
+                              child: Text(
+                                'Đơn hàng',
+                                style: TextStyle(fontSize: 18.sp),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                FoodItem(
+                                  map: order_1.listFood,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(Delivery());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2,
+                                      color: kPrimaryColorBackground))),
+                          padding: EdgeInsets.all(12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Giao hàng',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Vui lòng chọn',
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.black38),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 16.sp,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(Voucher());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2,
+                                      color: kPrimaryColorBackground))),
+                          padding: EdgeInsets.all(12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Khuyến mãi',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    // width: 150.w,
+                                    height: 30.h,
+                                    padding: EdgeInsets.only(
+                                        left: 16.sp, right: 16.sp),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(40)),
+                                    ),
+
+                                    child: Text(
+                                      'Chọn voucher',
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          color: Colors.black38),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 16.sp,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(Payment());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2,
+                                      color: kPrimaryColorBackground))),
+                          padding: EdgeInsets.all(12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Phương thức thanh toán',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Tiền mặt',
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.black38),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 16.sp,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2,
+                                      color: kPrimaryColorBackground))),
+                          padding: EdgeInsets.all(12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Lưu ý',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Chưa có',
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.black38),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 16.sp,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 2, color: kPrimaryColorBackground))),
+                        padding: EdgeInsets.all(12.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Tổng',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                            Text(
+                              '1000đ',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 2, color: kPrimaryColorBackground))),
+                        padding: EdgeInsets.all(12.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Phí giao hàng',
-                              style: TextStyle(fontSize: 16.sp),
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
                             ),
                             Text(
-                              '-15000đ',
-                              style: TextStyle(fontSize: 16.sp),
+                              '1000đ',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 8.0.h, top: 8.h),
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: kPrimaryColorBackground))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Vorcher',
-                              style: TextStyle(fontSize: 16.sp),
-                            ),
-                            Text(
-                              '-10000đ',
-                              style: TextStyle(fontSize: 16.sp),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(bottom: 10.h, top: 10.h),
+                                    width: 2, color: kPrimaryColorBackground))),
+                        padding: EdgeInsets.all(12.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Tổng cộng',
                               style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              '10000đ',
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.only(
-                      left: 12.w, right: 12.w, top: 8.h, bottom: 8.h),
-                  margin: EdgeInsets.only(bottom: 8.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Phương thức thanh toán',
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                      Text(
-                        'Tiền mặt',
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    showPicker();
-                    changedtext();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(bottom: 8.h),
-                    padding: EdgeInsets.only(
-                        left: 12.w, right: 12.w, top: 8.h, bottom: 8.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Ghi chú',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 250.w,
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                note,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16.sp, color: Colors.black45),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
                               ),
                             ),
-                            Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              size: 16.sp,
-                            )
+                            Text(
+                              '1000đ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                              ),
+                            ),
                           ],
-                        )
-                      ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 116.h,
+            width: 414.w,
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Tổng cộng',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                      ),
+                    ),
+                    Text(
+                      '50000đ',
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 66.h,
+                  width: 414.w,
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () {
+                      print('Đặt hàng');
+                    },
+                    child: Container(
+                      height: 45.h,
+                      margin: EdgeInsets.only(
+                        top: 20.h,
+                      ),
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: Center(
+                        child: Text(
+                          'Đặt hàng',
+                          style:
+                              TextStyle(fontSize: 18.sp, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),

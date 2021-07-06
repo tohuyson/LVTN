@@ -4,9 +4,9 @@ import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchBody extends StatelessWidget {
-  final List<Food> foods;
+  final List<Food>? foods;
 
-  const SearchBody({Key key, this.foods}) : super(key: key);
+  const SearchBody({Key? key, this.foods}) : super(key: key);
 
   Widget buildBook(Food food) => Container(
         width: 414.w,
@@ -19,7 +19,7 @@ class SearchBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.network(
-              food.image,
+              food.image!,
               width: 80,
               height: 80,
               fit: BoxFit.cover,
@@ -32,7 +32,7 @@ class SearchBody extends StatelessWidget {
                 children: [
                   Container(
                     width: 300.w,
-                      child: Text(food.name, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),)),
+                      child: Text(food.name!, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),)),
                   Container(
                       width: 300.w,
                       child: Text('Giá: '+food.price.toString()+ 'đ', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),)),
@@ -89,9 +89,9 @@ class SearchBody extends StatelessWidget {
     return Container(
       color: kPrimaryColorBackground,
       child: ListView.builder(
-        itemCount: foods.length,
+        itemCount: foods!.length,
         itemBuilder: (context, index) {
-          final food = foods[index];
+          final food = foods![index];
 
           return buildBook(food);
         },

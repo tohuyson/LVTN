@@ -1,5 +1,5 @@
 class SlideBanner {
-  String url;
+  String? url;
 
   SlideBanner({this.url});
 }

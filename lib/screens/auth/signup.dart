@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/controllers/auth_controller.dart';
-import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,14 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SignUp extends GetWidget<AuthController> {
   AuthController controller = Get.put(AuthController());
 
-  // TextEditingController username = TextEditingController();
-  //
-  // TextEditingController email = TextEditingController();
-
-  // TextEditingController phone = TextEditingController();
   var confirmPass = null;
-
-  // TextEditingController re_password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +46,6 @@ class SignUp extends GetWidget<AuthController> {
                 ),
               ),
               Form(
-                // key: controller.formKeySignUp,
-                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Builder(
                   builder: (BuildContext ctx) => Column(
                     children: [

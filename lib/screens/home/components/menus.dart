@@ -1,9 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/model/data_fake.dart';
+import 'package:fooddelivery/controllers/home_controller.dart';
+import 'package:get/get.dart';
+import 'package:fooddelivery/model/item_category.dart';
 
-class Menu extends StatelessWidget {
+class Menu extends GetView<HomeController> {
+  HomeController controller = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +25,7 @@ class Menu extends StatelessWidget {
             ),
             shrinkWrap: true,
             physics: ScrollPhysics(),
-            itemCount: categorys.length,
+            itemCount: listItemCategory.length,
             itemBuilder: (_, index) {
               return Container(
                 height: 80.h,
@@ -42,13 +46,13 @@ class Menu extends StatelessWidget {
                       height: 40.h,
                       width: 40.w,
                       child: Image.asset(
-                          'assets/icons_menu/' + categorys[index].url!),
+                          'assets/icons_menu/' + listItemCategory[index].url!),
                     ),
                     Container(
                       height: 30.h,
                       child: Center(
                           child: AutoSizeText(
-                        categorys[index].name!,
+                        listItemCategory[index].name!,
                         style: TextStyle(
                           fontSize: 14.sp,
                         ),

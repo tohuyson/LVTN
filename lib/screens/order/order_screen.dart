@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
+import 'package:fooddelivery/controllers/order_controller.dart';
 import 'package:fooddelivery/model/data_fake.dart';
+import 'package:fooddelivery/screens/order/components/card_item.dart';
 import 'package:fooddelivery/screens/order/order_coming.dart';
 import 'package:fooddelivery/screens/order/order_item.dart';
+import 'package:get/get.dart';
 
-class OrderScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _OrderScreen();
-  }
-}
-
-class _OrderScreen extends State<OrderScreen>
-    with SingleTickerProviderStateMixin {
-  TabController? _tabController;
-  int index = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    print(index);
-    _tabController = TabController(length: 3, vsync: this, initialIndex: index);
-  }
+class OrderScreen extends GetView<OrderController> {
+  OrderController controller = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +17,7 @@ class _OrderScreen extends State<OrderScreen>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
@@ -50,54 +38,31 @@ class _OrderScreen extends State<OrderScreen>
                 padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                 child: TabBar(
                   labelColor: Colors.black,
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      child: Center(
-                        child: Text(
-                          'Đang đến',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Center(
-                        child: Text(
-                          'Lịch sử',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Center(
-                        child: Text(
-                          'Đơn nháp',
-                          style: TextStyle(fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                  ],
+                  controller: controller.tabController,
+                  tabs: controller.myTabs,
                 ),
               ),
               Expanded(
                 child: TabBarView(
-                  controller: _tabController,
+                  controller: controller.tabController,
                   children: [
-                    order_1.status == false
-                        ? OrderComing(
-                            order: order_1,
-                          )
-                        : Text('Không có đơn hàng'),
-                    listOrder.isNotEmpty
-                        ? OrderItem(
-                            listOrder: listOrder,
-                          )
-                        : Text('Không có đơn hàng'),
-                    Container(height: 100, child: Text('piuhhj')),
+                    Text('dasd'),
+                    Text('dasdhsk'),
+                    // order_1.status == false
+                    //     ? OrderComing(
+                    //         order: order_1,
+                    //       )
+                    //     : Text('Không có đơn hàng'),
+                    // listOrder.isNotEmpty
+                    //     ? OrderItem(
+                    //         listOrder: listOrder,
+                    //       )
+                    //     : Text('Không có đơn hàng'),
+                    Column(
+                      children: [
+                        CardItem(),
+                      ],
+                    ),
                   ],
                 ),
               ),

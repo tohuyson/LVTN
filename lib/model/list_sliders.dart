@@ -1,4 +1,4 @@
-import 'package:fooddelivery/model/sliders.dart';
+import 'package:fooddelivery/model/slider.dart';
 
 class ListSliders {
   late final List<Sliders>? listSliders;

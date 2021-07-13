@@ -5,7 +5,6 @@ import 'package:fooddelivery/screens/notify/notify_screen.dart';
 import 'package:fooddelivery/screens/order/order_screen.dart';
 import 'package:fooddelivery/screens/profile/profile_screen.dart';
 
-
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
 
@@ -16,7 +15,7 @@ class BottomNavigation extends StatefulWidget {
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<BottomNavigation> {
   int _selectedIndex = 2;
-  static  List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     OrderScreen(),
     AddressScreen(),
     HomeScreen(),
@@ -67,4 +66,3 @@ class _MyStatefulWidgetState extends State<BottomNavigation> {
     );
   }
 }
-

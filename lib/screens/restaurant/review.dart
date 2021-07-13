@@ -21,8 +21,8 @@ class _Review extends State<Review> {
   static double? _rating;
 
   String listTopping() {
-    for (Topping topping in food_1.listTopping!)
-      txtTopping += topping.name! + ',';
+    // for (Topping topping in food_1.listTopping!)
+    //   txtTopping += topping.name! + ',';
     return txtTopping;
   }
 
@@ -58,7 +58,8 @@ class _Review extends State<Review> {
             child: Row(
               children: [
                 Image.network(
-                  food_1.image!,
+                  '',
+                  // food_1.image!,
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
@@ -71,7 +72,8 @@ class _Review extends State<Review> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        food_1.name!,
+                        '',
+                        // food_1.name!,
                         style: TextStyle(
                             fontSize: 18.sp, fontWeight: FontWeight.w500),
                       ),

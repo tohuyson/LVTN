@@ -10,4 +10,9 @@ class Apis {
 
   //home
   static String getSlidersUrl = '$root/sliders';
+  static String getFoodsUrl = '$root/listfood';
+  static String getRestaurantsUrl = '$root/listrestaurant';
+  static String getUsersUrl = '$root/getuser';
+  static String getAddressUrl = '$root/listaddress';
+  static String getFoodResUrl = '$root/listfoodres';
 }

@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/controllers/auth_controller.dart';
 import 'package:fooddelivery/controllers/sign_in_controller.dart';
 import 'package:fooddelivery/screens/auth/forgot_password.dart';
 import 'package:fooddelivery/screens/auth/signup.dart';

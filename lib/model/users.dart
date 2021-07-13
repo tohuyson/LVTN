@@ -1,45 +1,86 @@
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fooddelivery/model/address.dart';
-import 'package:fooddelivery/model/function_profile.dart';
-
 class Users {
   int? id;
   String? username;
-  String? phone;
   String? email;
-  List<FunctionProfile>? listFunction;
-  List<Address>? listAddress;
+  String? phone;
+  String? gender;
+  String? avatar;
+  String? dob;
+  String? bio;
+  int? active;
+  int? roleId;
+  String? token;
+  String? randomKey;
+  String? keyTime;
+  String? expiresAt;
 
   Users(
       {this.id,
       this.username,
-      this.phone,
       this.email,
-      this.listFunction,
-      this.listAddress});
+      this.phone,
+      this.gender,
+      this.avatar,
+      this.dob,
+      this.bio,
+      this.active,
+      this.roleId,
+      this.token,
+      this.randomKey,
+      this.keyTime,
+      this.expiresAt});
 
-  Users.empty() {
-    this.id = -1;
-    this.username = 'Empty User';
-    this.email = '';
-    this.phone = '';
+  Users.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    username = json['username'];
+    email = json['email'];
+    phone = json['phone'];
+    gender = json['gender'];
+    avatar = json['avatar'];
+    dob = json['dob'];
+    bio = json['bio'];
+    active = json['active'];
+    roleId = json['role_id'];
+    token = json['token'];
+    randomKey = json['random_key'];
+    keyTime = json['key_time'];
+    expiresAt = json['expires_at'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'Id': id,
-      'UserName': username,
-      'Phone': phone,
-      'Email': email,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['username'] = this.username;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['gender'] = this.gender;
+    data['avatar'] = this.avatar;
+    data['dob'] = this.dob;
+    data['bio'] = this.bio;
+    data['active'] = this.active;
+    data['role_id'] = this.roleId;
+    data['token'] = this.token;
+    data['random_key'] = this.randomKey;
+    data['key_time'] = this.keyTime;
+    data['expires_at'] = this.expiresAt;
+    return data;
+  }
+}
+
+class UsersJson {
+  Users? users;
+
+  UsersJson({this.users});
+
+  UsersJson.fromJson(Map<String, dynamic> json) {
+    users = json['users'] != null ? new Users.fromJson(json['users']) : null;
   }
 
-  factory Users.fromJson(Map<String, dynamic> json) {
-    return Users(
-      id: json['id'],
-      email: json['email'],
-      username: json['username'],
-      phone: json['phone'],
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.users != null) {
+      data['users'] = this.users!.toJson();
+    }
+    return data;
   }
 }

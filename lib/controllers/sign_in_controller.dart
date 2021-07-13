@@ -10,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
+import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -56,6 +57,11 @@ class SignInController extends GetxController {
     await _prefs.setString('token', token);
   }
 
+  // Future<void> _saveIdUsers(String id) async {
+  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //   await _prefs.setString('iduser', id);
+  // }
+
   Future<void> login(BuildContext context) async {
     Form.of(context)!.validate();
     print(email!.text);
@@ -77,11 +83,14 @@ class SignInController extends GetxController {
         print(response.statusCode);
         if (response.statusCode == 200) {
           var token = jsonDecode(response.body)["token"];
+          // var iduser = jsonDecode(response.body)["iduser"];
           print('token $token');
+          // print('id $iduser');
           if (token != null) {
             print("TOKEN: " + token);
             await EasyLoading.dismiss();
             await _saveToken(token);
+            // await _saveIdUsers(iduser.toString());
             Get.to(() => BottomNavigation());
           }
         }

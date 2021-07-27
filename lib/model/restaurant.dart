@@ -64,3 +64,23 @@ class Restaurant {
     return data;
   }
 }
+
+class RestaurantJson {
+  late Restaurant? restaurant;
+
+  RestaurantJson({this.restaurant});
+
+  RestaurantJson.fromJson(Map<String, dynamic> json) {
+    restaurant = (json['restaurants'] != null
+        ? new Restaurant.fromJson(json['restaurants'])
+        : null)!;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.restaurant != null) {
+      data['restaurants'] = this.restaurant!.toJson();
+    }
+    return data;
+  }
+}

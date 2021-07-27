@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
-import 'package:fooddelivery/controllers/auth_controller.dart';
 import 'package:fooddelivery/controllers/profile_controllor.dart';
-import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/item_profile.dart';
 import 'package:fooddelivery/screens/home/home_screen.dart';
-import 'package:fooddelivery/screens/profile/avatar.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
 import 'package:get/get.dart';
@@ -40,13 +37,6 @@ class ProfileScreen extends GetView<ProfileController> {
                       height: 100.h,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50.0),
-
-                        // padding: EdgeInsets.only(
-                        //     right: 12.w, bottom: 12.h, left: 12.w, top: 12.h),
-                        // decoration: BoxDecoration(
-                        //   border: Border.all(width: 1, color: Colors.black12),
-                        //   borderRadius: BorderRadius.all(Radius.circular(50)),
-                        // ),
                         child: controller.user.value.avatar != null &&
                                 controller.user.value.avatar != ''
                             ? Image.network(

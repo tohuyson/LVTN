@@ -4,7 +4,7 @@ import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUp extends GetWidget<AuthController> {
+class SignUp extends GetView<AuthController> {
   AuthController controller = Get.put(AuthController());
 
   var confirmPass = null;
@@ -45,6 +45,9 @@ class SignUp extends GetWidget<AuthController> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 20.h,
+              ),
               Form(
                 child: Builder(
                   builder: (BuildContext ctx) => Column(
@@ -58,7 +61,7 @@ class SignUp extends GetWidget<AuthController> {
                         controller: controller.username,
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 20.h,
                       ),
                       InputField(
                         validator: (val) {
@@ -74,7 +77,7 @@ class SignUp extends GetWidget<AuthController> {
                         icon: Icons.email,
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 20.h,
                       ),
                       InputField(
                         validator: (val) {
@@ -90,7 +93,7 @@ class SignUp extends GetWidget<AuthController> {
                         icon: Icons.phone,
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 20.h,
                       ),
                       InputField(
                         obscureText: true,
@@ -108,7 +111,7 @@ class SignUp extends GetWidget<AuthController> {
                         icon: Icons.vpn_key,
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 20.h,
                       ),
                       InputField(
                         obscureText: true,
@@ -125,10 +128,10 @@ class SignUp extends GetWidget<AuthController> {
                         icon: Icons.vpn_key,
                       ),
                       SizedBox(
-                        height: 30.h,
+                        height: 40.h,
                       ),
                       Container(
-                        height: 50.h,
+                        height: 60.h,
                         width: 414.w,
                         padding: EdgeInsets.only(left: 24.w, right: 24.w),
                         decoration: BoxDecoration(
@@ -169,9 +172,6 @@ class SignUp extends GetWidget<AuthController> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30.h,
-              )
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:fooddelivery/model/category.dart';
 import 'package:fooddelivery/model/image.dart';
 import 'package:fooddelivery/model/restaurant.dart';
+import 'package:fooddelivery/model/topping.dart';
 
 class Food {
   int? id;
@@ -9,11 +10,12 @@ class Food {
   int? price;
   int? weight;
   String? ingredients;
-  String? status;
+  int? status;
   String? note;
   int? restaurantId;
   int? categoryId;
-  List<Image>? image;
+  List<Image>? images;
+  List<Topping>? toppings;
   Restaurant? restaurant;
   Category? category;
 
@@ -28,7 +30,8 @@ class Food {
       this.note,
       this.restaurantId,
       this.categoryId,
-      this.image,
+      this.images,
+      this.toppings,
       this.restaurant,
       this.category});
 
@@ -44,9 +47,15 @@ class Food {
     restaurantId = json['restaurant_id'];
     categoryId = json['category_id'];
     if (json['image'] != null) {
-      image = new List.generate(0, (index) => new Image());
+      images = new List.generate(0, (index) => new Image());
       json['image'].forEach((v) {
-        image!.add(new Image.fromJson(v));
+        images!.add(new Image.fromJson(v));
+      });
+    }
+    if (json['toppings'] != null) {
+      toppings = new List.generate(0, (index) => new Topping());
+      json['toppings'].forEach((v) {
+        toppings!.add(new Topping.fromJson(v));
       });
     }
     restaurant = json['restaurant'] != null
@@ -69,8 +78,11 @@ class Food {
     data['note'] = this.note;
     data['restaurant_id'] = this.restaurantId;
     data['category_id'] = this.categoryId;
-    if (this.image != null) {
-      data['image'] = this.image!.map((v) => v.toJson()).toList();
+    if (this.images != null) {
+      data['image'] = this.images!.map((v) => v.toJson()).toList();
+    }
+    if (this.toppings != null) {
+      data['toppings'] = this.toppings!.map((v) => v.toJson()).toList();
     }
     if (this.restaurant != null) {
       data['restaurant'] = this.restaurant!.toJson();

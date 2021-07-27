@@ -1,18 +1,26 @@
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/controllers/auth_controller.dart';
-import 'package:fooddelivery/controllers/sign_in_controller.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
+import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-// class IsSignIn extends GetWidget<AuthController> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return null;
-//     // return Obx(() {
-//     //   // return Get.find<SignInController>().userLogin != null
-//     //   //     ? BottomNavigation()
-//     //   //     : SignIn();
-//     // });
-//   }
-// }
+class IsSignIn extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: checkIsSign(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data == true ? BottomNavigation() : SignIn();
+          } else {
+            return Container();
+          }
+        });
+  }
+
+  Future<bool> checkIsSign() async {
+    String token = (await getToken())!;
+    return token.isNotEmpty;
+  }
+}

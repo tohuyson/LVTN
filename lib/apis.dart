@@ -10,9 +10,21 @@ class Apis {
 
   //home
   static String getSlidersUrl = '$root/sliders';
-  static String getFoodsUrl = '$root/listfood';
-  static String getRestaurantsUrl = '$root/listrestaurant';
+
+  // static String getFoodsUrl = '$root/listfood';
+  static String getRestaurantsUrl = '$root/listrestaurants';
   static String getUsersUrl = '$root/getuser';
   static String getAddressUrl = '$root/listaddress';
-  static String getFoodResUrl = '$root/listfoodres';
+  static String getAddressUrl1 = '$root/address';
+
+  static String getCardOrderUrl = '$root/getcardorder';
+
+  static String getVoucherUrl = '$root/listdiscount';
+
+  // restaurant
+  static String getRestaurantUrl = '$root/listrestaurant';
+  static String getFoodUrl = '$root/listfood';
+
+  static String postAddCardUrl = '$root/addcardorder';
+  static String getCardUrl = '$root/getcard';
 }

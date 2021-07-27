@@ -4,7 +4,7 @@ class Address {
   String? longtitude;
   String? lattitude;
   int? userId;
-  String? status;
+  int? status;
 
   Address(
       {this.id,

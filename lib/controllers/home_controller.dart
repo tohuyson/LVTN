@@ -100,80 +100,81 @@ class HomeController extends GetxController {
     return null;
   }
 
-  Future<void> fetchFoods() async {
-    var foods = await getFood();
-    if (foods != null) {
-      listFoods.value = foods;
-      print(listFoods);
-    }
-  }
+  // Future<void> fetchFoods() async {
+  //   var foods = await getFood();
+  //   if (foods != null) {
+  //     listFoods.value = foods;
+  //     print(listFoods);
+  //   }
+  // }
 
-  Future<List<Food>?> getFood() async {
-    String token = (await getToken())!;
-    try {
-      http.Response response = await http.get(
-        Uri.parse(Apis.getFoodsUrl),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        },
-      );
-
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
-        foods = ListFoods.fromJson(parsedJson).listFood!;
-        print(parsedJson['foods']);
-        return foods;
-      }
-      if (response.statusCode == 401) {
-        showToast("Load failed");
-      }
-      if (response.statusCode == 500) {
-        showToast("Server error, please try again later!");
-      }
-    } on TimeoutException catch (e) {
-      showError(e.toString());
-    } on SocketException catch (e) {
-      showError(e.toString());
-    }
-    return null;
-  }
+  // Future<List<Food>?> getFood() async {
+  //   String token = (await getToken())!;
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse(Apis.getFoodsUrl),
+  //       headers: <String, String>{
+  //         "Accept": "application/json",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //     );
+  //
+  //     print(response.statusCode);
+  //     if (response.statusCode == 200) {
+  //       var parsedJson = jsonDecode(response.body);
+  //       foods = ListFoods.fromJson(parsedJson).listFood!;
+  //       print(parsedJson['foods']);
+  //       return foods;
+  //     }
+  //     if (response.statusCode == 401) {
+  //       showToast("Load failed");
+  //     }
+  //     if (response.statusCode == 500) {
+  //       showToast("Server error, please try again later!");
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     showError(e.toString());
+  //   } on SocketException catch (e) {
+  //     showError(e.toString());
+  //   }
+  //   return null;
+  // }
 
   Future<void> fetchRestaurants() async {
     var restaurants = await getRestaurants();
     if (restaurants != null) {
       listRestaurants.value = restaurants;
-      print(listRestaurants.length);
-      print(listRestaurants);
     }
   }
 
   Future<List<Restaurant>?> getRestaurants() async {
     String token = (await getToken())!;
+    print(token);
+    Map<String, String> queryParams = {
+      'limit': '40',
+    };
+    String queryString = Uri(queryParameters: queryParams).query;
+    print(queryString);
     try {
       http.Response response = await http.get(
-        Uri.parse(Apis.getRestaurantsUrl),
+        Uri.parse(Apis.getRestaurantsUrl + '?' + queryString),
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $token",
         },
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print('_findUsers $paginationFilter');
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['restaurants']);
         restaurants = ListRestaurants.fromJson(parsedJson).listRestaurants!;
         restaurants.sort((a, b) => (b.id!.compareTo(a.id!)));
         return restaurants;
       }
       if (response.statusCode == 401) {
-        showToast("Load failed");
+        showToast("Tải dữ liệu thất bại!");
       }
       if (response.statusCode == 500) {
-        showToast("Server error, please try again later!");
+        showToast("Hệ thống bị lỗi, vui lòng quay lại sau!");
       }
     } on TimeoutException catch (e) {
       showError(e.toString());

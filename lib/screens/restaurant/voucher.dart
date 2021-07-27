@@ -1,97 +1,39 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/constants.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-class Voucher extends StatelessWidget {
-  Widget voucherItem(context) {
-    return Container(
-      color: Colors.white,
-      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-      width: 414.w,
-      // height: 104.h,
-      padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 5.w, top: 5.w),
-      child: Row(
-        children: [
-          Image.network(
-            'https://svoucher.vn/wp-content/uploads/2019/09/gift-voucher.jpg',
-            fit: BoxFit.cover,
-            width: 80,
-            height: 80,
-          ),
-          Container(
-            width: 310.w,
-            padding: EdgeInsets.only(left: 12.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 120.w,
-                    decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Số lượng có hạn',
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          color: Theme.of(context).primaryColor),
-                    )),
-                Container(
-                  // width: 298.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'FreeShip cho đơn 60k',
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.w500),
-                      ),
-                      // Radio(
-                      //   value: 1,
-                      //   onChanged: (int? value) {
-                      //   },
-                      //   groupValue: null,
-                      // )
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time_outlined,
-                            size: 16.sp,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 12.w),
-                            child: Text(
-                              'Hết hạn sau 3 ngày',
-                              style: TextStyle(fontSize: 16.sp),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Điều kiện',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Theme.of(context).primaryColor),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/apis.dart';
+import 'package:fooddelivery/constants.dart';
+import 'package:fooddelivery/model/discount.dart';
+import 'package:fooddelivery/utils.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+class Voucher extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _Voucher();
+  }
+}
+
+class _Voucher extends State<Voucher> {
+  late RxList<Discount> list;
+  late int restaurant_id;
+  late String group;
+  late String percent;
+
+  @override
+  void initState() {
+    group = '';
+    percent = '';
+    list = RxList<Discount>();
+    restaurant_id = Get.arguments['restaurant_id'];
+    print(restaurant_id);
+    fetchDiscount();
+    super.initState();
   }
 
   @override
@@ -156,13 +98,190 @@ class Voucher extends StatelessWidget {
           )),
       body: Container(
         color: kPrimaryColorBackground,
-        child: Column(
-          children: [
-            voucherItem(context),
-            voucherItem(context),
-          ],
+        height: 834.h,
+        width: 414.w,
+        child: Obx(() => ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              return Container(
+                color: Colors.white,
+                margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                width: 414.w,
+                padding: EdgeInsets.only(
+                    left: 12.w, right: 12.w, bottom: 5.w, top: 5.w),
+                child: Row(
+                  children: [
+                    Image.network(
+                      Apis.baseURL + list[index].image!,
+                      fit: BoxFit.cover,
+                      width: 80.w,
+                      height: 80.h,
+                    ),
+                    Container(
+                      width: 308.w,
+                      padding: EdgeInsets.only(left: 12.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                color: Colors.black12,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Số lượng có hạn',
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Theme.of(context).primaryColor),
+                              )),
+                          Container(
+                            // width: 296.w,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${list[index].name}',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                new Radio(
+                                  toggleable: true,
+                                  value: list[index].id!.toString(),
+                                  groupValue: group.toString(),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      group = val.toString();
+                                      if (val == null) {
+                                        percent = '';
+                                      } else
+                                        percent =
+                                            list[index].percent.toString();
+                                      print(percent);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 296.w,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 236.w,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.access_time_outlined,
+                                        size: 16.sp,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 6.w),
+                                        child: Text(
+                                          'Hạn sử dụng đến ngày ${list[index].endDate}',
+                                          style: TextStyle(fontSize: 13.sp),
+                                          softWrap: true,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 60.w,
+                                  child: Text(
+                                    'Điều kiện',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            })),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          print('Sử dụng');
+          if (percent != '') {
+            Get.back(result: new RxString(percent));
+          } else
+            Get.back(result: new RxString(''));
+        },
+        label: Container(
+          height: 76.h,
+          width: 414.w,
+          color: Colors.white,
+          child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                  top: 10.h, bottom: 16.h, left: 16.w, right: 16.w),
+              height: 50.h,
+              width: 382.w,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Text(
+                'Sử dụng',
+                style: TextStyle(fontSize: 18.sp, color: Colors.white),
+              )),
         ),
       ),
     );
+  }
+
+  Future<void> fetchDiscount() async {
+    var discount = await getDiscount();
+    if (discount != null) {
+      list.assignAll(discount);
+      list.refresh();
+    }
+  }
+
+  Future<List<Discount>?> getDiscount() async {
+    List<Discount> list;
+    var token = await getToken();
+    try {
+      Map<String, String> queryParams = {
+        'restaurant_id': restaurant_id.toString(),
+      };
+      String queryString = Uri(queryParameters: queryParams).query;
+      http.Response response = await http.get(
+        Uri.parse(Apis.getVoucherUrl + '?' + queryString),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var parsedJson = jsonDecode(response.body);
+        print(parsedJson['discounts']);
+        list = ListDiscount.fromJson(parsedJson).discounts!;
+        return list;
+      }
+      if (response.statusCode == 500) {
+        showToast("Server error, please try again later!");
+      }
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+    return null;
   }
 }

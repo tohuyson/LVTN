@@ -45,6 +45,9 @@ class InputField extends StatelessWidget {
           color: Theme.of(context).primaryColor,
         ),
         hintText: hintText,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black12, width: 1)
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(

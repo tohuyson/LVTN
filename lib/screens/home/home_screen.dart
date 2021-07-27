@@ -9,7 +9,7 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import 'components/restaurant_item.dart';
 
-class HomeScreen extends GetWidget<HomeController> {
+class HomeScreen extends GetView<HomeController> {
   HomeController controller = Get.put(HomeController());
 
   @override
@@ -66,12 +66,11 @@ class HomeScreen extends GetWidget<HomeController> {
         ),
       ),
       body: Container(
-        width: double.infinity,
+        width: 414.w,
         height: 834.h,
         child: RefreshIndicator(
           onRefresh: () => controller.fetchRestaurants(),
           child: SingleChildScrollView(
-            // physics: ScrollPhysics(),
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: <Widget>[
@@ -108,19 +107,15 @@ class LatestFeedsTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 414.w,
       color: Colors.white,
-      padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 6.h, bottom: 6.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "Thức ăn phổ biến",
-            style: TextStyle(
-                fontSize: 16.sp,
-                color: Color(0xFF3a3a3b),
-                fontWeight: FontWeight.w400),
-          ),
-        ],
+      padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 6.h, bottom: 6.h),
+      child: Text(
+        "Nhà hàng phổ biến",
+        style: TextStyle(
+            fontSize: 18.sp,
+            color: Color(0xFF3a3a3b),
+            fontWeight: FontWeight.w500),
       ),
     );
   }

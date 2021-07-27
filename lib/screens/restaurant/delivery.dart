@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 enum SingingCharacter { staff, student }
 
@@ -88,6 +89,12 @@ class _Delivery extends State<Delivery> {
             padding: EdgeInsets.all(12.w),
             child: InkWell(
               onTap: () {
+                if (_character == SingingCharacter.staff) {
+                  Get.back(result: new RxString('Nhân viên'));
+                }
+                if (_character == SingingCharacter.student) {
+                  Get.back(result: new RxString('Sinh Viên'));
+                }
                 print('Xác nhận');
               },
               child: Container(

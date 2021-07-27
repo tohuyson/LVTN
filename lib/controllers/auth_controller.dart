@@ -12,7 +12,6 @@ import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   late TextEditingController? email;
@@ -49,6 +48,8 @@ class AuthController extends GetxController {
     return regExp.hasMatch(email);
   }
 
+  late String validateEmail;
+
   Future<void> register(BuildContext context) async {
     if (Form.of(context)!.validate()) {
       if (email!.text.isNotEmpty &&
@@ -74,12 +75,13 @@ class AuthController extends GetxController {
           if (response.statusCode == 201) {
             EasyLoading.dismiss();
             Get.to(SignIn());
+            showToast('Tạo tài khoản thành công!');
           }
           if (response.statusCode == 409) {
             showToast("Email đã tồn tại!");
           }
           if (response.statusCode == 500) {
-            showToast("Server error, please try again later!");
+            showToast("Hệ thống bị lỗi, Vui lòng quay lại sau!");
           }
         } on TimeoutException catch (e) {
           showError(e.toString());
@@ -93,8 +95,6 @@ class AuthController extends GetxController {
       showToast("Vui lòng điền đầy đủ các trường.");
     }
   }
-
-
 
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
 

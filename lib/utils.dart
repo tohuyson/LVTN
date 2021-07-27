@@ -15,3 +15,13 @@ Future<String?> getToken() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   return _prefs.getString('token');
 }
+
+Future<void> setValue(String key, String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(key, value);
+}
+
+Future<String?> getValue(String key) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(key);
+}

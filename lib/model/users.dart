@@ -1,3 +1,5 @@
+import 'address.dart';
+
 class Users {
   int? id;
   String? username;
@@ -13,6 +15,7 @@ class Users {
   String? randomKey;
   String? keyTime;
   String? expiresAt;
+  List<Address>? address;
 
   Users(
       {this.id,
@@ -28,7 +31,7 @@ class Users {
       this.token,
       this.randomKey,
       this.keyTime,
-      this.expiresAt});
+      this.expiresAt, this.address});
 
   Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,6 +48,12 @@ class Users {
     randomKey = json['random_key'];
     keyTime = json['key_time'];
     expiresAt = json['expires_at'];
+    if (json['address'] != null) {
+      address = new List.generate(0, (index) => Address());
+      json['address'].forEach((v) {
+        address!.add(new Address.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +72,9 @@ class Users {
     data['random_key'] = this.randomKey;
     data['key_time'] = this.keyTime;
     data['expires_at'] = this.expiresAt;
+    if (this.address != null) {
+      data['address'] = this.address!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

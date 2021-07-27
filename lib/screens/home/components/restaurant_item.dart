@@ -15,8 +15,9 @@ class RestaurantItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.to(() => RestaurantsScreen(), arguments: {'id': restaurant!.id});
+      onTap: () async {
+        await Get.to(() => RestaurantsScreen(),
+            arguments: {'restaurant_id': restaurant!.id});
       },
       child: Container(
         width: 414.w,
@@ -29,11 +30,14 @@ class RestaurantItem extends StatelessWidget {
             EdgeInsets.only(left: 12.w, right: 12.w, top: 6.h, bottom: 6.h),
         child: Row(
           children: [
-            Image.network(
-              Apis.baseURL + restaurant!.image!,
-              fit: BoxFit.cover,
-              width: 100.w,
-              height: 100.h,
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              child: Image.network(
+                Apis.baseURL + restaurant!.image!,
+                fit: BoxFit.cover,
+                width: 100.w,
+                height: 100.h,
+              ),
             ),
             Container(
               width: 286.w,

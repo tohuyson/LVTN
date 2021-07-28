@@ -12,7 +12,7 @@ class IsSignIn extends StatelessWidget {
         future: checkIsSign(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return snapshot.data == true ? BottomNavigation() : SignIn();
+            return snapshot.data == true ? BottomNavigation(selectedIndex: 2,) : SignIn();
           } else {
             return Container();
           }

@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
+import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/card.dart';
 import 'package:fooddelivery/model/data_fake.dart';
+import 'package:fooddelivery/model/discount.dart';
 import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
 import 'package:fooddelivery/screens/order/components/food_item.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
+import 'package:fooddelivery/screens/order/order_screen.dart';
 import 'package:fooddelivery/screens/restaurant/delivery.dart';
 import 'package:fooddelivery/screens/restaurant/payment.dart';
 import 'package:fooddelivery/screens/restaurant/voucher.dart';
@@ -37,7 +40,7 @@ class _OrderDetail extends State<OrderDetail> {
   late Rx<CardModel> card;
 
   late RxString person;
-  late RxString voucher;
+  late Rx<Discount> voucher;
   late RxString payment;
   late int card_id;
   late int delivery_fee;
@@ -47,7 +50,7 @@ class _OrderDetail extends State<OrderDetail> {
     card_id = Get.arguments['card_id'];
     print('card_id $card_id');
     person = 'Vui lòng chọn'.obs;
-    voucher = ''.obs;
+    voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: 0));
     payment = ''.obs;
     delivery_fee = 10000;
     // checkUser();
@@ -292,7 +295,8 @@ class _OrderDetail extends State<OrderDetail> {
                                 });
                             print(result);
                             setState(() {
-                              voucher = result;
+                              voucher.value = result;
+                              voucher.refresh();
                             });
                           },
                           child: Container(
@@ -327,9 +331,9 @@ class _OrderDetail extends State<OrderDetail> {
                                         ),
 
                                         child: Text(
-                                          voucher.value == ''
+                                          voucher.value.percent == 0
                                               ? 'Chọn voucher'
-                                              : 'Mã giảm ${voucher.value}%',
+                                              : 'Mã giảm ${voucher.value.percent}%',
                                           style: TextStyle(
                                               fontSize: 16.sp,
                                               color: Colors.black38),
@@ -479,7 +483,7 @@ class _OrderDetail extends State<OrderDetail> {
                             ],
                           ),
                         ),
-                        voucher.isNotEmpty
+                        voucher.value.name!.isNotEmpty
                             ? Container(
                                 decoration: BoxDecoration(
                                     border: Border(
@@ -541,7 +545,8 @@ class _OrderDetail extends State<OrderDetail> {
                           padding: EdgeInsets.all(12.w),
                           child: InkWell(
                             onTap: () {
-                              print('Đặt hàng');
+                              print('Thanh toán');
+                              addOrder();
                             },
                             child: Container(
                               height: 46.h,
@@ -552,10 +557,10 @@ class _OrderDetail extends State<OrderDetail> {
                               decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
+                                      BorderRadius.all(Radius.circular(5))),
                               child: Center(
                                 child: Text(
-                                  'Đặt hàng',
+                                  'Thanh toán',
                                   style: TextStyle(
                                       fontSize: 18.sp, color: Colors.white),
                                 ),
@@ -568,8 +573,6 @@ class _OrderDetail extends State<OrderDetail> {
                   ],
                 ),
               );
-
-
             } else {
               return Container();
             }
@@ -578,7 +581,7 @@ class _OrderDetail extends State<OrderDetail> {
   }
 
   double priceVocher() {
-    return card.value.sumPrice! * (int.parse(voucher.value) / 100);
+    return card.value.sumPrice! * (voucher.value.percent! / 100);
   }
 
   int sumPrice() {
@@ -680,5 +683,56 @@ class _OrderDetail extends State<OrderDetail> {
       showError(e.toString());
     }
     return null;
+  }
+
+  Future<void> addOrder() async {
+    var token = await getToken();
+    if (payment.value.isNotEmpty) {
+      try {
+        int sumprice = sumPrice();
+        int discount_id;
+        if (voucher.value.id == null) {
+          discount_id = 0;
+        } else {
+          discount_id = voucher.value.id!;
+        }
+        print(sumprice);
+        print(payment.value);
+        int card_id = card.value.id!;
+        http.Response response = await http.post(
+          Uri.parse(Apis.postOrderUrl),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': "Bearer $token",
+          },
+          body: jsonEncode(<String, dynamic>{
+            'sumprice': sumprice,
+            'method_payment': payment.value,
+            'address': address,
+            'price_delivery': delivery_fee.toString(),
+            'note': note,
+            'discount_id': discount_id,
+            'card_id': card_id,
+          }),
+        );
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          var parsedJson = jsonDecode(response.body);
+          print(parsedJson['order']);
+          // showToast('Mua hàng thành công');
+          Get.off(BottomNavigation(selectedIndex: 0,));
+        }
+        if (response.statusCode == 500) {
+          showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");
+        }
+      } on TimeoutException catch (e) {
+        showError(e.toString());
+      } on SocketException catch (e) {
+        showError(e.toString());
+        print(e.toString());
+      }
+    } else {
+      showToast('Vui lòng chọn phương thức thanh toán!');
+    }
   }
 }

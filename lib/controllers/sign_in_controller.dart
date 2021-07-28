@@ -79,7 +79,7 @@ class SignInController extends GetxController {
             print("TOKEN: " + token);
             await EasyLoading.dismiss();
             await _saveToken(token);
-            Get.to(() => BottomNavigation());
+            Get.to(() => BottomNavigation(selectedIndex: 2,));
           }
         }
         if (response.statusCode == 401) {
@@ -144,7 +144,7 @@ class SignInController extends GetxController {
       user = _auth.currentUser!;
       print(user.email);
       print(user.toString());
-      Get.off(BottomNavigation());
+      Get.off(BottomNavigation(selectedIndex: 2,));
     } else {
       final GoogleSignInAccount googleUser = (await googleSignIn.signIn())!;
       if (googleUser != null) {
@@ -198,11 +198,11 @@ class SignInController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
-        Get.off(BottomNavigation());
+        Get.off(BottomNavigation(selectedIndex: 2,));
       }
       if (response.statusCode == 204) {
         EasyLoading.dismiss();
-        Get.off(BottomNavigation());
+        Get.off(BottomNavigation(selectedIndex: 2,));
       }
       if (response.statusCode == 500) {
         showToast("Server error, please try again later!");

@@ -28,6 +28,7 @@ class RestaurantsScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _RestaurantsScreen();
   }
+
 }
 
 class _RestaurantsScreen extends State<RestaurantsScreen> {
@@ -143,7 +144,6 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
     await fetchCard(idRestaurant);
 
     print('render card $card');
-
 
     return restaurant.isBlank;
   }
@@ -306,9 +306,90 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                             body: TabBarView(
                               children: [
                                 food.isNotEmpty == true
-                                    ? FoodRestaurant(
-                                        food: food,
-                                      )
+                                    ?
+                                ListView.builder(
+                                    itemCount: food.length,
+                                    itemBuilder: (context, i) {
+                                      return Container(
+                                        padding: EdgeInsets.only(
+                                          left: 12.w,
+                                          right: 12.w,
+                                          top: 10.h,
+                                          bottom: 12.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            bottom: BorderSide(width: 1, color: kPrimaryColorBackground),
+                                          ),
+                                        ),
+                                        height: 102.h,
+                                        child: Row(
+                                          children: [
+                                            Image.network(
+                                              Apis.baseURL + food[i].images![0].url!,
+                                              fit: BoxFit.cover,
+                                              width: 80,
+                                              height: 80,
+                                            ),
+                                            Container(
+                                              width: 300.w,
+                                              padding: EdgeInsets.only(left: 12.w),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    food[i].name!,
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp, fontWeight: FontWeight.w500),
+                                                  ),
+                                                  Text(
+                                                    '10+ đã bán',
+                                                    style:
+                                                    TextStyle(fontSize: 14.sp, color: Colors.black38),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        food[i].price.toString() + 'đ',
+                                                        style: TextStyle(
+                                                            fontSize: 18.sp, fontWeight: FontWeight.w500),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          print('add');
+                                                          var result = await Get.to(FoodDetail(
+                                                            food: food[i],
+                                                          ));
+                                                          setState(() {
+                                                            if (result != null) {
+                                                              fetchCard(restaurant_id);
+                                                            }
+                                                          });
+                                                          // showPicker(context, food![i]!);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.add_circle,
+                                                          color: Colors.red,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })
+                                // FoodRestaurant(
+                                //         food: food,
+                                //       )
                                     : Container(
                                         child: Center(
                                           child: Text(
@@ -337,7 +418,8 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                           child: InkWell(
                             onTap: () {
                               print('Đặt hàng');
-                              Get.to(OrderDetail(), arguments: {'card_id':card.id});
+                              Get.to(OrderDetail(),
+                                  arguments: {'card_id': card.id});
                             },
                             child: Container(
                                 margin: EdgeInsets.only(
@@ -496,7 +578,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
     }
   }
 
-  Future<void> fetchCard(int restaurant_id) async {
+   Future<void> fetchCard(int restaurant_id) async {
     print('chayj ddaay vaayj  banj ');
     var c = await getCard(restaurant_id);
     print(c);
@@ -507,10 +589,8 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
     // return c.isBlank;
   }
 
-  Future<CardModel?> getCard(int restaurant_id) async {
+   Future<CardModel?> getCard(int restaurant_id) async {
     var token = await getToken();
-    // var card_id = await getValue('card_id');
-    // print(token);
     Map<String, String> queryParams = {
       'restaurant_id': restaurant_id.toString(),
     };
@@ -528,7 +608,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
         EasyLoading.dismiss();
         print(response.body);
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['card']);
+        // print(parsedJson['card']);
         CardModel card = CardJson.fromJson(parsedJson).card!;
         print(card);
         return card;

@@ -24,9 +24,11 @@ class _Voucher extends State<Voucher> {
   late int restaurant_id;
   late String group;
   late String percent;
+  late Discount discount;
 
   @override
   void initState() {
+    discount = new Discount();
     group = '';
     percent = '';
     list = RxList<Discount>();
@@ -158,10 +160,9 @@ class _Voucher extends State<Voucher> {
                                     setState(() {
                                       group = val.toString();
                                       if (val == null) {
-                                        percent = '';
+                                        discount = new Discount();
                                       } else
-                                        percent =
-                                            list[index].percent.toString();
+                                        discount = list[index];
                                       print(percent);
                                     });
                                   },
@@ -217,10 +218,7 @@ class _Voucher extends State<Voucher> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           print('Sử dụng');
-          if (percent != '') {
-            Get.back(result: new RxString(percent));
-          } else
-            Get.back(result: new RxString(''));
+          Get.back(result: discount);
         },
         label: Container(
           height: 76.h,

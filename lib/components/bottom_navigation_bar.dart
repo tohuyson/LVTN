@@ -7,43 +7,44 @@ import 'package:fooddelivery/screens/order/order_screen.dart';
 import 'package:fooddelivery/screens/profile/profile_screen.dart';
 import 'package:get/get.dart';
 
-// class BottomNavigation extends StatefulWidget {
-//   const BottomNavigation({Key? key}) : super(key: key);
-//
-//   @override
-//   State<BottomNavigation> createState() => _MyStatefulWidgetState();
-// }
+class BottomNavigation extends StatefulWidget {
+  late int selectedIndex;
 
-class BottomNavigation extends GetView<BottomNavigationBarController> {
-  BottomNavigationBarController controller =
-      Get.put(BottomNavigationBarController());
+  BottomNavigation({required this.selectedIndex});
+
+  @override
+  State<BottomNavigation> createState() => _BottomNavigation(selectedIndex: selectedIndex);
+}
+
+class _BottomNavigation extends State<BottomNavigation> {
+  late int selectedIndex;
+
+  _BottomNavigation({required this.selectedIndex});
+  
 
   // int _selectedIndex = 2;
-  // static List<Widget> _widgetOptions = <Widget>[
-  //   OrderScreen(),
-  //   AddressScreen(),
-  //   HomeScreen(),
-  //   NotifyScreen(),
-  //   ProfileScreen(),
-  // ];
+  static List<Widget> widgetOptions = <Widget>[
+    OrderScreen(),
+    AddressScreen(),
+    HomeScreen(),
+    NotifyScreen(),
+    ProfileScreen(),
+  ];
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () => Center(
-          // child: widgetOptions.elementAt(_selectedIndex),
-          child: controller.widgetOptions.elementAt(controller.tabIndex.value),
-        ),
+      body: Center(
+        child: widgetOptions.elementAt(selectedIndex),
+        // child: controller.widgetOptions.elementAt(controller.tabIndex.value),
       ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
+      bottomNavigationBar:  BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.article),
@@ -66,12 +67,11 @@ class BottomNavigation extends GetView<BottomNavigationBarController> {
               label: 'Tôi',
             ),
           ],
-          currentIndex: controller.tabIndex.value,
+          currentIndex: selectedIndex,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.blueAccent,
-          onTap: controller.setPage,
+          onTap: onItemTapped,
         ),
-      ),
     );
   }
 }

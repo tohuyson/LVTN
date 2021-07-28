@@ -27,4 +27,5 @@ class Apis {
 
   static String postAddCardUrl = '$root/addcardorder';
   static String getCardUrl = '$root/getcard';
+  static String postOrderUrl = '$root/addorder';
 }

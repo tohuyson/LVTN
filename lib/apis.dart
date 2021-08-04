@@ -7,6 +7,7 @@ class Apis {
   static String getSignInUrl = '$root/login';
   static String getLogoutUrl = '$root/logout';
   static String getSignInSocialUrl = '$root/registerSocial';
+  static String postloginAndRegisterPhone = '$root/loginAndRegisterPhone';
 
   //home
   static String getSlidersUrl = '$root/sliders';
@@ -28,4 +29,23 @@ class Apis {
   static String postAddCardUrl = '$root/addcardorder';
   static String getCardUrl = '$root/getcard';
   static String postOrderUrl = '$root/addorder';
+  static String getOrderUrl = '$root/getOrder';
+
+  //
+  static String uploadImage = '$root/uploadImage';
+  static String uploadAvatar = '$root/uploadAvatar';
+
+  //proflie
+  static String changeUsersUrl = '$root/changeUsers';
+  static String changeNameUrl = '$root/changeName';
+  static String changeDobUrl = '$root/changeDob';
+  static String changeGenderUrl = '$root/changeGender';
+  static String changeAvatarUrl = '$root/changeAvatar';
+
+  // address
+  static String addAddressUrl = '$root/addAddress';
+  static String updateAddressUrl = '$root/updateAddress';
+  static String deleteAddressUrl = '$root/deleteAddress';
+  static String updateLocationUrl = '$root/updateLocation';
+  static String getAddressFromIdUrl = '$root/getAddressFromId';
 }

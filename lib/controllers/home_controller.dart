@@ -41,17 +41,17 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    ever(paginationFilter, (_) => getRestaurants());
+    // ever(paginationFilter, (_) => getRestaurants());
     changePaginationFilter(1, 10);
     scrollController = ScrollController(
       initialScrollOffset: 2, // or whatever offset you wish
       keepScrollOffset: true,
     );
     sliders = List.generate(0, (index) => new Sliders());
-    fetchSliders();
+    // fetchSliders();
     // fetchFoods();
     // getFood();
-    fetchRestaurants();
+    // fetchRestaurants();
     super.onInit();
   }
 
@@ -62,43 +62,43 @@ class HomeController extends GetxController {
     super.onReady();
   }
 
-  void fetchSliders() async {
-    var sliders = await getSliders();
-    if (sliders != null) {
-      listSliders.value = sliders;
-    }
-  }
-
-  Future<List<Sliders>?> getSliders() async {
-    String token = (await getToken())!;
-    try {
-      http.Response response = await http.get(
-        Uri.parse(Apis.getSlidersUrl),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
-        sliders = ListSliders.fromJson(parsedJson).listSliders!;
-        print(sliders);
-        return sliders;
-      }
-      if (response.statusCode == 401) {
-        showToast("Load failed");
-      }
-      if (response.statusCode == 500) {
-        showToast("Server error, please try again later!");
-      }
-    } on TimeoutException catch (e) {
-      showError(e.toString());
-    } on SocketException catch (e) {
-      showError(e.toString());
-    }
-    return null;
-  }
+  // void fetchSliders() async {
+  //   var sliders = await getSliders();
+  //   if (sliders != null) {
+  //     listSliders.value = sliders;
+  //   }
+  // }
+  //
+  // Future<List<Sliders>?> getSliders() async {
+  //   String token = (await getToken())!;
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse(Apis.getSlidersUrl),
+  //       headers: <String, String>{
+  //         "Accept": "application/json",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var parsedJson = jsonDecode(response.body);
+  //       sliders = ListSliders.fromJson(parsedJson).listSliders!;
+  //       print(sliders);
+  //       return sliders;
+  //     }
+  //     if (response.statusCode == 401) {
+  //       showToast("Load failed");
+  //     }
+  //     if (response.statusCode == 500) {
+  //       showToast("Server error, please try again later!");
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     showError(e.toString());
+  //   } on SocketException catch (e) {
+  //     showError(e.toString());
+  //   }
+  //   return null;
+  // }
 
   // Future<void> fetchFoods() async {
   //   var foods = await getFood();
@@ -140,49 +140,49 @@ class HomeController extends GetxController {
   //   return null;
   // }
 
-  Future<void> fetchRestaurants() async {
-    var restaurants = await getRestaurants();
-    if (restaurants != null) {
-      listRestaurants.value = restaurants;
-    }
-  }
-
-  Future<List<Restaurant>?> getRestaurants() async {
-    String token = (await getToken())!;
-    print(token);
-    Map<String, String> queryParams = {
-      'limit': '40',
-    };
-    String queryString = Uri(queryParameters: queryParams).query;
-    print(queryString);
-    try {
-      http.Response response = await http.get(
-        Uri.parse(Apis.getRestaurantsUrl + '?' + queryString),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
-        restaurants = ListRestaurants.fromJson(parsedJson).listRestaurants!;
-        restaurants.sort((a, b) => (b.id!.compareTo(a.id!)));
-        return restaurants;
-      }
-      if (response.statusCode == 401) {
-        showToast("Tải dữ liệu thất bại!");
-      }
-      if (response.statusCode == 500) {
-        showToast("Hệ thống bị lỗi, vui lòng quay lại sau!");
-      }
-    } on TimeoutException catch (e) {
-      showError(e.toString());
-    } on SocketException catch (e) {
-      showError(e.toString());
-    }
-    return null;
-  }
+  // Future<void> fetchRestaurants() async {
+  //   var restaurants = await getRestaurants();
+  //   if (restaurants != null) {
+  //     listRestaurants.value = restaurants;
+  //   }
+  // }
+  //
+  // Future<List<Restaurant>?> getRestaurants() async {
+  //   String token = (await getToken())!;
+  //   print(token);
+  //   Map<String, String> queryParams = {
+  //     'limit': '40',
+  //   };
+  //   String queryString = Uri(queryParameters: queryParams).query;
+  //   print(queryString);
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse(Apis.getRestaurantsUrl + '?' + queryString),
+  //       headers: <String, String>{
+  //         "Accept": "application/json",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var parsedJson = jsonDecode(response.body);
+  //       restaurants = ListRestaurants.fromJson(parsedJson).listRestaurants!;
+  //       restaurants.sort((a, b) => (b.id!.compareTo(a.id!)));
+  //       return restaurants;
+  //     }
+  //     if (response.statusCode == 401) {
+  //       showToast("Tải dữ liệu thất bại!");
+  //     }
+  //     if (response.statusCode == 500) {
+  //       showToast("Hệ thống bị lỗi, vui lòng quay lại sau!");
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     showError(e.toString());
+  //   } on SocketException catch (e) {
+  //     showError(e.toString());
+  //   }
+  //   return null;
+  // }
 
   void nextPage() => changePaginationFilter(_page + 1, limit);
 

@@ -18,6 +18,7 @@ class Food {
   List<Topping>? toppings;
   Restaurant? restaurant;
   Category? category;
+  Pivot? pivot;
 
   Food(
       {this.id,
@@ -33,7 +34,9 @@ class Food {
       this.images,
       this.toppings,
       this.restaurant,
-      this.category});
+      this.category,
+      this.pivot
+      });
 
   Food.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -64,6 +67,7 @@ class Food {
     category = json['category'] != null
         ? new Category.fromJson(json['category'])
         : null;
+    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -90,6 +94,33 @@ class Food {
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
+    if (this.pivot != null) {
+      data['pivot'] = this.pivot!.toJson();
+    }
+    return data;
+  }
+}
+class Pivot {
+  int? orderId;
+  int? foodId;
+  int? price;
+  int? quantity;
+
+  Pivot({this.orderId, this.foodId, this.price, this.quantity});
+
+  Pivot.fromJson(Map<String, dynamic> json) {
+    orderId = json['order_id'];
+    foodId = json['food_id'];
+    price = json['price'];
+    quantity = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['order_id'] = this.orderId;
+    data['food_id'] = this.foodId;
+    data['price'] = this.price;
+    data['quantity'] = this.quantity;
     return data;
   }
 }

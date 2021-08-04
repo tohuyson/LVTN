@@ -39,8 +39,8 @@ class ProfileController extends GetxController {
     // update();
   }
 
-  late File image;
-  late String imagePath;
+  late File? image;
+  late String? imagePath;
   final _picker = ImagePicker();
 
   Future<void> getImage() async {

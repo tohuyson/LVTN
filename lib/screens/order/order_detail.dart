@@ -14,6 +14,7 @@ import 'package:fooddelivery/model/card.dart';
 import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/discount.dart';
 import 'package:fooddelivery/model/list_address.dart';
+import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
@@ -709,7 +710,7 @@ class _OrderDetail extends State<OrderDetail> {
             'sumprice': sumprice,
             'method_payment': payment.value,
             'address': address,
-            'price_delivery': delivery_fee.toString(),
+            'price_delivery': delivery_fee,
             'note': note,
             'discount_id': discount_id,
             'card_id': card_id,
@@ -720,7 +721,11 @@ class _OrderDetail extends State<OrderDetail> {
           var parsedJson = jsonDecode(response.body);
           print(parsedJson['order']);
           // showToast('Mua hàng thành công');
-          Get.off(BottomNavigation(selectedIndex: 0,));
+          Order order = OrderJson.fromJson(parsedJson).order!;
+          Get.off(
+              BottomNavigation(
+                selectedIndex: 0,
+              ), arguments: {'order_id': order.id});
         }
         if (response.statusCode == 500) {
           showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");

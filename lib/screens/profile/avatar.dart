@@ -11,7 +11,7 @@ class Avatar extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // controller.getImage();
+        controller.getImage();
       },
       child: Container(
         color: Color(0xFFFFFFFF),

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/screens/auth/is_signin.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
@@ -31,7 +32,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Color(0xFF0992E8),
         ),
-        home: IsSignIn(),
+        debugShowCheckedModeBanner: false,
+        home: AuthService().handleAuth(),
+        // home: IsSignIn(),
+        // home: SignIn(),
         builder: EasyLoading.init(),
       ),
     );

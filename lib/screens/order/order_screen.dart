@@ -1,15 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/controllers/order_controller.dart';
 import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/screens/order/components/card_item.dart';
 import 'package:fooddelivery/screens/order/order_coming.dart';
 import 'package:fooddelivery/screens/order/order_item.dart';
 import 'package:get/get.dart';
 
-class OrderScreen extends GetView<OrderController> {
-  OrderController controller = Get.put(OrderController());
+class OrderScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _OrderScreen();
+  }
+}
+
+class _OrderScreen extends State<OrderScreen>
+    with SingleTickerProviderStateMixin {
+  int index = 0;
+  TabController? tabController;
+
+  final List<Tab> myTabs = <Tab>[
+    Tab(
+      child: Center(
+        child: Text(
+          'Đang đến',
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+    ),
+    Tab(
+      child: Center(
+        child: Text(
+          'Lịch sử',
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+    ),
+    Tab(
+      child: Center(
+        child: Text(
+          'Đơn nháp',
+          style: TextStyle(fontWeight: FontWeight.w400),
+        ),
+      ),
+    ),
+  ];
+
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this, initialIndex: index);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +64,9 @@ class OrderScreen extends GetView<OrderController> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
           centerTitle: true,
           title: Text(
             'Đơn hàng',
@@ -38,15 +85,17 @@ class OrderScreen extends GetView<OrderController> {
                 padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                 child: TabBar(
                   labelColor: Colors.black,
-                  controller: controller.tabController,
-                  tabs: controller.myTabs,
+                  controller: tabController,
+                  tabs: myTabs,
                 ),
               ),
               Expanded(
                 child: TabBarView(
-                  controller: controller.tabController,
+                  controller: tabController,
                   children: [
-                    Text('dasd'),
+                    OrderComing(
+                      // order: order_1,
+                    ),
                     Text('dasdhsk'),
                     // order_1.status == false
                     //     ? OrderComing(

@@ -6,12 +6,10 @@ class InputField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final bool autofocus;
   final bool obscureText;
-
   final String? initValue;
-
   final FormFieldValidator<String>? validator;
-
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
 
   const InputField({
     Key? key,
@@ -23,11 +21,13 @@ class InputField extends StatelessWidget {
     this.initValue,
     this.validator,
     this.obscureText = false,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType:keyboardType,
       controller: controller,
       obscureText: obscureText,
       validator: validator,

@@ -4,7 +4,7 @@ class Topping {
   int? id;
   String? name;
   int? price;
-  String? status;
+  int? status;
   PivotFoodTopping? pivot;
 
   Topping({this.id, this.name, this.price, this.status, this.pivot});

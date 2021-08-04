@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class CardItem extends StatelessWidget {
+class CardItem extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _CardItem();
+  }
+}
+
+class _CardItem extends State<CardItem> {
+
   @override
   Widget build(BuildContext context) {
     return Slidable(

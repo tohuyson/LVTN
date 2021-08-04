@@ -13,10 +13,11 @@ import 'package:http/http.dart' as http;
 class AddressController extends GetxController {
   late List<Address> address;
   late Rx<Users> users;
-  var listAddress = List?.generate(0, (index) => new Address()).obs;
+  var listAddress;
 
   @override
   void onInit() {
+    listAddress = List?.generate(0, (index) => new Address()).obs;
     // fetchAddress();
     getAddress();
     super.onInit();

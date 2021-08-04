@@ -69,7 +69,7 @@ class _BottomNavigation extends State<BottomNavigation> {
           ],
           currentIndex: selectedIndex,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blueAccent,
+          selectedItemColor: Theme.of(context).primaryColor,
           onTap: onItemTapped,
         ),
     );

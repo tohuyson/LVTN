@@ -368,7 +368,8 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                                                           ));
                                                           setState(() {
                                                             if (result != null) {
-                                                              fetchCard(restaurant_id);
+                                                              CardModel c = result;
+                                                              fetchCard(c.restaurantId!);
                                                             }
                                                           });
                                                           // showPicker(context, food![i]!);

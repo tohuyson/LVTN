@@ -311,6 +311,8 @@ class _SignIn extends State<SignIn> {
       this.verificationId = verId;
     };
 
+    await FirebaseAuth.instance.setLanguageCode('VI');
+
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '+84' + phoneNo,
         timeout: const Duration(seconds: 60),

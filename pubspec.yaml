@@ -26,7 +26,6 @@ dependencies:
 
   #  use routes/snackbars/dialogs/bottomsheets
   get: ^4.1.4
-
   #A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
   flutter_screenutil: ^5.0.0+2
 

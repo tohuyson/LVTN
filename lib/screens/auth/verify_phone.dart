@@ -1,8 +1,18 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/authservice.dart';
+import 'package:fooddelivery/components/bottom_navigation_bar.dart';
+import 'package:fooddelivery/model/users.dart';
+import 'package:fooddelivery/screens/auth/signup.dart';
 import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
+import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class VerifyPhone extends StatefulWidget {
   @override
@@ -96,7 +106,16 @@ class _VerifyPhone extends State<VerifyPhone> {
 
                     if (isSignSMS == true) {
                       print("vào ddaa7f true đi bạn $isSignSMS");
-                      await AuthService().loginAndRegisterPhone(numberPhone);
+                      //check user đã có tồn tại hay chưa
+                      bool isCheckUser = await checkUser();
+                      if (isCheckUser) {
+                        await loginUser();
+                      } else {
+                        Get.to(SignUp(),
+                            arguments: {'numberPhone': numberPhone});
+                      }
+
+                      // await AuthService().loginAndRegisterPhone(numberPhone);
                     }
                   },
                   child: Text(
@@ -111,5 +130,62 @@ class _VerifyPhone extends State<VerifyPhone> {
         ),
       ),
     );
+  }
+
+  Future<bool> checkUser() async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse(Apis.checkUserUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'phone': numberPhone,
+        }),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        if (jsonDecode(response.body)['users'] != null) {
+          return true;
+        }
+        return false;
+      }
+      if (response.statusCode == 500) {
+        showToast("Hệ thống bị lỗi, Vui lòng quay lại sau!");
+      }
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> loginUser() async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse(Apis.postLoginPhoneUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'phone': numberPhone,
+        }),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body)['token']);
+        await saveToken(jsonDecode(response.body)['token']);
+        Get.offAll(BottomNavigation(selectedIndex: 2));
+      }
+      if (response.statusCode == 500) {
+        showToast("Hệ thống bị lỗi, Vui lòng quay lại sau!");
+      }
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+    return false;
   }
 }

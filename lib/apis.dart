@@ -8,6 +8,8 @@ class Apis {
   static String getLogoutUrl = '$root/logout';
   static String getSignInSocialUrl = '$root/registerSocial';
   static String postloginAndRegisterPhone = '$root/loginAndRegisterPhone';
+  static String checkUserUrl = '$root/checkUser';
+  static String postLoginPhoneUrl = '$root/loginPhone';
 
   //home
   static String getSlidersUrl = '$root/sliders';

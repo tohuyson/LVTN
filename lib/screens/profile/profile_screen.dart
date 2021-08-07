@@ -5,9 +5,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
+import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/controllers/profile_controllor.dart';
 import 'package:fooddelivery/model/item_profile.dart';
 import 'package:fooddelivery/model/users.dart';
+import 'package:fooddelivery/screens/chat/home.dart';
 import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
@@ -130,6 +132,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                             page: HomeScreen(),
                           ),
                         ),
+                        ItemProfile(
+                          itemProfile: ItemProfileModel(
+                            title: 'Tin Nhăn',
+                            description: '',
+                            page: ChatHomeScreen(),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -166,6 +175,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                   InkWell(
                     onTap: () {
                       controller.logout();
+                      AuthService().signOut();
                     },
                     child: Container(
                       margin: EdgeInsets.only(

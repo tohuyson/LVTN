@@ -58,39 +58,4 @@ class AuthService {
     }
     return false;
   }
-
-  Future<void> loginAndRegisterPhone(String phone) async {
-    print(phone);
-    try {
-      http.Response response = await http.post(
-        Uri.parse(Apis.postloginAndRegisterPhone),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'phone': phone,
-        }),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 201) {
-        var token = jsonDecode(response.body)["token"];
-        if (token != null) {
-          print("TOKEN: " + token);
-          await _saveToken(token);
-          Get.offAll(() => BottomNavigation(
-                selectedIndex: 2,
-              ));
-        }
-      }
-    } on TimeoutException catch (e) {
-      showError(e.toString());
-    } on SocketException catch (e) {
-      showError(e.toString());
-    }
-  }
-
-  Future<void> _saveToken(String token) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('token', token);
-  }
 }

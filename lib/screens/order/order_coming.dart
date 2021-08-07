@@ -720,22 +720,6 @@ class _OrderDetail extends State<OrderComing> {
     return order.isBlank;
   }
 
-  // Future<bool?> fetch() async {
-  //   print('chayj ddaay vaayj banj ');
-  //   var c = await getOrder();
-  //   print(c);
-  //   if (c != null) {
-  //     o = c;
-  //     isLoading = true;
-  //   }else{
-  //     o=null;
-  //     isLoading= false;
-  //
-  //   }
-  //
-  //   return o.isBlank;
-  // }
-
   Future<Order?> getOrder() async {
     Order order;
     String token = (await getToken())!;

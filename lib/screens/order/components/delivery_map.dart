@@ -48,15 +48,15 @@ class _DeliveryMap extends State<DeliveryMap> {
       height: height!.h,
       width: double.infinity,
       color: Colors.white,
-      child: GoogleMap(
-        mapType: MapType.normal,
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(
-          target: currentPostion,
-          zoom: 10,
-        ),
-        onMapCreated: (GoogleMapController controller) {},
-      ),
+      // child: GoogleMap(
+      //   mapType: MapType.normal,
+      //   myLocationEnabled: true,
+      //   initialCameraPosition: CameraPosition(
+      //     target: currentPostion,
+      //     zoom: 10,
+      //   ),
+      //   onMapCreated: (GoogleMapController controller) {},
+      // ),
     );
   }
 }

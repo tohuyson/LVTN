@@ -139,12 +139,13 @@ class _SignIn extends State<SignIn> {
                                 child: TextButton(
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                      print(phone!.text);
-                                      await verifyPhone(phone!.text);
+                                      // print(phone!.text);
+                                      // await verifyPhone(phone!.text);
                                     }
-                                    // await saveToken(
-                                    //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZjAxNWMwZTdjNTdkNGZhYTRhYzU3YmJiZmQ0ZTZjOTIxNjI1YWI0OTM5MWZkOWViZjY0M2E1YmE2MzE0OWY4NzVmOTBhYjNmMWM2ZTAzZTciLCJpYXQiOjE2Mjc2NzU2NDguNjYyMTcyLCJuYmYiOjE2Mjc2NzU2NDguNjYyMTgsImV4cCI6MTY1OTIxMTY0OC40NTczNjYsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.R6nyyfpag5jwgvrYQTWbk41yoDJBkNxctS1za-H_keIU1MbN9oXngGnKet2QZbQeW-RPrD9qYxyu6t1nWQZtY7MzVsvI5DL8wM3CxaN8bt4RK5G1aEexWNsGoH2A66vM6iPSXyXlxPzhOmGia2Pgq_p323899U8ebS-GldXVD_r7gyFfvhddaU2tEK5WNmt-xeStCzKYC4uTyM-vcUHp7nVRj-N56u2_aPQRKcbjTumuRs9WbVuRASuyaCxu07zudlE5IqnVTRkk1ASTkudc1sBJmg1VljiBl0wGMyxvV_P1AlkxdFY_vItHAQu5pDpXXdjB-94DpxWXOHiBE3QKkhJfsj4oZr-9t1RGqehqhBe4e16MdYOs33HeTH2xwz2BlVPE0IUue2o9YWanxg7mY2Rth7S984XzTFmZnlgzWn84dZJYJZ6V1JH8pb3EHduxH4t91v89iY-R994NNXgbX_UpENWu2B5QAmQ_lCzGpl85W4YbGGvsISimyMQpZGVejkoz8151zr7vWfzEU_bTxSI-HkJZDqisJmci7c1RkNTaNFa4yxmrfVvwI0U9nE3KsGiQobk48mupiODVDBrUPa2qOk9J-AhUkiXu82-51Qx7a_hijaUIOwejXB3zg3OZvC7FNF1bKbHGdL8efO3Ry713a9XnZ10fKqAgrlPPOGs');
-                                    // Get.to(BottomNavigation(selectedIndex: 2,));
+                                    await saveToken(
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2MzMTAyZTAxNjkwNmYwZjA0MTRjNWUzZWQ3YmJlYjQ4MTJjNjRlMDlhZDM1MDBhNzQ5NWY0YmQ3MTM3OTIyMjg2ODA1MDE4ODNhOWI4ODkiLCJpYXQiOjE2MjgyNjE1MjMuMDI0NTI4LCJuYmYiOjE2MjgyNjE1MjMuMDI0NTM1LCJleHAiOjE2NTk3OTc1MjMuMDExOTQ0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.H4UKnZKFh7nQ2H5QUI24fwYUYIuTgWPZmkDsLiwRxjL3asnM4MWqGH2B523EE8nTsvjEs1ieKIYV1DMw3lZfq_m90Hv9v8E408a7Y5GAjCK5pvdD4No4oaiYbymlK6CYIp0KOkrWOWw8KMUiaBnSn7xYI_fgWJ8gAnlnOjkzmLIOFPybY2fGkAqp2bKWup2PbdusjEIxZ0dZN_aMHJphczPvKUISztSSiaDFVUOZn-3nY0x-CF0bDULB67J_Q4GNmmF87NoQNN5I1sZfIuE4huSDoibkitVaQHiepMHXyx3YxydfFOJDkttdYUenQmmy_mq0sXsZPKsUKtO2hb1KLD2KQVGWN-f5odibJQDI99v59bsob544YTBv6mHyIRSq8vF9wiBFKXNY-32l0QeKRQ8Aje-2zzU2Tf8thCGV9uhT3vojBX8EjRzA7z98hxCOpBf-mvgUCj_08IFMp2xGX3QE1iKS8rx4HCPMhJFuGlITwS14LIi-s5xCGUSlALOLbQpbvWXCCbCBx4irRjoGQUNvBzSBElP9uVGo7kuBk5xEvDsGbfdR7P8diM0wgDuvkUX0S5GP-N0uqpuoByona9wN0xuH25sTdpSJhRLPMVYs5eQSMEmVB6wFmSXYWLoFi3SnGOZkVQOTL7T1X2u-1zUjJi9KfLCwwZmjfM5BDPU"
+                                    );
+                                        Get.to(BottomNavigation(selectedIndex: 2,));
                                   },
                                   child: Text(
                                     'Đăng nhập/Đăng ký'.toUpperCase(),

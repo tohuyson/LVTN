@@ -24,9 +24,6 @@ class _OrderScreen extends State<OrderScreen>
       child: Center(
         child: Text(
           'Đang đến',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-          ),
         ),
       ),
     ),
@@ -34,9 +31,6 @@ class _OrderScreen extends State<OrderScreen>
       child: Center(
         child: Text(
           'Lịch sử',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-          ),
         ),
       ),
     ),
@@ -44,7 +38,6 @@ class _OrderScreen extends State<OrderScreen>
       child: Center(
         child: Text(
           'Đơn nháp',
-          style: TextStyle(fontWeight: FontWeight.w400),
         ),
       ),
     ),
@@ -64,9 +57,7 @@ class _OrderScreen extends State<OrderScreen>
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
-          backgroundColor: Theme
-              .of(context)
-              .primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: Text(
             'Đơn hàng',
@@ -80,11 +71,12 @@ class _OrderScreen extends State<OrderScreen>
           child: Column(
             children: [
               Container(
-                height: 50.h,
                 color: Colors.white,
-                padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                constraints: BoxConstraints.expand(height: 50.h),
                 child: TabBar(
-                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.black87,
+                  indicatorColor: Colors.blue,
+                  labelColor: Colors.blue,
                   controller: tabController,
                   tabs: myTabs,
                 ),

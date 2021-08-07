@@ -20,25 +20,28 @@ class Order {
   StatusOrder? statusOrder;
   List<Food>? food;
   Payment? payment;
+  String? createdAt;
+  String? updatedAt;
 
-  Order({
-    this.id,
-    this.tax,
-    this.price,
-    this.priceDelivery,
-    this.addressDelivery,
-    this.date,
-    this.orderStatusId,
-    this.paymentId,
-    this.discountId,
-    this.note,
-    this.status,
-    this.userId,
-    this.userDeliveryId,
-    this.statusOrder,
-    this.food,
-    this.payment
-  });
+  Order(
+      {this.id,
+      this.tax,
+      this.price,
+      this.priceDelivery,
+      this.addressDelivery,
+      this.date,
+      this.orderStatusId,
+      this.paymentId,
+      this.discountId,
+      this.note,
+      this.status,
+      this.userId,
+      this.userDeliveryId,
+      this.statusOrder,
+      this.food,
+      this.payment,
+      this.createdAt,
+      this.updatedAt});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -64,7 +67,9 @@ class Order {
       });
     }
     payment =
-    json['payment'] != null ? new Payment.fromJson(json['payment']) : null;
+        json['payment'] != null ? new Payment.fromJson(json['payment']) : null;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {

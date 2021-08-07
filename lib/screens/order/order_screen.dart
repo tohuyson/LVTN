@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/data_fake.dart';
-import 'package:fooddelivery/screens/order/components/card_item.dart';
+import 'package:fooddelivery/screens/order/draft_order.dart';
 import 'package:fooddelivery/screens/order/order_coming.dart';
 import 'package:fooddelivery/screens/order/order_item.dart';
 import 'package:get/get.dart';
+
+import 'history_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   @override
@@ -86,9 +88,9 @@ class _OrderScreen extends State<OrderScreen>
                   controller: tabController,
                   children: [
                     OrderComing(
-                      // order: order_1,
-                    ),
-                    Text('dasdhsk'),
+                        // order: order_1,
+                        ),
+                    HistoryScreen(),
                     // order_1.status == false
                     //     ? OrderComing(
                     //         order: order_1,
@@ -99,11 +101,7 @@ class _OrderScreen extends State<OrderScreen>
                     //         listOrder: listOrder,
                     //       )
                     //     : Text('Không có đơn hàng'),
-                    Column(
-                      children: [
-                        CardItem(),
-                      ],
-                    ),
+                    DraftOrder(),
                   ],
                 ),
               ),

@@ -134,7 +134,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                         ),
                         ItemProfile(
                           itemProfile: ItemProfileModel(
-                            title: 'Tin Nhăn',
+                            title: 'Tin nhắn',
                             description: '',
                             page: ChatHomeScreen(),
                           ),

@@ -700,14 +700,6 @@ class _OrderDetail extends State<OrderComing> {
         });
   }
 
-  // Widget buildLoading() {
-  //   return Positioned(
-  //     child: isLoading
-  //         ? const Loading()
-  //         : EmptyScreen(text: "Bạn chưa có đơn hàng nào."),
-  //   );
-  // }
-
   Future<bool?> fetchOrder() async {
     var o = await getOrder();
     if (o!.id != null) {
@@ -719,22 +711,6 @@ class _OrderDetail extends State<OrderComing> {
     }
     return order.isBlank;
   }
-
-  // Future<bool?> fetch() async {
-  //   print('chayj ddaay vaayj banj ');
-  //   var c = await getOrder();
-  //   print(c);
-  //   if (c != null) {
-  //     o = c;
-  //     isLoading = true;
-  //   }else{
-  //     o=null;
-  //     isLoading= false;
-  //
-  //   }
-  //
-  //   return o.isBlank;
-  // }
 
   Future<Order?> getOrder() async {
     Order order;

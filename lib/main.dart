@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFF0992E8),
         ),
         debugShowCheckedModeBanner: false,
-        // home: AuthService().handleAuth(),
+        home: AuthService().handleAuth(),
         // home: IsSignIn(),
-        home: SignIn(),
+        // home: SignIn(),
         builder: EasyLoading.init(),
       ),
     );

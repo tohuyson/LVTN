@@ -74,7 +74,7 @@ class _OrderScreen extends State<OrderScreen>
             children: [
               Container(
                 color: Colors.white,
-                constraints: BoxConstraints.expand(height: 50.h),
+                // constraints: BoxConstraints.expand(height: 50.h),
                 child: TabBar(
                   unselectedLabelColor: Colors.black87,
                   indicatorColor: Colors.blue,

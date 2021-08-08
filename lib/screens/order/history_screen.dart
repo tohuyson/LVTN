@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/model/order.dart';
-import 'package:fooddelivery/screens/chat/widget/loading.dart';
 import 'package:fooddelivery/screens/widget/empty_screen.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;

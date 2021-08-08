@@ -1,5 +1,5 @@
 class Apis {
-  static final String baseURL = 'http://192.168.1.10:8000';
+  static final String baseURL = 'http://192.168.1.233:8000';
   static final String root = '$baseURL/api';
 
   //auth
@@ -36,6 +36,7 @@ class Apis {
   static String getOrderUrl = '$root/getOrder';
   static String getHistoryUrl = '$root/getHistory';
   static String getdraftOrderUrl = '$root/getdraftOrder';
+  static String deleteDraftOrderUrl = '$root/deleteDraftOrder';
 
   //
   static String uploadImage = '$root/uploadImage';

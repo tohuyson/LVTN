@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,20 +17,23 @@ import 'package:fooddelivery/model/food.dart';
 import 'package:fooddelivery/model/list_foods.dart';
 import 'package:fooddelivery/model/list_restaurant.dart';
 import 'package:fooddelivery/model/restaurant.dart';
+import 'package:fooddelivery/screens/chat/chat.dart';
+import 'package:fooddelivery/screens/chat/model/user_chat.dart';
 import 'package:fooddelivery/screens/order/order_detail.dart';
 import 'package:fooddelivery/screens/order/order_detail_delivered.dart';
 import 'package:fooddelivery/screens/restaurant/component/food_restaurant.dart';
 import 'package:fooddelivery/screens/search/components/search_widget.dart';
+import 'package:fooddelivery/screens/widget/empty_screen.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RestaurantsScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _RestaurantsScreen();
   }
-
 }
 
 class _RestaurantsScreen extends State<RestaurantsScreen> {
@@ -39,7 +44,6 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
   late RxList<Food> food = new RxList<Food>();
   late int restaurant_id;
 
-  // late Rx<CardModel> card;
   late CardModel card;
   late int idRestaurant;
 
@@ -215,7 +219,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                                   ],
                                 ),
                                 SliverAppBar(
-                                  expandedHeight: 80.h,
+                                  expandedHeight: 82.h,
                                   automaticallyImplyLeading: false,
                                   backgroundColor: Colors.white,
                                   flexibleSpace: Container(
@@ -234,15 +238,115 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                                       children: [
                                         Container(
                                           width: 414.w,
-                                          padding: EdgeInsets.only(bottom: 8.h),
-                                          child: Obx(
-                                            () => Text(
-                                              restaurant.value!.name!,
-                                              // restaurant.name!,
-                                              style: TextStyle(
-                                                  fontSize: 22.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          // padding: EdgeInsets.only(bottom: 8.h),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Obx(
+                                                () => Text(
+                                                  restaurant.value!.name!,
+                                                  style: TextStyle(
+                                                      fontSize: 22.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                  icon:
+                                                      Icon(Icons.chat_outlined),
+                                                  onPressed: () async {
+                                                    SharedPreferences prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    print('chát');
+                                                    User? user = FirebaseAuth
+                                                        .instance.currentUser!;
+                                                    print(user);
+                                                    if (user != null) {
+                                                      // Check is already sign up
+                                                      final querySnapshotresult =
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'users')
+                                                              .where('id',
+                                                                  isEqualTo:
+                                                                      user.uid)
+                                                              .get();
+                                                      print(querySnapshotresult
+                                                          .docs);
+                                                      // final List<DocumentSnapshot>documents = result.docs;
+                                                      if (querySnapshotresult
+                                                              .docs.length ==
+                                                          0) {
+                                                        // Update data to server if new user
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection('users')
+                                                            .doc(user.uid)
+                                                            .set({
+                                                          'nickname':
+                                                              user.displayName,
+                                                          'photoUrl':
+                                                              user.photoURL,
+                                                          'id': user.uid,
+                                                          'createdAt': DateTime
+                                                                  .now()
+                                                              .millisecondsSinceEpoch
+                                                              .toString(),
+                                                          'chattingWith':
+                                                              restaurant.value!
+                                                                  .user!.uid,
+                                                        });
+
+                                                        // Write data to local
+                                                        // currentUser = user;
+                                                        // print(currentUser.uid);
+                                                        await prefs.setString(
+                                                            'id', user.uid);
+                                                        await prefs.setString(
+                                                            'nickname',
+                                                            user.displayName ??
+                                                                "");
+                                                        await prefs.setString(
+                                                            'photoUrl',
+                                                            user.photoURL ??
+                                                                "");
+                                                      } else {
+                                                        DocumentSnapshot
+                                                            documentSnapshot =
+                                                            querySnapshotresult
+                                                                .docs[0];
+                                                        UserChat userChat =
+                                                            UserChat.fromDocument(
+                                                                documentSnapshot);
+                                                        // Write data to local
+                                                        print(userChat.id);
+                                                        await prefs.setString(
+                                                            'id', userChat.id!);
+                                                        await prefs.setString(
+                                                            'nickname',
+                                                            userChat.nickname!);
+                                                        await prefs.setString(
+                                                            'photoUrl',
+                                                            userChat.photoUrl ??
+                                                                "");
+                                                      }
+                                                      String avatar =
+                                                          Apis.baseURL +
+                                                              restaurant
+                                                                  .value!
+                                                                  .user!
+                                                                  .avatar!;
+                                                      Get.to(Chat(
+                                                        peerId: restaurant
+                                                            .value!.user!.uid!,
+                                                        peerAvatar: avatar,
+                                                      ));
+                                                    }
+                                                  })
+                                            ],
                                           ),
                                         ),
                                         Container(
@@ -306,97 +410,119 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
                             body: TabBarView(
                               children: [
                                 food.isNotEmpty == true
-                                    ?
-                                ListView.builder(
-                                    itemCount: food.length,
-                                    itemBuilder: (context, i) {
-                                      return Container(
-                                        padding: EdgeInsets.only(
-                                          left: 12.w,
-                                          right: 12.w,
-                                          top: 10.h,
-                                          bottom: 12.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border(
-                                            bottom: BorderSide(width: 1, color: kPrimaryColorBackground),
-                                          ),
-                                        ),
-                                        height: 102.h,
-                                        child: Row(
-                                          children: [
-                                            Image.network(
-                                              Apis.baseURL + food[i].images![0].url!,
-                                              fit: BoxFit.cover,
-                                              width: 80,
-                                              height: 80,
+                                    ? ListView.builder(
+                                        itemCount: food.length,
+                                        itemBuilder: (context, i) {
+                                          return Container(
+                                            padding: EdgeInsets.only(
+                                              left: 12.w,
+                                              right: 12.w,
+                                              top: 10.h,
+                                              bottom: 12.h,
                                             ),
-                                            Container(
-                                              width: 300.w,
-                                              padding: EdgeInsets.only(left: 12.w),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    food[i].name!,
-                                                    style: TextStyle(
-                                                        fontSize: 18.sp, fontWeight: FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    '10+ đã bán',
-                                                    style:
-                                                    TextStyle(fontSize: 14.sp, color: Colors.black38),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10.h,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border(
+                                                bottom: BorderSide(
+                                                    width: 1,
+                                                    color:
+                                                        kPrimaryColorBackground),
+                                              ),
+                                            ),
+                                            height: 102.h,
+                                            child: Row(
+                                              children: [
+                                                Image.network(
+                                                  Apis.baseURL +
+                                                      food[i].images![0].url!,
+                                                  fit: BoxFit.cover,
+                                                  width: 80,
+                                                  height: 80,
+                                                ),
+                                                Container(
+                                                  width: 300.w,
+                                                  padding: EdgeInsets.only(
+                                                      left: 12.w),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        food[i].price.toString() + 'đ',
+                                                        food[i].name!,
                                                         style: TextStyle(
-                                                            fontSize: 18.sp, fontWeight: FontWeight.w500),
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          print('add');
-                                                          var result = await Get.to(FoodDetail(
-                                                            food: food[i],
-                                                          ));
-                                                          setState(() {
-                                                            if (result != null) {
-                                                              CardModel c = result;
-                                                              fetchCard(c.restaurantId!);
-                                                            }
-                                                          });
-                                                          // showPicker(context, food![i]!);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.add_circle,
-                                                          color: Colors.red,
-                                                        ),
+                                                      Text(
+                                                        '10+ đã bán',
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            color:
+                                                                Colors.black38),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            food[i]
+                                                                    .price
+                                                                    .toString() +
+                                                                'đ',
+                                                            style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              print('add');
+                                                              var result =
+                                                                  await Get.to(
+                                                                      FoodDetail(
+                                                                food: food[i],
+                                                              ));
+                                                              setState(() {
+                                                                if (result !=
+                                                                    null) {
+                                                                  CardModel c =
+                                                                      result;
+                                                                  fetchCard(c
+                                                                      .restaurantId!);
+                                                                }
+                                                              });
+                                                              // showPicker(context, food![i]!);
+                                                            },
+                                                            child: Icon(
+                                                              Icons.add_circle,
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    })
-                                // FoodRestaurant(
-                                //         food: food,
-                                //       )
-                                    : Container(
-                                        child: Center(
-                                          child: Text(
-                                              'Nhà hàng chưa có món ăn'),
-                                        ),
-                                      ),
+                                          );
+                                        })
+                                    // FoodRestaurant(
+                                    //         food: food,
+                                    //       )
+                                    : EmptyScreen(
+                                        text: 'Nhà hàng chưa có món ăn!'),
                                 // Text('2'),
                                 Text('2'),
                                 Text('3'),
@@ -579,7 +705,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
     }
   }
 
-   Future<void> fetchCard(int restaurant_id) async {
+  Future<void> fetchCard(int restaurant_id) async {
     print('chayj ddaay vaayj  banj ');
     var c = await getCard(restaurant_id);
     print(c);
@@ -590,7 +716,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen> {
     // return c.isBlank;
   }
 
-   Future<CardModel?> getCard(int restaurant_id) async {
+  Future<CardModel?> getCard(int restaurant_id) async {
     var token = await getToken();
     Map<String, String> queryParams = {
       'restaurant_id': restaurant_id.toString(),

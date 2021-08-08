@@ -1,4 +1,5 @@
 import 'package:fooddelivery/model/food.dart';
+import 'package:fooddelivery/model/users.dart';
 
 class Restaurant {
   int? id;
@@ -12,6 +13,7 @@ class Restaurant {
   int? userId;
   String? image;
   List<Food>? foods;
+  Users? user;
 
   Restaurant({
     this.id,
@@ -25,6 +27,7 @@ class Restaurant {
     this.userId,
     this.image,
     this.foods,
+    this.user
   });
 
   Restaurant.fromJson(Map<String, dynamic> json) {
@@ -44,6 +47,7 @@ class Restaurant {
         foods!.add(new Food.fromJson(v));
       });
     }
+    user = json['user'] != null ? new Users.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +64,9 @@ class Restaurant {
     data['image'] = this.image;
     if (this.foods != null) {
       data['foods'] = this.foods!.map((v) => v.toJson()).toList();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
     return data;
   }

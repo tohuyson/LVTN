@@ -232,6 +232,7 @@ class _SignUp extends State<SignUp> {
 
   Future<void> loginAndRegisterPhone(
       String phone, String username, String email) async {
+    User user = FirebaseAuth.instance.currentUser!;
     print(phone);
     try {
       http.Response response = await http.post(
@@ -243,6 +244,7 @@ class _SignUp extends State<SignUp> {
           'phone': phone,
           'username': username,
           'email': email,
+          'uid': user.uid,
         }),
       );
       print(response.statusCode);
@@ -250,7 +252,7 @@ class _SignUp extends State<SignUp> {
         var token = jsonDecode(response.body)["token"];
 
         await saveToken(token);
-        User user = FirebaseAuth.instance.currentUser!;
+
         print(user);
 
         user.updateDisplayName(username);

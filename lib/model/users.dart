@@ -16,6 +16,7 @@ class Users {
   String? keyTime;
   String? expiresAt;
   List<Address>? address;
+  String? uid;
 
   Users(
       {this.id,
@@ -31,7 +32,7 @@ class Users {
       this.token,
       this.randomKey,
       this.keyTime,
-      this.expiresAt, this.address});
+      this.expiresAt, this.address, this.uid});
 
   Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,6 +55,7 @@ class Users {
         address!.add(new Address.fromJson(v));
       });
     }
+    uid = json['uid'];
   }
 
   Map<String, dynamic> toJson() {
@@ -75,6 +77,7 @@ class Users {
     if (this.address != null) {
       data['address'] = this.address!.map((v) => v.toJson()).toList();
     }
+    data['uid'] = this.uid;
     return data;
   }
 }

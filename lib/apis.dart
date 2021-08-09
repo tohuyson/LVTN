@@ -1,5 +1,5 @@
 class Apis {
-  static final String baseURL = 'http://192.168.1.233:8000';
+  static final String baseURL = 'http://192.168.1.10:8000';
   static final String root = '$baseURL/api';
 
   //auth
@@ -10,6 +10,10 @@ class Apis {
   static String postloginAndRegisterPhone = '$root/loginAndRegisterPhone';
   static String checkUserUrl = '$root/checkUser';
   static String postLoginPhoneUrl = '$root/loginPhone';
+
+  //notify
+  static String postNotificationUrl = '$root/sendNotification';
+  static String saveNotificationUrl = '$root/saveNotification';
 
   //home
   static String getSlidersUrl = '$root/sliders';

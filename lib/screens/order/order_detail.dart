@@ -632,12 +632,6 @@ class _OrderDetail extends State<OrderDetail> {
         print(users.username);
         return users;
       }
-      if (response.statusCode == 401) {
-        showToast("Load failed");
-      }
-      if (response.statusCode == 500) {
-        showToast("Server error, please try again later!");
-      }
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {
@@ -674,9 +668,6 @@ class _OrderDetail extends State<OrderDetail> {
         card = CardJson.fromJson(parsedJson).card!;
         print(card);
         return card;
-      }
-      if (response.statusCode == 500) {
-        showToast("Server error, please try again later!");
       }
     } on TimeoutException catch (e) {
       showError(e.toString());
@@ -719,13 +710,22 @@ class _OrderDetail extends State<OrderDetail> {
         print(response.statusCode);
         if (response.statusCode == 200) {
           var parsedJson = jsonDecode(response.body);
-          print(parsedJson['order']);
+          // print(parsedJson['order']);
           // showToast('Mua hàng thành công');
           Order order = OrderJson.fromJson(parsedJson).order!;
+
+          print(order);
+
+          print(order.food![0].restaurant!.user!.uid!);
+
+         await notification(order.food![0].restaurant!.user!.uid!, 'Đơn hàng mới',
+              'Bạn có một đơn hàng mới');
+
           Get.off(
               BottomNavigation(
                 selectedIndex: 0,
-              ), arguments: {'order_id': order.id});
+              ),
+              arguments: {'order_id': order.id});
         }
         if (response.statusCode == 500) {
           showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");

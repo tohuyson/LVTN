@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -43,8 +44,6 @@ Future<int?> uploadImage(File file, String filename) async {
   String? token = await getToken();
   print(token);
   try {
-    // EasyLoading.show(status: 'Loading...');
-    // var bytes = controller.image.readAsBytesSync();
     var request =
         await http.MultipartRequest('POST', Uri.parse(Apis.uploadImage));
     request.files.add(http.MultipartFile.fromBytes(
@@ -64,8 +63,6 @@ Future<int?> uploadAvatar(File file, String filename) async {
   String? token = await getToken();
   print(token);
   try {
-    // EasyLoading.show(status: 'Loading...');
-    // var bytes = controller.image.readAsBytesSync();
     var request =
         await http.MultipartRequest('POST', Uri.parse(Apis.uploadAvatar));
     request.files.add(http.MultipartFile.fromBytes(
@@ -79,4 +76,50 @@ Future<int?> uploadAvatar(File file, String filename) async {
   } on SocketException catch (e) {
     showError(e.toString());
   }
+}
+
+Future<bool> notification(String uid, String title, String body) async {
+  try {
+    http.Response response = await http.post(
+      Uri.parse(Apis.postNotificationUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'uid': uid,
+        'title': title,
+        'body': body,
+      }),
+    );
+    print(response.statusCode);
+  } on TimeoutException catch (e) {
+    showError(e.toString());
+  } on SocketException catch (e) {
+    showError(e.toString());
+  }
+  return false;
+}
+
+Future<bool> saveNotification(String title, String body) async {
+  var token = await getToken();
+  try {
+    http.Response response = await http.post(
+      Uri.parse(Apis.saveNotificationUrl),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(<String, String>{
+        'title': title,
+        'body': body,
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {}
+  } on TimeoutException catch (e) {
+    showError(e.toString());
+  } on SocketException catch (e) {
+    showError(e.toString());
+  }
+  return false;
 }

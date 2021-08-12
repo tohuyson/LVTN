@@ -8,6 +8,7 @@ import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/screens/auth/is_signin.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
+import 'package:fooddelivery/testzalo.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 
@@ -37,10 +38,11 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFF0992E8),
         ),
         debugShowCheckedModeBanner: false,
-        // home: AuthService().handleAuth(),
+        home: AuthService().handleAuth(),
         // home: IsSignIn(),
-        home: MyHomePage(),
+        //  home: MyHomePage(),
         // home: SignIn(),
+//        home: Home('zalo'),
         builder: EasyLoading.init(),
       ),
     );

@@ -1,5 +1,7 @@
+import 'package:fooddelivery/model/food_order.dart';
 import 'package:fooddelivery/model/payment.dart';
 import 'package:fooddelivery/model/status_order.dart';
+import 'package:fooddelivery/model/users.dart';
 
 import 'food.dart';
 
@@ -22,6 +24,8 @@ class Order {
   Payment? payment;
   String? createdAt;
   String? updatedAt;
+  Users? user;
+  List<FoodOrder>? foodOrder;
 
   Order(
       {this.id,
@@ -41,7 +45,9 @@ class Order {
       this.food,
       this.payment,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.user,
+      this.foodOrder});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -70,6 +76,13 @@ class Order {
         json['payment'] != null ? new Payment.fromJson(json['payment']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    user = json['user'] != null ? new Users.fromJson(json['user']) : null;
+    if (json['food_order'] != null) {
+      foodOrder = new List.generate(0, (index) => new FoodOrder());
+      json['food_order'].forEach((v) {
+        foodOrder!.add(new FoodOrder.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +108,12 @@ class Order {
     }
     if (this.payment != null) {
       data['payment'] = this.payment!.toJson();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.foodOrder != null) {
+      data['food_order'] = this.foodOrder!.map((v) => v.toJson()).toList();
     }
     return data;
   }

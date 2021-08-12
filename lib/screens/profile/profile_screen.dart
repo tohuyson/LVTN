@@ -10,6 +10,7 @@ import 'package:fooddelivery/controllers/profile_controllor.dart';
 import 'package:fooddelivery/model/item_profile.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/chat/home.dart';
+import 'package:fooddelivery/screens/delivery/delivery_screen.dart';
 import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
@@ -122,7 +123,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           itemProfile: ItemProfileModel(
                             title: 'Người giao hàng',
                             description: '',
-                            page: HomeScreen(),
+                            page: DeliveryScreen(),
                           ),
                         ),
                         ItemProfile(

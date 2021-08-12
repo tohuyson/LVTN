@@ -59,4 +59,6 @@ class Apis {
   static String deleteAddressUrl = '$root/deleteAddress';
   static String updateLocationUrl = '$root/updateLocation';
   static String getAddressFromIdUrl = '$root/getAddressFromId';
+  //delivery
+  static String getDeliveryUrl = '$root/getDelivery';
 }

@@ -8,7 +8,7 @@ class Food {
   String? name;
   String? size;
   int? price;
-  int? weight;
+  String? weight;
   String? ingredients;
   int? status;
   String? note;

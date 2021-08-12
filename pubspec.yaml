@@ -110,7 +110,6 @@ flutter:
   #      - images/Com_suon.jpg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/images/Com_suon.jpg
     - assets/images/
     - assets/icons_menu/
     - assets/logos/

@@ -58,6 +58,7 @@ class _SignIn extends State<SignIn> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 50.h,),
                       Container(
                           width: 414.w,
                           height: 280.h,
@@ -67,9 +68,9 @@ class _SignIn extends State<SignIn> {
                               child: Image(
                                   image: ResizeImage(
                                 AssetImage(
-                                    'assets/images/logo-food-delivery.png'),
-                                width: 100,
-                                height: 100,
+                                    'assets/images/logo.png'),
+                                width: 200,
+                                height: 200,
                               )),
                             ),
                           )),
@@ -189,37 +190,37 @@ class _SignIn extends State<SignIn> {
                           height: 30.h,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            color: Color(0xffDFDFDF),
-                            height: 2.h,
-                            width: 100.w,
-                          ),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          Text(
-                            'Hoặc',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          Container(
-                            width: 100.w,
-                            color: Color(0xffDFDFDF),
-                            height: 2.h,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     Container(
+                      //       color: Color(0xffDFDFDF),
+                      //       height: 2.h,
+                      //       width: 100.w,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10.h,
+                      //     ),
+                      //     Text(
+                      //       'Hoặc',
+                      //       style: TextStyle(
+                      //         fontSize: 16.sp,
+                      //         color: Colors.grey,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10.h,
+                      //     ),
+                      //     Container(
+                      //       width: 100.w,
+                      //       color: Color(0xffDFDFDF),
+                      //       height: 2.h,
+                      //     )
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: 40.h,
+                      // ),
                       // Center(
                       //   child: Row(
                       //     mainAxisAlignment: MainAxisAlignment.center,

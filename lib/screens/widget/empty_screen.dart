@@ -21,7 +21,7 @@ class EmptyScreen extends StatelessWidget {
               children: [
                 ClipRRect(
                   child: Image.asset(
-                    'assets/images/banner-2.png',
+                    'assets/images/logo.png',
                     width: 120.w,
                     fit: BoxFit.cover,
                   ),

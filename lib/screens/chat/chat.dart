@@ -534,7 +534,7 @@ class ChatScreenState extends State<ChatScreen> {
               buildListMessage(),
 
               // Sticker
-              isShowSticker ? buildSticker() : Container(),
+              // isShowSticker ? buildSticker() : Container(),
 
               // Input content
               buildInput(),
@@ -549,118 +549,118 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget buildSticker() {
-    return Expanded(
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                TextButton(
-                  onPressed: () => onSendMessage('mimi1', 2),
-                  child: Image.asset(
-                    'images/mimi1.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi2', 2),
-                  child: Image.asset(
-                    'images/mimi2.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi3', 2),
-                  child: Image.asset(
-                    'images/mimi3.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            ),
-            Row(
-              children: <Widget>[
-                TextButton(
-                  onPressed: () => onSendMessage('mimi4', 2),
-                  child: Image.asset(
-                    'images/mimi4.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi5', 2),
-                  child: Image.asset(
-                    'images/mimi5.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi6', 2),
-                  child: Image.asset(
-                    'images/mimi6.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            ),
-            Row(
-              children: <Widget>[
-                TextButton(
-                  onPressed: () => onSendMessage('mimi7', 2),
-                  child: Image.asset(
-                    'images/mimi7.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi8', 2),
-                  child: Image.asset(
-                    'images/mimi8.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => onSendMessage('mimi9', 2),
-                  child: Image.asset(
-                    'images/mimi9.gif',
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            )
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        ),
-        decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: greyColor2, width: 0.5)),
-            color: Colors.white),
-        padding: EdgeInsets.all(5.0),
-        height: 180.0,
-      ),
-    );
-  }
+  // Widget buildSticker() {
+  //   return Expanded(
+  //     child: Container(
+  //       child: Column(
+  //         children: <Widget>[
+  //           Row(
+  //             children: <Widget>[
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi1', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi1.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi2', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi2.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi3', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi3.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               )
+  //             ],
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           ),
+  //           Row(
+  //             children: <Widget>[
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi4', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi4.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi5', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi5.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi6', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi6.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               )
+  //             ],
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           ),
+  //           Row(
+  //             children: <Widget>[
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi7', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi7.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi8', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi8.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () => onSendMessage('mimi9', 2),
+  //                 child: Image.asset(
+  //                   'images/mimi9.gif',
+  //                   width: 50.0,
+  //                   height: 50.0,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               )
+  //             ],
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           )
+  //         ],
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       ),
+  //       decoration: BoxDecoration(
+  //           border: Border(top: BorderSide(color: greyColor2, width: 0.5)),
+  //           color: Colors.white),
+  //       padding: EdgeInsets.all(5.0),
+  //       height: 180.0,
+  //     ),
+  //   );
+  // }
 
   Widget buildLoading() {
     return Positioned(

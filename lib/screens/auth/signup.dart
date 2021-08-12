@@ -77,7 +77,7 @@ class _SignUp extends State<SignUp> {
                 height: 160.h,
                 child: Center(
                   child: Image(
-                    image: AssetImage('assets/images/logo-food-delivery.png'),
+                    image: AssetImage('assets/images/logo.png'),
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,

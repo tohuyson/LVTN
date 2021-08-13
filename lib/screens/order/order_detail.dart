@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
@@ -16,6 +17,7 @@ import 'package:fooddelivery/model/discount.dart';
 import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/users.dart';
+import 'package:fooddelivery/payment.dart';
 import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
 import 'package:fooddelivery/screens/order/components/food_item.dart';
@@ -45,9 +47,15 @@ class _OrderDetail extends State<OrderDetail> {
   late RxString payment;
   late int card_id;
   late int delivery_fee;
+  static const EventChannel eventChannel =
+      EventChannel('flutter.native/eventPayOrder');
+  static const MethodChannel platform =
+      MethodChannel('flutter.native/channelPayOrder');
+  String payResult = "";
 
   @override
   void initState() {
+    card = Rx<CardModel>(new CardModel());
     card_id = Get.arguments['card_id'];
     print('card_id $card_id');
     person = 'Vui lòng chọn'.obs;
@@ -56,9 +64,12 @@ class _OrderDetail extends State<OrderDetail> {
     delivery_fee = 10000;
     // checkUser();
     // users =  getAddress();
-    RxStatus.loading();
-    fetchUser();
-    fetchCard();
+    // RxStatus.loading();
+    // fetchUser();
+    // fetchCard();
+    if (Platform.isIOS) {
+      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+    }
     super.initState();
   }
 
@@ -545,9 +556,37 @@ class _OrderDetail extends State<OrderDetail> {
                           color: Colors.white,
                           padding: EdgeInsets.all(12.w),
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               print('Thanh toán');
-                              addOrder();
+                              if (payment.value == 'Zalopay') {
+                                var result = await createOrder(sumPrice());
+                                String response = "";
+                                try {
+                                  final String r = await platform.invokeMethod(
+                                      'payOrder',
+                                      {"zptoken": result!.zptranstoken});
+                                  response = r;
+                                  print("payOrder Result: '$result'.");
+                                } on PlatformException catch (e) {
+                                  print("Failed to Invoke: '${e.message}'.");
+                                  response = "Thanh toán thất bại";
+                                }
+                                print(response);
+                                setState(() {
+                                  if (response == 'Payment Success') {
+                                    payResult = 'Thanh toán thành công';
+                                  } else
+                                    payResult = response;
+                                });
+                                if (payResult != 'User Canceled') {
+                                  addOrder();
+                                }
+                              } else {
+                                setState(() {
+                                  payResult = ' Chưa thanh toán';
+                                });
+                                addOrder();
+                              }
                             },
                             child: Container(
                               height: 46.h,
@@ -581,6 +620,27 @@ class _OrderDetail extends State<OrderDetail> {
     );
   }
 
+  void _onEvent(Object? event) {
+    print("_onEvent: '$event'.");
+    var res = Map<String, dynamic>.from(event as Map<String, dynamic>);
+    setState(() {
+      if (res["errorCode"] == 1) {
+        payResult = "Thanh toán thành công";
+      } else if (res["errorCode"] == 4) {
+        payResult = "User hủy thanh toán";
+      } else {
+        payResult = "Giao dịch thất bại";
+      }
+    });
+  }
+
+  void _onError(Object error) {
+    print("_onError: '$error'.");
+    setState(() {
+      payResult = "Giao dịch thất bại";
+    });
+  }
+
   double priceVocher() {
     return card.value.sumPrice! * (voucher.value.percent! / 100);
   }
@@ -590,9 +650,8 @@ class _OrderDetail extends State<OrderDetail> {
   }
 
   Future<bool?> checkUser() async {
-    await fetchUser();
-
     await fetchCard();
+    await fetchUser();
 
     for (int i = 0; i < users.value.address!.length; i++) {
       if (users.value.address![i].status == 1) {
@@ -600,7 +659,6 @@ class _OrderDetail extends State<OrderDetail> {
         address = users.value.address![i].address!;
       }
     }
-
     return users.isBlank;
   }
 
@@ -612,7 +670,7 @@ class _OrderDetail extends State<OrderDetail> {
   }
 
   Future<Users?> getAddress() async {
-    Users users = new Users();
+    Users users;
     String token = (await getToken())!;
     try {
       http.Response response = await http.get(
@@ -625,10 +683,7 @@ class _OrderDetail extends State<OrderDetail> {
 
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        // listAddress.assignAll(ListAddress.fromJson(parsedJson).listAddress!);
-        // listAddress.refresh();
         users = UsersJson.fromJson(parsedJson).users!;
-        // print(listAddress);
         print(users.username);
         return users;
       }
@@ -650,10 +705,12 @@ class _OrderDetail extends State<OrderDetail> {
   Future<CardModel?> getCard() async {
     CardModel card = new CardModel();
     String token = (await getToken())!;
+    print(card_id);
     try {
       Map<String, String> queryParams = {
         'card_id': card_id.toString(),
       };
+
       String queryString = Uri(queryParameters: queryParams).query;
       http.Response response = await http.get(
         Uri.parse(Apis.getCardOrderUrl + '?' + queryString),
@@ -679,65 +736,71 @@ class _OrderDetail extends State<OrderDetail> {
 
   Future<void> addOrder() async {
     var token = await getToken();
-    if (payment.value.isNotEmpty) {
-      try {
-        int sumprice = sumPrice();
-        int discount_id;
-        if (voucher.value.id == null) {
-          discount_id = 0;
-        } else {
-          discount_id = voucher.value.id!;
+    print(' trang thái  $payResult');
+    if (address.isNotEmpty) {
+      if (payment.value.isNotEmpty) {
+        try {
+          int sumprice = sumPrice();
+          int discount_id;
+          if (voucher.value.id == null) {
+            discount_id = 0;
+          } else {
+            discount_id = voucher.value.id!;
+          }
+          print(sumprice);
+          print(payment.value);
+          int card_id = card.value.id!;
+          http.Response response = await http.post(
+            Uri.parse(Apis.postOrderUrl),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': "Bearer $token",
+            },
+            body: jsonEncode(<String, dynamic>{
+              'sumprice': sumprice,
+              'method_payment': payment.value,
+              'address': address,
+              'price_delivery': delivery_fee,
+              'note': note,
+              'discount_id': discount_id,
+              'card_id': card_id,
+              'status': payResult,
+            }),
+          );
+          print(response.statusCode);
+          if (response.statusCode == 200) {
+            var parsedJson = jsonDecode(response.body);
+            // print(parsedJson['order']);
+            // showToast('Mua hàng thành công');
+            Order order = OrderJson.fromJson(parsedJson).order!;
+
+            print(order);
+
+            print(order.food![0].restaurant!.user!.uid!);
+
+            await notification(order.food![0].restaurant!.user!.uid!,
+                'Đơn hàng mới', 'Bạn có một đơn hàng mới');
+
+            Get.off(
+                BottomNavigation(
+                  selectedIndex: 0,
+                ),
+                arguments: {'order_id': order.id});
+          }
+          if (response.statusCode == 500) {
+            showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");
+          }
+        } on TimeoutException catch (e) {
+          showError(e.toString());
+        } on SocketException catch (e) {
+          showError(e.toString());
+          print(e.toString());
         }
-        print(sumprice);
-        print(payment.value);
-        int card_id = card.value.id!;
-        http.Response response = await http.post(
-          Uri.parse(Apis.postOrderUrl),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': "Bearer $token",
-          },
-          body: jsonEncode(<String, dynamic>{
-            'sumprice': sumprice,
-            'method_payment': payment.value,
-            'address': address,
-            'price_delivery': delivery_fee,
-            'note': note,
-            'discount_id': discount_id,
-            'card_id': card_id,
-          }),
-        );
-        print(response.statusCode);
-        if (response.statusCode == 200) {
-          var parsedJson = jsonDecode(response.body);
-          // print(parsedJson['order']);
-          // showToast('Mua hàng thành công');
-          Order order = OrderJson.fromJson(parsedJson).order!;
-
-          print(order);
-
-          print(order.food![0].restaurant!.user!.uid!);
-
-         await notification(order.food![0].restaurant!.user!.uid!, 'Đơn hàng mới',
-              'Bạn có một đơn hàng mới');
-
-          Get.off(
-              BottomNavigation(
-                selectedIndex: 0,
-              ),
-              arguments: {'order_id': order.id});
-        }
-        if (response.statusCode == 500) {
-          showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");
-        }
-      } on TimeoutException catch (e) {
-        showError(e.toString());
-      } on SocketException catch (e) {
-        showError(e.toString());
-        print(e.toString());
+      } else {
+        showToast('Vui lòng chọn phương thức thanh toán!');
       }
     } else {
-      showToast('Vui lòng chọn phương thức thanh toán!');
+      showToast('Vui lòng Thêm địa chỉ giao hàng!');
     }
   }
 }

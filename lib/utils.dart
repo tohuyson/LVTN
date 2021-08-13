@@ -12,7 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:crypto/crypto.dart';
 
-
 String keyGoogleMap = 'AIzaSyBFRhlxolpDTOnWONYQ-VdctzKzlsN5hAY';
 
 /// Function Format DateTime to String with layout string
@@ -41,7 +40,7 @@ String getAppTransId() {
 String getBankCode() => "zalopayapp";
 
 String getDescription(String apptransid) =>
-    "Merchant Demo thanh toán cho đơn hàng  #$apptransid";
+    "Thanh toán cho đơn hàng  #$apptransid";
 
 String getMacCreateOrder(String data) {
   var hmac = new Hmac(sha256, utf8.encode(ZaloPayConfig.key1));

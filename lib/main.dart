@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         // home: IsSignIn(),
         //  home: MyHomePage(),
         // home: SignIn(),
-//        home: Home('zalo'),
+       // home: Home('zalo'),
         builder: EasyLoading.init(),
       ),
     );

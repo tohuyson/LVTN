@@ -105,7 +105,8 @@ class _HomeState extends State<Home> {
             String response = "";
             try {
               final String result = await platform.invokeMethod('payOrder', {"zptoken": zpToken});
-              response = result;              print("payOrder Result: '$result'.");
+              response = result;
+              print("payOrder Result: '$result'.");
             } on PlatformException catch (e) {
               print("Failed to Invoke: '${e.message}'.");
               response = "Thanh toán thất bại";

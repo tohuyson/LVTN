@@ -110,6 +110,12 @@ class _DeliveryMap extends State<DeliveryMap> {
     super.dispose();
   }
 
+  @override
+  void dispose() {
+    locateUser();
+    super.dispose();
+  }
+
   static LatLng currentPostion = LatLng(10.873286, 106.7914436);
   late Position currentLocation;
 

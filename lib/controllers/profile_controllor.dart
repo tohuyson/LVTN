@@ -19,6 +19,7 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
+    image = new File('');
     // getUser();
     fetchUsers();
     // users = (getUser().obs) as Users?;
@@ -40,7 +41,7 @@ class ProfileController extends GetxController {
   }
 
   late File? image;
-  late String? imagePath;
+  late String? imagePath = null;
   final _picker = ImagePicker();
 
   Future<void> getImage() async {

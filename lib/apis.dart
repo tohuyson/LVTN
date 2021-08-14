@@ -65,4 +65,7 @@ class Apis {
   static String isDeliveryUrl = '$root/isDelivery';
   static String changeDeliveryUrl = '$root/changeDelivery';
   static String historyDeliveryUrl = '$root/historyDelivery';
+
+  //review
+  static String addReviewUrl = '$root/addReview';
 }

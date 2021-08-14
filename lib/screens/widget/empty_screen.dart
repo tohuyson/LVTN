@@ -28,7 +28,7 @@ class EmptyScreen extends StatelessWidget {
                 ),
                 Text(
                   text,
-                  style: TextStyle(color: Colors.blue, fontSize: 24.sp),
+                  style: TextStyle(color: Colors.blue, fontSize: 20.sp),
                 )
               ],
             ),

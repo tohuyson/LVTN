@@ -1,16 +1,24 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/screens/auth/is_signin.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:fooddelivery/testzalo.dart';
+import 'package:fooddelivery/utils.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'local_notification_service.dart';
 
@@ -38,11 +46,10 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFF0992E8),
         ),
         debugShowCheckedModeBanner: false,
-        home: AuthService().handleAuth(),
+        // home: AuthService().handleAuth(),
         // home: IsSignIn(),
         //  home: MyHomePage(),
-        // home: SignIn(),
-       // home: Home('zalo'),
+        home: SignIn(),
         builder: EasyLoading.init(),
       ),
     );

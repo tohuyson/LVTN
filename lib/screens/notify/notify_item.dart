@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/notify.dart';
+import 'package:intl/intl.dart';
 
 class NotifyItem extends StatelessWidget {
   final Notify? notify;
@@ -36,7 +37,7 @@ class NotifyItem extends StatelessWidget {
                           size: 22.sp,
                         ),
                         onPressed: () {
-                          print("Map");
+                          print("setting");
                         }),
                     Text(
                       notify!.title!,
@@ -47,11 +48,14 @@ class NotifyItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
-                      '10 phút',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w300),
-                    ),
+                    Text(DateFormat('HH:mm').format(
+                        DateTime.parse(notify!.createdAt!)), style: TextStyle(
+                        fontSize: 14.sp, fontWeight: FontWeight.w300),),
+                    // Text(
+                    //   '10 phút',
+                    //   style: TextStyle(
+                    //       fontSize: 14.sp, fontWeight: FontWeight.w300),
+                    // ),
                     IconButton(
                         icon: Icon(
                           Icons.more_vert,
@@ -71,7 +75,7 @@ class NotifyItem extends StatelessWidget {
             padding:
                 EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
             child: Text(
-             notify!.content!,
+              notify!.body!,
               style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14.sp),
             ),
           )

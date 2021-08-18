@@ -10,6 +10,7 @@ import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/auth/signup.dart';
 import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,7 @@ class _VerifyPhone extends State<VerifyPhone> {
   late TextEditingController? code;
 
   late String numberPhone, verificationId;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -53,75 +55,92 @@ class _VerifyPhone extends State<VerifyPhone> {
           width: 414.w,
           height: 834.h,
           padding: EdgeInsets.only(top: 50.h, left: 30.w, right: 30.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: [
-              Text(
-                'Mã xác minh của bạn đã được gửi tới số',
-                style: TextStyle(fontSize: 18.sp),
-                softWrap: true,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                numberPhone,
-                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                softWrap: true,
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Mã xác minh',
-                ),
-                controller: code,
-                keyboardType: TextInputType.number,
-                validator: (val) {
-                  if (val!.length == 0) {
-                    return 'Vui lòng nhập Mã xác minh';
-                  } else if (!val.isNum) {
-                    return 'Sai định dạng Mã xác minh';
-                  } else
-                    return null;
-                },
-              ),
-              SizedBox(
-                height: 40.h,
-              ),
-              Container(
-                height: 60.h,
-                width: 414.w,
-                padding: EdgeInsets.only(left: 24.w, right: 24.w),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: TextButton(
-                  onPressed: () async {
-                    print(code!.text);
-                    var isSignSMS = await AuthService()
-                        .signInWithOTP(code!.text, verificationId);
-                    print(isSignSMS);
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Mã xác minh của bạn đã được gửi tới số',
+                    style: TextStyle(fontSize: 18.sp),
+                    softWrap: true,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    numberPhone,
+                    style:
+                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    softWrap: true,
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Mã xác minh',
+                    ),
+                    controller: code,
+                    keyboardType: TextInputType.number,
+                    validator: (val) {
+                      if (val!.length == 0) {
+                        return 'Vui lòng nhập Mã xác minh';
+                      } else if (!val.isNum) {
+                        return 'Sai định dạng Mã xác minh';
+                      } else
+                        return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Container(
+                    height: 60.h,
+                    width: 414.w,
+                    padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: TextButton(
+                      onPressed: () async {
+                        if (isLoading == false) {
+                          print(code!.text);
+                          var isSignSMS = await AuthService()
+                              .signInWithOTP(code!.text, verificationId);
+                          print(isSignSMS);
 
-                    if (isSignSMS == true) {
-                      print("vào ddaa7f true đi bạn $isSignSMS");
-                      //check user đã có tồn tại hay chưa
-                      bool isCheckUser = await checkUser();
-                      if (isCheckUser) {
-                        await loginUser();
-                      } else {
-                        Get.to(SignUp(),
-                            arguments: {'numberPhone': numberPhone});
-                      }
-
-                      // await AuthService().loginAndRegisterPhone(numberPhone);
-                    }
-                  },
-                  child: Text(
-                    'Tiếp tục'.toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                          if (isSignSMS == true) {
+                            print("vào ddaa7f true đi bạn $isSignSMS");
+                            //check user đã có tồn tại hay chưa
+                            bool isCheckUser = await checkUser();
+                            if (isCheckUser) {
+                              await loginUser();
+                            } else {
+                              Get.to(SignUp(),
+                                  arguments: {'numberPhone': numberPhone});
+                            }
+                          }
+                          // await AuthService().loginAndRegisterPhone(numberPhone);
+                        }
+                      },
+                      child: Text(
+                        'Tiếp tục'.toUpperCase(),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Positioned.fill(
+                child: Center(
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
+                    width: 100.w,
+                    height: 100.h,
+                    child: isLoading ? Loading() : Container(),
                   ),
                 ),
               ),
@@ -133,6 +152,9 @@ class _VerifyPhone extends State<VerifyPhone> {
   }
 
   Future<bool> checkUser() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       http.Response response = await http.post(
         Uri.parse(Apis.checkUserUrl),
@@ -174,6 +196,9 @@ class _VerifyPhone extends State<VerifyPhone> {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
         print(jsonDecode(response.body)['token']);
         await saveToken(jsonDecode(response.body)['token']);
         Get.offAll(BottomNavigation(selectedIndex: 2));

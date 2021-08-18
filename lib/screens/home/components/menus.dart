@@ -1,14 +1,28 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/controllers/home_controller.dart';
+import 'package:fooddelivery/model/food.dart';
+import 'package:fooddelivery/model/list_foods.dart';
+import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:fooddelivery/model/item_category.dart';
+import 'package:http/http.dart' as http;
 
-class Menu extends GetView<HomeController> {
-  HomeController controller = Get.put(HomeController());
+class Menu extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _Menu();
+  }
+}
 
+class _Menu extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,10 +42,11 @@ class Menu extends GetView<HomeController> {
             physics: ScrollPhysics(),
             itemCount: listItemCategory.length,
             itemBuilder: (_, index) {
-              return InkWell(
-                onTap: (){
+              return GestureDetector(
+                onTap: () {
                   print('tap tap');
-                  AuthService().signOut();
+                  print(listItemCategory[index].name!);
+
                 },
                 child: Container(
                   height: 80.h,
@@ -43,7 +58,8 @@ class Menu extends GetView<HomeController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         decoration: BoxDecoration(
                             border:
                                 Border.all(width: 1, color: Color(0xFFEFEFEF)),
@@ -51,8 +67,8 @@ class Menu extends GetView<HomeController> {
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         height: 40.h,
                         width: 40.w,
-                        child: Image.asset(
-                            'assets/icons_menu/' + listItemCategory[index].url!),
+                        child: Image.asset('assets/icons_menu/' +
+                            listItemCategory[index].url!),
                       ),
                       Container(
                         height: 30.h,
@@ -75,5 +91,36 @@ class Menu extends GetView<HomeController> {
         ],
       ),
     );
+  }
+
+  Future<List<Food>> getRestaurants(String name) async {
+    List<Food> list = [];
+    String token = (await getToken())!;
+    print(token);
+    Map<String, String> queryParams = {
+      'name': name,
+    };
+    String queryString = Uri(queryParameters: queryParams).query;
+    print(queryString);
+    try {
+      http.Response response = await http.get(
+        Uri.parse(Apis.searchFoodUrl + '?' + queryString),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var parsedJson = jsonDecode(response.body);
+        list = ListFoods.fromJson(parsedJson).listFood!;
+        return list;
+      }
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+    return list;
   }
 }

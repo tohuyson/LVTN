@@ -1,106 +1,128 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/model/restaurant.dart';
+import 'package:fooddelivery/networking.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DeliveryMap extends StatefulWidget {
   final double? height;
+  final Restaurant? restaurant;
 
-  DeliveryMap({this.height});
+  DeliveryMap({this.height, this.restaurant});
 
   @override
   State<StatefulWidget> createState() {
-    return _DeliveryMap(height: height);
+    return _DeliveryMap(height: height, restaurant: restaurant);
   }
 }
 
-// Starting point latitude
-double _originLatitude = 10.8693218;
-// Starting point longitude
-double _originLongitude = 106.7869136;
-
-double _destLatitude = 10.8724929;
-// Destination Longitude
-double _destLongitude = 106.7895604;
-// Markers to show points on the map
-Map<MarkerId, Marker> markers = {};
-
-PolylinePoints polylinePoints = PolylinePoints();
-Map<PolylineId, Polyline> polylines = {};
-
 class _DeliveryMap extends State<DeliveryMap> {
   final double? height;
+  final Restaurant? restaurant;
 
-  _DeliveryMap({this.height});
+  _DeliveryMap({this.height, this.restaurant});
 
-  Completer<GoogleMapController> _controller = Completer();
+  //draw line
 
-  // Configure map position and zoom
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(_originLatitude, _originLongitude),
-    zoom: 16.25,
-  );
+  late GoogleMapController mapController;
 
-  _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
-    MarkerId markerId = MarkerId(id);
-    Marker marker =
-        Marker(markerId: markerId, icon: descriptor, position: position);
-    markers[markerId] = marker;
+  final List<LatLng> polyPoints = []; // For holding Co-ordinates as LatLng
+  final Set<Polyline> polyLines = {}; // For holding instance of Polyline
+  final Set<Marker> markers = {}; // For holding instance of Marker
+  late var data;
+
+  // Dummy Start and Destination Points
+  late double startLat = 10.8780557;
+
+  late double startLng = 106.77468599999997;
+
+  late double endLat;
+  late double endLng;
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    setMarkers();
   }
 
-  _addPolyLine(List<LatLng> polylineCoordinates) {
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.blue,
-      points: polylineCoordinates,
-      width: 4,
+  setMarkers() {
+    markers.add(
+      Marker(
+        markerId: MarkerId("Home"),
+        position: LatLng(startLat, startLng),
+        infoWindow: InfoWindow(
+          title: "Home",
+          snippet: "Home Sweet Home",
+        ),
+      ),
     );
-    polylines[id] = polyline;
+
+    markers.add(Marker(
+      markerId: MarkerId("Destination"),
+      position: LatLng(endLat, endLng),
+      infoWindow: InfoWindow(
+        title: "Masjid",
+        snippet: "5 star ratted place",
+      ),
+    ));
     setState(() {});
   }
 
-  void _getPolyline() async {
-    List<LatLng> polylineCoordinates = [];
+  void getJsonData() async {
+    // Create an instance of Class NetworkHelper which uses http package
+    // for requesting data to the server and receiving response as JSON format
 
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      keyGoogleMap,
-      PointLatLng(_originLatitude, _originLongitude),
-      PointLatLng(_destLatitude, _destLongitude),
-      travelMode: TravelMode.driving,
+    NetworkHelper network = NetworkHelper(
+      startLat: startLat,
+      startLng: startLng,
+      endLat: endLat,
+      endLng: endLng,
     );
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print(result.errorMessage);
+
+    try {
+      // getData() returns a json Decoded data
+      data = await network.getData();
+
+      // We can reach to our desired JSON data manually as following
+      LineString ls =
+          LineString(data['features'][0]['geometry']['coordinates']);
+
+      for (int i = 0; i < ls.lineString.length; i++) {
+        polyPoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+      }
+
+      if (polyPoints.length == ls.lineString.length) {
+        setPolyLines();
+      }
+    } catch (e) {
+      print(e);
     }
-    _addPolyLine(polylineCoordinates);
+  }
+
+  setPolyLines() {
+    Polyline polyline = Polyline(
+      polylineId: PolylineId("polyline"),
+      color: Colors.lightBlue,
+      points: polyPoints,
+    );
+    polyLines.add(polyline);
+    setState(() {});
   }
 
   @override
   void initState() {
+    endLat = double.parse(restaurant!.lattitude!);
+    endLng = double.parse(restaurant!.longtitude!);
+
     _getUserLocation();
-    _addMarker(
-      LatLng(_originLatitude, _originLongitude),
-      "origin",
-      BitmapDescriptor.defaultMarker,
-    );
-
-    // Add destination marker
-    _addMarker(
-      LatLng(_destLatitude, _destLongitude),
-      "destination",
-      BitmapDescriptor.defaultMarkerWithHue(90),
-    );
-
-    _getPolyline();
-
+    getJsonData();
     super.initState();
   }
 
@@ -110,7 +132,7 @@ class _DeliveryMap extends State<DeliveryMap> {
     super.dispose();
   }
 
-  static LatLng currentPostion = LatLng(10.873286, 106.7914436);
+  static LatLng currentPostion = new LatLng(10.873286, 106.7914436);
   late Position currentLocation;
 
   Future<Position> locateUser() async {
@@ -123,39 +145,57 @@ class _DeliveryMap extends State<DeliveryMap> {
     setState(() {
       currentPostion =
           LatLng(currentLocation.latitude, currentLocation.longitude);
+      startLat = currentLocation.latitude;
+      startLng = currentLocation.longitude;
     });
     print('center $currentPostion');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height!.h,
-      width: double.infinity,
-      color: Colors.white,
-      child: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        // myLocationEnabled: true,
-        tiltGesturesEnabled: true,
-        compassEnabled: true,
-        scrollGesturesEnabled: true,
-        zoomGesturesEnabled: true,
-        polylines: Set<Polyline>.of(polylines.values),
-        markers: Set<Marker>.of(markers.values),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      // child: GoogleMap(
-      //   mapType: MapType.normal,
-      //   myLocationEnabled: true,
-      //   initialCameraPosition: CameraPosition(
-      //     target: currentPostion,
-      //     zoom: 10,
-      //   ),
-      //   onMapCreated: (GoogleMapController controller) {},
-      // ),
-    );
+    return FutureBuilder(
+        future: _getUserLocation(),
+        builder: (context, snapshot) {
+          return Container(
+            height: height!.h,
+            width: double.infinity,
+            color: Colors.white,
+            child: GoogleMap(
+              myLocationEnabled: true,
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: currentPostion,
+                zoom: 16,
+              ),
+              markers: markers,
+              polylines: polyLines,
+              mapType: MapType.normal,
+              gestureRecognizers: Set()
+                ..add(
+                    Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                ..add(Factory<ScaleGestureRecognizer>(
+                    () => ScaleGestureRecognizer()))
+                ..add(
+                    Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+                ..add(Factory<VerticalDragGestureRecognizer>(
+                    () => VerticalDragGestureRecognizer())),
+            ),
+            // child: GoogleMap(
+            //   mapType: MapType.normal,
+            //   myLocationEnabled: true,
+            //   initialCameraPosition: CameraPosition(
+            //     target: currentPostion,
+            //     zoom: 10,
+            //   ),
+            //   onMapCreated: (GoogleMapController controller) {},
+            // ),
+          );
+        });
   }
+}
+
+class LineString {
+  LineString(this.lineString);
+
+  List<dynamic> lineString;
 }

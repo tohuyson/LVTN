@@ -129,6 +129,9 @@ Future<bool> notification(String uid, String title, String body) async {
       }),
     );
     print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    }
   } on TimeoutException catch (e) {
     showError(e.toString());
   } on SocketException catch (e) {
@@ -137,14 +140,16 @@ Future<bool> notification(String uid, String title, String body) async {
   return false;
 }
 
-Future<bool> saveNotification(String title, String body) async {
+Future<void> saveNotification(String title, String body) async {
   var token = await getToken();
   try {
+    print(title);
+    print(body);
     http.Response response = await http.post(
       Uri.parse(Apis.saveNotificationUrl),
       headers: <String, String>{
-        "Accept": "application/json",
-        "Authorization": "Bearer $token",
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token",
       },
       body: jsonEncode(<String, String>{
         'title': title,
@@ -158,5 +163,4 @@ Future<bool> saveNotification(String title, String body) async {
   } on SocketException catch (e) {
     showError(e.toString());
   }
-  return false;
 }

@@ -5,6 +5,7 @@ import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/notify/notify_screen.dart';
 import 'package:fooddelivery/screens/order/order_screen.dart';
 import 'package:fooddelivery/screens/profile/profile_screen.dart';
+import 'package:fooddelivery/testzalo.dart';
 import 'package:get/get.dart';
 
 class BottomNavigation extends StatefulWidget {

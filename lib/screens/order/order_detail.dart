@@ -778,8 +778,14 @@ class _OrderDetail extends State<OrderDetail> {
 
             print(order.food![0].restaurant!.user!.uid!);
 
-            await notification(order.food![0].restaurant!.user!.uid!,
-                'Đơn hàng mới', 'Bạn có một đơn hàng mới');
+            var isNotify = await notification(
+                order.food![0].restaurant!.user!.uid!,
+                'Đơn hàng mới',
+                'Bạn có một đơn hàng mới');
+            if (isNotify == true) {
+              await saveNotification(
+                  'Đơn hàng mới', 'Bạn có một đơn hàng mới');
+            }
 
             Get.off(
                 BottomNavigation(

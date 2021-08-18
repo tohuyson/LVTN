@@ -1,5 +1,5 @@
 class Apis {
-  static final String baseURL = 'http://192.168.1.10:8000';
+  static final String baseURL = 'http://fooddelivery.gtnlu.site';
   static final String root = '$baseURL/api';
 
   //auth
@@ -14,6 +14,7 @@ class Apis {
   //notify
   static String postNotificationUrl = '$root/sendNotification';
   static String saveNotificationUrl = '$root/saveNotification';
+  static String getNotificationUrl = '$root/getNotification';
 
   //home
   static String getSlidersUrl = '$root/sliders';
@@ -42,7 +43,7 @@ class Apis {
   static String getdraftOrderUrl = '$root/getdraftOrder';
   static String deleteDraftOrderUrl = '$root/deleteDraftOrder';
 
-  //
+  //avatar
   static String uploadImage = '$root/uploadImage';
   static String uploadAvatar = '$root/uploadAvatar';
 
@@ -59,6 +60,7 @@ class Apis {
   static String deleteAddressUrl = '$root/deleteAddress';
   static String updateLocationUrl = '$root/updateLocation';
   static String getAddressFromIdUrl = '$root/getAddressFromId';
+
   //delivery
   static String getDeliveryUrl = '$root/getDelivery';
   static String receivedUrl = '$root/received';
@@ -68,4 +70,8 @@ class Apis {
 
   //review
   static String addReviewUrl = '$root/addReview';
+
+  //search
+  static String searchRestaurantUrl = '$root/searchRestaurant';
+  static String searchFoodUrl = '$root/searchFood';
 }

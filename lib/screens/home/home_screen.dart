@@ -107,7 +107,7 @@ class _HomeScreen extends State<HomeScreen> {
                     child: Column(
                       children: <Widget>[
                         SlideBannerWidget(),
-                        Menu(),
+                        // Menu(),
                         LatestFeedsTitle(),
                         Obx(
                           () => LazyLoadScrollView(

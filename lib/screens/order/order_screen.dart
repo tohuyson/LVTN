@@ -85,6 +85,7 @@ class _OrderScreen extends State<OrderScreen>
               ),
               Expanded(
                 child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: tabController,
                   children: [
                     OrderComing(

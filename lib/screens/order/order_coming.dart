@@ -10,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
+import 'package:fooddelivery/testzalo.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
@@ -360,210 +361,343 @@ class _OrderDetail extends State<OrderComing> {
               return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
             } else {
               // return buildLoading();
-              return order.value.id!= null? ListView(
-                children: [
-                  DeliveryMap(
-                    height: 240,
-                  ),
-                  Container(
-                    // height: 450.h,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Column(
+              return order.value.id != null
+                  ? SingleChildScrollView(
+                      child: Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 10.w,
-                            right: 10.w,
-                            top: 6.h,
-                          ),
-                          padding: EdgeInsets.only(
-                              bottom: 6.h, left: 5.w, right: 5.w),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      width: 1, color: Colors.black12))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  child: Text(
-                                'Đồ ăn',
-                                style: TextStyle(fontSize: 16.sp),
-                              )),
-                              Container(
-                                  child: Text(
-                                'Đang đến trong 20 phút',
-                                style: TextStyle(fontSize: 16.sp),
-                              )),
-                            ],
-                          ),
+                        DeliveryMap(
+                          height: 280,
+                          restaurant: order.value.food![0].restaurant,
                         ),
                         Container(
-                          margin: EdgeInsets.only(
-                              top: 6.h, left: 10.w, right: 10.w),
-                          padding: EdgeInsets.only(
-                              bottom: 6.h, left: 5.w, right: 5.w),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      width: 1, color: Colors.black12))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // height: 450.h,
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Column(
                             children: [
                               Container(
-                                width: 290.w,
-                                height: 55.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                margin: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
+                                  top: 6.h,
+                                ),
+                                padding: EdgeInsets.only(
+                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1, color: Colors.black12))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    AutoSizeText(
-                                      order.value.food![0].restaurant!.name!,
-                                      style: TextStyle(fontSize: 16),
+                                    Container(
+                                        child: Text(
+                                      'Đồ ăn',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    )),
+                                    Container(
+                                        child: Text(
+                                      'Đang đến trong 20 phút',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    )),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: 6.h, left: 10.w, right: 10.w),
+                                padding: EdgeInsets.only(
+                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1, color: Colors.black12))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 290.w,
+                                      height: 55.h,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AutoSizeText(
+                                            order.value.food![0].restaurant!
+                                                .name!,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          SizedBox(
+                                            height: 4.h,
+                                          ),
+                                          AutoSizeText(
+                                            'Tổng: ' +
+                                                order.value.price.toString() +
+                                                ' - ' +
+                                                order.value.payment!.method! +
+                                                ' - ' +
+                                                order.value.payment!.status!,
+                                            style: TextStyle(fontSize: 14),
+                                            maxLines: 1,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    AutoSizeText(
-                                      'Tổng: ' +
-                                          order.value.price.toString() +
-                                          ' - ' +
-                                          order.value.payment!.method! +
-                                          ' - ' +
-                                          order.value.payment!.status!,
-                                      style: TextStyle(fontSize: 14),
-                                      maxLines: 1,
+                                    InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                  title: Text(
+                                                      'Chi tiết đơn hàng'),
+                                                  content: Container(
+                                                    width: 414.w,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        ListView.builder(
+                                                          shrinkWrap: true,
+                                                          physics:
+                                                              NeverScrollableScrollPhysics(),
+                                                          itemCount: order.value
+                                                              .food!.length,
+                                                          itemBuilder:
+                                                              (ctx, index) {
+                                                            return Container(
+                                                              width: 414.w,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 8.w,
+                                                                      right:
+                                                                          8.w,
+                                                                      top: 8.h,
+                                                                      bottom:
+                                                                          8),
+                                                              child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Container(
+                                                                            child:
+                                                                                Text('x ${order.value.food![index].pivot!.quantity}'),
+                                                                          ),
+                                                                          Container(
+                                                                            child:
+                                                                                Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(
+                                                                                  '${order.value.food![index].name}',
+                                                                                  style: TextStyle(fontSize: 18.sp),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Container(
+                                                                        child:
+                                                                            Text(
+                                                                          '${order.value.food![index].pivot!.price}',
+                                                                          textAlign:
+                                                                              TextAlign.right,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(
+                                                                        left: 20
+                                                                            .w),
+                                                                    width:
+                                                                        414.w,
+                                                                    child: ListView.builder(
+                                                                        shrinkWrap: true,
+                                                                        physics: NeverScrollableScrollPhysics(),
+                                                                        itemCount: order.value.food![index].toppings!.length,
+                                                                        itemBuilder: (c, i) {
+                                                                          return Text(order
+                                                                              .value
+                                                                              .food![index]
+                                                                              .toppings![i]
+                                                                              .name!);
+                                                                        }),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Get.back(),
+                                                      child: const Text('Hủy'),
+                                                    ),
+                                                  ]);
+                                            });
+                                      },
+                                      child: Container(
+                                        height: 38.h,
+                                        width: 80.w,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
+                                        child: Center(
+                                          child: Text(
+                                            'Chi tiết',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                            title: Text('Chi tiết đơn hàng'),
-                                            content: Container(
-                                              width: 414.w,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  ListView.builder(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        NeverScrollableScrollPhysics(),
-                                                    itemCount: order
-                                                        .value.food!.length,
-                                                    itemBuilder: (ctx, index) {
-                                                      return Container(
-                                                        width: 414.w,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 8.w,
-                                                                right: 8.w,
-                                                                top: 8.h,
-                                                                bottom: 8),
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      child: Text(
-                                                                          'x ${order.value.food![index].pivot!.quantity}'),
-                                                                    ),
-                                                                    Container(
-                                                                      child:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            '${order.value.food![index].name}',
-                                                                            style:
-                                                                                TextStyle(fontSize: 18.sp),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  child: Text(
-                                                                    '${order.value.food![index].pivot!.price}',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .right,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          20.w),
-                                                              width: 414.w,
-                                                              child: ListView
-                                                                  .builder(
-                                                                      shrinkWrap:
-                                                                          true,
-                                                                      physics:
-                                                                          NeverScrollableScrollPhysics(),
-                                                                      itemCount: order
-                                                                          .value
-                                                                          .food![
-                                                                              index]
-                                                                          .toppings!
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (c, i) {
-                                                                        return Text(order
-                                                                            .value
-                                                                            .food![index]
-                                                                            .toppings![i]
-                                                                            .name!);
-                                                                      }),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Get.back(),
-                                                child: const Text('Hủy'),
-                                              ),
-                                            ]);
-                                      });
+                              Stepper(
+                                physics: ClampingScrollPhysics(),
+                                steps: [
+                                  Step(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Đặt đơn"),
+                                        Container(
+                                            padding:
+                                                EdgeInsets.only(right: 30.w),
+                                            child: Text("10:30")),
+                                      ],
+                                    ),
+                                    content: SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                                    isActive: true,
+                                  ),
+                                  Step(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Xác nhận đơn hàng"),
+                                        Container(
+                                            padding:
+                                                EdgeInsets.only(right: 30.w),
+                                            child: Text("10:30")),
+                                      ],
+                                    ),
+                                    content: SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Step(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Giao hàng"),
+                                        Container(
+                                            padding:
+                                                EdgeInsets.only(right: 30.w),
+                                            child: Text("10:30")),
+                                      ],
+                                    ),
+                                    content: SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Step(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Đã giao hàng"),
+                                        Container(
+                                            padding:
+                                                EdgeInsets.only(right: 30.w),
+                                            child: Text("10:30")),
+                                      ],
+                                    ),
+                                    content: SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Step(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Hoàn thành"),
+                                        Container(
+                                            padding:
+                                                EdgeInsets.only(right: 30.w),
+                                            child: Text("10:30")),
+                                      ],
+                                    ),
+                                    content: SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ],
+                                currentStep: _index,
+                                onStepTapped: (index) {
+                                  setState(() {
+                                    _index = index;
+                                  });
                                 },
+                                controlsBuilder: (BuildContext context,
+                                        {VoidCallback? onStepContinue,
+                                        VoidCallback? onStepCancel}) =>
+                                    Container(),
+                              ),
+                              InkWell(
+                                onTap: () {},
                                 child: Container(
-                                  height: 38.h,
-                                  width: 80.w,
+                                  margin: EdgeInsets.only(
+                                      top: 15.h,
+                                      bottom: 10.h,
+                                      left: 8.w,
+                                      right: 8.w),
+                                  height: 45.h,
+                                  width: 360.w,
                                   decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Colors.white,
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
+                                          BorderRadius.all(Radius.circular(5)),
+                                      border: Border.all(
+                                          width: 1, color: Color(0xFFF60404))),
                                   child: Center(
                                     child: Text(
-                                      'Chi tiết',
+                                      'Hủy Đơn Hàng',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w400),
+                                          color: Color(0xFFF60404),
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -571,130 +705,9 @@ class _OrderDetail extends State<OrderComing> {
                             ],
                           ),
                         ),
-                        Stepper(
-                          physics: ClampingScrollPhysics(),
-                          steps: [
-                            Step(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Đặt đơn"),
-                                  Container(
-                                      padding: EdgeInsets.only(right: 30.w),
-                                      child: Text("10:30")),
-                                ],
-                              ),
-                              content: SizedBox(
-                                width: 0,
-                                height: 0,
-                              ),
-                              isActive: true,
-                            ),
-                            Step(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Xác nhận đơn hàng"),
-                                  Container(
-                                      padding: EdgeInsets.only(right: 30.w),
-                                      child: Text("10:30")),
-                                ],
-                              ),
-                              content: SizedBox(
-                                width: 0,
-                                height: 0,
-                              ),
-                            ),
-                            Step(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Giao hàng"),
-                                  Container(
-                                      padding: EdgeInsets.only(right: 30.w),
-                                      child: Text("10:30")),
-                                ],
-                              ),
-                              content: SizedBox(
-                                width: 0,
-                                height: 0,
-                              ),
-                            ),
-                            Step(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Đã giao hàng"),
-                                  Container(
-                                      padding: EdgeInsets.only(right: 30.w),
-                                      child: Text("10:30")),
-                                ],
-                              ),
-                              content: SizedBox(
-                                width: 0,
-                                height: 0,
-                              ),
-                            ),
-                            Step(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Hoàn thành"),
-                                  Container(
-                                      padding: EdgeInsets.only(right: 30.w),
-                                      child: Text("10:30")),
-                                ],
-                              ),
-                              content: SizedBox(
-                                width: 0,
-                                height: 0,
-                              ),
-                            ),
-                          ],
-                          currentStep: _index,
-                          onStepTapped: (index) {
-                            setState(() {
-                              _index = index;
-                            });
-                          },
-                          controlsBuilder: (BuildContext context,
-                                  {VoidCallback? onStepContinue,
-                                  VoidCallback? onStepCancel}) =>
-                              Container(),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                top: 15.h, bottom: 10.h, left: 8.w, right: 8.w),
-                            height: 45.h,
-                            width: 360.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                border: Border.all(
-                                    width: 1, color: Color(0xFFF60404))),
-                            child: Center(
-                              child: Text(
-                                'Hủy Đơn Hàng',
-                                style: TextStyle(
-                                    color: Color(0xFFF60404),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
-                    ),
-                  ),
-                ],
-              ): EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
+                    ))
+                  : EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
             }
           }
         });
@@ -706,7 +719,7 @@ class _OrderDetail extends State<OrderComing> {
       print(o);
       order = o.obs;
       order.refresh();
-    }else{
+    } else {
       order = new Order().obs;
     }
     return order.isBlank;

@@ -44,7 +44,7 @@ class _SlideBannerWidget extends State<SlideBannerWidget> {
                 // controller.listSliders.forEach((element) { })
                 for (Sliders slider in sliders)
                   Image.network(
-                    slider.url!,
+                    Apis.baseURL + slider.url!,
                     fit: BoxFit.fill,
                   ),
               ],

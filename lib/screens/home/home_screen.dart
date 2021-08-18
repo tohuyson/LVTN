@@ -11,6 +11,7 @@ import 'package:fooddelivery/model/list_restaurant.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/screens/home/components/menus.dart';
 import 'package:fooddelivery/screens/home/components/slider_banner.dart';
+import 'package:fooddelivery/screens/search/search_screens.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -75,7 +76,7 @@ class _HomeScreen extends State<HomeScreen> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              // Get.to(SearchScreen());
+                              Get.to(SearchScreen());
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

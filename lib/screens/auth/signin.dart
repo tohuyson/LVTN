@@ -10,6 +10,8 @@ import 'package:fooddelivery/screens/auth/verify_phone.dart';
 import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,6 +33,7 @@ class _SignIn extends State<SignIn> {
 
   @override
   void initState() {
+    checkPermission();
     phone = TextEditingController();
     super.initState();
   }
@@ -301,6 +304,122 @@ class _SignIn extends State<SignIn> {
         ],
       ),
     );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Vị trí"),
+          content: new Text(
+              "Bạn đang tắt quyền truy cập vị trí\n\nViệc cho phép truy cập vị trí sẽ giúp định vị đúng vị trí để giao  hàng chính xác hơn."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              child: new Text("Hủy"),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            new TextButton(
+              child: new Text("Đồng ý"),
+              onPressed: () {
+                Get.back();
+                loadData();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> checkPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      _showDialog();
+    }
+  }
+
+  Future<void> loadData() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      showToast('Vui lòng bật vị trí!');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showToast('Vui lòng cung cấp vị trí!');
+      }
+    }
+
+    Position position = await getPosition();
+    String street = await getStreet(position);
+    String locality = await getLocality(position);
+    String a = await getAddress(position);
+    String address;
+    setState(() {
+      address = (street + ', ' + locality + ', ' + a);
+      setValue('address', address);
+    });
+  }
+
+  Future<String> getStreet(Position position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    for (int i = 0; i < placemarks.length; i++) {
+      if (placemarks[i].street!.isNotEmpty) {
+        return placemarks[i].street!;
+      }
+    }
+    return '';
+  }
+
+  Future<String> getLocality(Position position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    for (int i = 0; i < placemarks.length; i++) {
+      if (placemarks[i].locality!.isNotEmpty) {
+        return placemarks[i].locality!;
+      }
+    }
+    return '';
+  }
+
+  Future<Position> getPosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        forceAndroidLocationManager: true);
+    return position;
+  }
+
+  Future<String> getAddress(Position position) async {
+    // List<String> address = [];
+    String address = '';
+
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    for (int i = 0; i < placemarks.length; i++) {
+      print(placemarks[i]);
+      if (placemarks[i].administrativeArea!.isNotEmpty &&
+          placemarks[i].subAdministrativeArea!.isNotEmpty &&
+          placemarks[i].country!.isNotEmpty) {
+        print('vào dât đi bạn');
+        // address.add(placemarks[i].administrativeArea!);
+        // address.add(placemarks[i].subAdministrativeArea!);
+        // address.add(placemarks[i].locality!);
+        address = placemarks[i].subAdministrativeArea! +
+            ', ' +
+            placemarks[i].administrativeArea! +
+            ', ' +
+            placemarks[i].country!;
+      }
+    }
+    return address;
   }
 
   Future<void> verifyPhone(phoneNo) async {

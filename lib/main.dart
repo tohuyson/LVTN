@@ -180,6 +180,7 @@ class SplashScreenState extends State<MyHome> {
                 setState(() {
                   address = 'Vị trí ngƯời dùng không xác định'.obs;
                 });
+                Timer(Duration(seconds: 5), () => Get.to(MyHomePage()));
               },
             ),
             new TextButton(

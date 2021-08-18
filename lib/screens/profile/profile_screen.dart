@@ -118,20 +118,20 @@ class _ProfileScreen extends State<ProfileScreen> {
                               color: Color(0xFFFFFFFF),
                               child: Column(
                                 children: [
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Thanh toán',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Địa chỉ',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
+                                  // ItemProfile(
+                                  //   itemProfile: ItemProfileModel(
+                                  //     title: 'Thanh toán',
+                                  //     description: '',
+                                  //     page: HomeScreen(),
+                                  //   ),
+                                  // ),
+                                  // ItemProfile(
+                                  //   itemProfile: ItemProfileModel(
+                                  //     title: 'Địa chỉ',
+                                  //     description: '',
+                                  //     page: HomeScreen(),
+                                  //   ),
+                                  // ),
                                   // ItemProfile(
                                   //   itemProfile: ItemProfileModel(
                                   //     title: 'Người giao hàng',
@@ -234,13 +234,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       ],
                                     ),
                                   ),
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Đơn hàng của tôi',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
+                                  // ItemProfile(
+                                  //   itemProfile: ItemProfileModel(
+                                  //     title: 'Đơn hàng của tôi',
+                                  //     description: '',
+                                  //     page: HomeScreen(),
+                                  //   ),
+                                  // ),
                                   ItemProfile(
                                     itemProfile: ItemProfileModel(
                                       title: 'Tin nhắn',
@@ -251,36 +251,36 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10.h),
-                              color: Color(0xFFFFFFFF),
-                              child: Column(
-                                children: [
-                                  // ColorLineBottom(),
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Trung tâm hỗ trợ',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Chính sách và quy định',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
-                                  ItemProfile(
-                                    itemProfile: ItemProfileModel(
-                                      title: 'Cài đặt',
-                                      description: '',
-                                      page: HomeScreen(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   margin: EdgeInsets.only(top: 10.h),
+                            //   color: Color(0xFFFFFFFF),
+                            //   child: Column(
+                            //     children: [
+                            //       // ColorLineBottom(),
+                            //       ItemProfile(
+                            //         itemProfile: ItemProfileModel(
+                            //           title: 'Trung tâm hỗ trợ',
+                            //           description: '',
+                            //           page: HomeScreen(),
+                            //         ),
+                            //       ),
+                            //       ItemProfile(
+                            //         itemProfile: ItemProfileModel(
+                            //           title: 'Chính sách và quy định',
+                            //           description: '',
+                            //           page: HomeScreen(),
+                            //         ),
+                            //       ),
+                            //       ItemProfile(
+                            //         itemProfile: ItemProfileModel(
+                            //           title: 'Cài đặt',
+                            //           description: '',
+                            //           page: HomeScreen(),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             InkWell(
                               onTap: () {
                                 controller.logout();

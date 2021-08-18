@@ -200,6 +200,8 @@ class SplashScreenState extends State<MyHome> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       _showDialog();
+    }else{
+      loadData();
     }
   }
 

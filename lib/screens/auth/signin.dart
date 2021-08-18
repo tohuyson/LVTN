@@ -339,6 +339,8 @@ class _SignIn extends State<SignIn> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       _showDialog();
+    } else {
+      loadData();
     }
   }
 

@@ -107,7 +107,7 @@ class _VerifyPhone extends State<VerifyPhone> {
                         if (isLoading == false) {
                           print(code!.text);
                           var isSignSMS = await AuthService()
-                              .signInWithOTP(code!.text, verificationId);
+                              .signInWithOTP(code!.text.trim(), verificationId, numberPhone);
                           print(isSignSMS);
 
                           if (isSignSMS == true) {

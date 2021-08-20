@@ -38,7 +38,7 @@ class _AddressScreen extends State<AddressScreen> {
   @override
   void initState() {
     address = new RxList<Address>();
-    getAd();
+    // getAd();
     fetchAddress();
     fetchUsers();
     super.initState();
@@ -66,26 +66,24 @@ class _AddressScreen extends State<AddressScreen> {
       }
     }
 
-    Position position = await getPosition();
-    String s = await getStreet(position);
-    String locality = await getLocality(position);
-    String a = await getAdd(position);
+    List<Placemark> placemark = await getPosition();
+    String s = await getStreet(placemark);
+    String locality = await getLocality(placemark);
+    String a = await getAdd(placemark);
     setState(() {
-      setState(() {
-        addressDetail = (street + ', ' + locality + ', ' + a).obs;
-        street = s.obs;
-      });
-
+      street = s.obs;
+      addressDetail = (s + ', ' + locality + ', ' + a).obs;
       setValue('street', s);
       setValue('address', addressDetail.value);
-      setValue("latitude", position.latitude.toString());
-      setValue('longitude', position.longitude.toString());
+      setValue("latitude", latitude);
+      setValue('longitude', longitude);
     });
   }
 
-  Future<String> getStreet(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  String latitude = '';
+  String longitude = '';
+
+  Future<String> getStreet(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].street!.isNotEmpty) {
         return placemarks[i].street!;
@@ -94,9 +92,7 @@ class _AddressScreen extends State<AddressScreen> {
     return '';
   }
 
-  Future<String> getLocality(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future<String> getLocality(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].locality!.isNotEmpty) {
         return placemarks[i].locality!;
@@ -105,25 +101,19 @@ class _AddressScreen extends State<AddressScreen> {
     return '';
   }
 
-  Future<Position> getPosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true);
-    return position;
-  }
-
-  Future<String> getAdd(Position position) async {
+  Future<String> getAdd(List<Placemark> placemarks) async {
     // List<String> address = [];
     String address = '';
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
     for (int i = 0; i < placemarks.length; i++) {
       print(placemarks[i]);
       if (placemarks[i].administrativeArea!.isNotEmpty &&
           placemarks[i].subAdministrativeArea!.isNotEmpty &&
           placemarks[i].country!.isNotEmpty) {
         print('vào dât đi bạn');
+        // address.add(placemarks[i].administrativeArea!);
+        // address.add(placemarks[i].subAdministrativeArea!);
+        // address.add(placemarks[i].locality!);
         address = placemarks[i].subAdministrativeArea! +
             ', ' +
             placemarks[i].administrativeArea! +
@@ -132,6 +122,17 @@ class _AddressScreen extends State<AddressScreen> {
       }
     }
     return address;
+  }
+
+  Future<List<Placemark>> getPosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        forceAndroidLocationManager: true);
+    latitude = position.latitude.toString();
+    longitude = position.longitude.toString();
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    return placemarks;
   }
 
   @override
@@ -745,6 +746,7 @@ class _AddressScreen extends State<AddressScreen> {
   }
 
   Future<bool?> checkload() async {
+    await getAd();
     await fetchUsers();
     await fetchAddress();
     return user.isBlank;

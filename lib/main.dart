@@ -199,6 +199,9 @@ class SplashScreenState extends State<MyHome> {
     }
   }
 
+  String latitude = '';
+  String longitude = '';
+
   Future<void> loadData() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -214,25 +217,23 @@ class SplashScreenState extends State<MyHome> {
       }
     }
 
-    Position position = await getPosition();
-    String street = await getStreet(position);
-    String locality = await getLocality(position);
-    String a = await getAddress(position);
+    List<Placemark> placemark = await getPosition();
+    String street = await getStreet(placemark);
+    String locality = await getLocality(placemark);
+    String a = await getAddress(placemark);
     setState(() {
       address = (street + ', ' + locality + ', ' + a).obs;
       setValue('street', street);
       setValue('address', address.value);
-      setValue("latitude", position.latitude.toString());
-      setValue('longitude', position.longitude.toString());
+      setValue("latitude", latitude);
+      setValue('longitude', longitude);
     });
 
     print(address.value);
     Timer(Duration(seconds: 3), () => Get.to(MyHomePage()));
   }
 
-  Future<String> getStreet(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future<String> getStreet(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].street!.isNotEmpty) {
         return placemarks[i].street!;
@@ -241,9 +242,7 @@ class SplashScreenState extends State<MyHome> {
     return '';
   }
 
-  Future<String> getLocality(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future<String> getLocality(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].locality!.isNotEmpty) {
         return placemarks[i].locality!;
@@ -252,19 +251,10 @@ class SplashScreenState extends State<MyHome> {
     return '';
   }
 
-  Future<Position> getPosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true);
-    return position;
-  }
-
-  Future<String> getAddress(Position position) async {
+  Future<String> getAddress(List<Placemark> placemarks) async {
     // List<String> address = [];
     String address = '';
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
     for (int i = 0; i < placemarks.length; i++) {
       print(placemarks[i]);
       if (placemarks[i].administrativeArea!.isNotEmpty &&
@@ -283,6 +273,20 @@ class SplashScreenState extends State<MyHome> {
     }
     return address;
   }
+
+  Future<List<Placemark>> getPosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        // desiredAccuracy: LocationAccuracy.low,
+        // forceAndroidLocationManager: true
+    );
+    latitude = position.latitude.toString();
+    longitude = position.longitude.toString();
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    return placemarks;
+  }
+
+
 }
 
 class MyHomePage extends StatefulWidget {

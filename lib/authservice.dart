@@ -15,8 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   handleAuth() {
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+    return FutureBuilder(
+        future: checkLogin(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             return BottomNavigation(selectedIndex: 2);
@@ -24,6 +24,11 @@ class AuthService {
             return SignIn();
           }
         });
+  }
+
+  Future<bool> checkLogin() async {
+    var token = await getToken();
+    return token!.isNotEmpty;
   }
 
   Future<void> _removeToken() async {
@@ -48,14 +53,22 @@ class AuthService {
     return user;
   }
 
-  Future<bool> signInWithOTP(smsCode, verId) async {
+  Future<bool> signInWithOTP(smsCode, verId, phoneNumber) async {
+    print(smsCode);
+    print(verId);
     AuthCredential authCreds =
         PhoneAuthProvider.credential(verificationId: verId, smsCode: smsCode);
-    UserCredential result = await signIn(authCreds);
-    print(result.user);
-    if (result.user != null) {
+    final UserCredential user =
+        await FirebaseAuth.instance.signInWithCredential(authCreds);
+    // print(authCreds.providerId);
+    // UserCredential result = await signIn(authCreds);
+    // print(result.user);
+    if (user != null) {
       return true;
     }
+    // if (result.user != null) {
+    //   return true;
+    // }
     return false;
   }
 }

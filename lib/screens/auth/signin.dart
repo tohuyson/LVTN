@@ -359,20 +359,21 @@ class _SignIn extends State<SignIn> {
       }
     }
 
-    Position position = await getPosition();
-    String street = await getStreet(position);
-    String locality = await getLocality(position);
-    String a = await getAddress(position);
+    List<Placemark> placemark = await getPosition();
+    String street = await getStreet(placemark);
+    String locality = await getLocality(placemark);
+    String a = await getAddress(placemark);
     String address;
     address = (street + ', ' + locality + ', ' + a);
     setValue('address', address);
-    setValue("latitude", position.latitude.toString());
-    setValue('longitude', position.longitude.toString());
+    setValue("latitude", latitude);
+    setValue('longitude', longitude);
   }
 
-  Future<String> getStreet(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  String latitude = '';
+  String longitude = '';
+
+  Future<String> getStreet(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].street!.isNotEmpty) {
         return placemarks[i].street!;
@@ -381,9 +382,7 @@ class _SignIn extends State<SignIn> {
     return '';
   }
 
-  Future<String> getLocality(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future<String> getLocality(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
       if (placemarks[i].locality!.isNotEmpty) {
         return placemarks[i].locality!;
@@ -392,19 +391,10 @@ class _SignIn extends State<SignIn> {
     return '';
   }
 
-  Future<Position> getPosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true);
-    return position;
-  }
-
-  Future<String> getAddress(Position position) async {
+  Future<String> getAddress(List<Placemark> placemarks) async {
     // List<String> address = [];
     String address = '';
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
     for (int i = 0; i < placemarks.length; i++) {
       print(placemarks[i]);
       if (placemarks[i].administrativeArea!.isNotEmpty &&
@@ -422,6 +412,17 @@ class _SignIn extends State<SignIn> {
       }
     }
     return address;
+  }
+
+  Future<List<Placemark>> getPosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        forceAndroidLocationManager: true);
+    latitude = position.latitude.toString();
+    longitude = position.longitude.toString();
+    List<Placemark> placemarks =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+    return placemarks;
   }
 
   Future<void> verifyPhone(phoneNo) async {

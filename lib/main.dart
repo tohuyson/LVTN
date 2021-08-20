@@ -66,18 +66,12 @@ class MyHome extends StatefulWidget {
 }
 
 class SplashScreenState extends State<MyHome> {
-  // late Position _currentPosition ;
   RxString address = ''.obs;
 
   @override
   void initState() {
     super.initState();
     checkPermission();
-    // loadData();
-    // Timer(
-    //     Duration(seconds: 5),
-    //     () => Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => MyHomePage())));
   }
 
   @override
@@ -200,23 +194,12 @@ class SplashScreenState extends State<MyHome> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       _showDialog();
-    }else{
+    } else {
       loadData();
     }
   }
 
   Future<void> loadData() async {
-    // List<String> a = await getLocation();
-    // print(a);
-    // String ad = '';
-    // if (a.length > 0) {
-    //   for (int i = a.length - 1; i >= 0; i--) {
-    //     ad = ad + a[i] + ',';
-    //   }
-    //   print(ad);
-    //   address = ad.obs;
-    //   Get.to(MyHomePage());
-    // }
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
@@ -237,11 +220,14 @@ class SplashScreenState extends State<MyHome> {
     String a = await getAddress(position);
     setState(() {
       address = (street + ', ' + locality + ', ' + a).obs;
+      setValue('street', street);
       setValue('address', address.value);
+      setValue("latitude", position.latitude.toString());
+      setValue('longitude', position.longitude.toString());
     });
 
     print(address.value);
-    Timer(Duration(seconds: 5), () => Get.to(MyHomePage()));
+    Timer(Duration(seconds: 3), () => Get.to(MyHomePage()));
   }
 
   Future<String> getStreet(Position position) async {

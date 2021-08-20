@@ -53,6 +53,10 @@ class _OrderDetail extends State<OrderDetail> {
       MethodChannel('flutter.native/channelPayOrder');
   String payResult = "";
 
+  RxString a = ''.obs;
+  String longitude = '';
+  String latitude = '';
+
   @override
   void initState() {
     card = Rx<CardModel>(new CardModel());
@@ -62,15 +66,18 @@ class _OrderDetail extends State<OrderDetail> {
     voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: 0));
     payment = ''.obs;
     delivery_fee = 10000;
-    // checkUser();
-    // users =  getAddress();
-    // RxStatus.loading();
-    // fetchUser();
-    // fetchCard();
     if (Platform.isIOS) {
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
     }
+    getAd();
     super.initState();
+  }
+
+  Future<void> getAd() async {
+    a = (await getValue('address'))!.obs;
+    longitude = (await getValue('longitude'))!;
+    latitude = (await getValue('latitude'))!;
+    print(a);
   }
 
   final myController = TextEditingController();
@@ -207,7 +214,7 @@ class _OrderDetail extends State<OrderDetail> {
                                     deliveryModel: DeliveryModel(
                                         iconData: Icons.location_on,
                                         name: users.value.username,
-                                        address: address),
+                                        address: a.value),
                                   ),
                                 ),
                               ),
@@ -765,6 +772,8 @@ class _OrderDetail extends State<OrderDetail> {
               'discount_id': discount_id,
               'card_id': card_id,
               'status': payResult,
+              'latitude': latitude,
+              'longitude': longitude,
             }),
           );
           print(response.statusCode);

@@ -72,7 +72,7 @@ class _AddressMap extends State<AddressMap> {
         child: Column(
           children: [
             Container(
-              height: 734.h,
+              height: 730.h,
               child: GoogleMap(
                 mapType: MapType.normal,
                 myLocationEnabled: true,

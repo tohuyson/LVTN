@@ -364,10 +364,10 @@ class _SignIn extends State<SignIn> {
     String locality = await getLocality(position);
     String a = await getAddress(position);
     String address;
-    setState(() {
-      address = (street + ', ' + locality + ', ' + a);
-      setValue('address', address);
-    });
+    address = (street + ', ' + locality + ', ' + a);
+    setValue('address', address);
+    setValue("latitude", position.latitude.toString());
+    setValue('longitude', position.longitude.toString());
   }
 
   Future<String> getStreet(Position position) async {

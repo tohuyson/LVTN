@@ -424,8 +424,7 @@ class _FoodRestaurant extends State<FoodRestaurant> {
                                 food: food![i],
                               ));
                               setState(() {
-                                if (result != null) {
-                                }
+                                if (result != null) {}
                               });
                               // showPicker(context, food![i]!);
                             },
@@ -742,9 +741,16 @@ class _FoodDetail extends State<FoodDetail> {
   Future<void> addCardOrder() async {
     String token = (await getToken())!;
     int price = productCounter.value * price_food;
-    // int price_topping=0;
+
     String toppingId = '';
+    int priceTopping = 0;
+
     for (int i = 0; i < listTopping.length; i++) {
+      for (int j = 0; j < food!.toppings!.length; j++) {
+        if (food!.toppings![j].id == listTopping[i]) {
+          priceTopping += food!.toppings![j].price! * productCounter.value;
+        }
+      }
       print('id topping lấy đc nè ${listTopping[i]}');
 
       if (i == listTopping.length - 1) {
@@ -754,6 +760,8 @@ class _FoodDetail extends State<FoodDetail> {
       }
     }
     print('topping $toppingId');
+    print(priceTopping);
+    price = price + priceTopping;
     try {
       http.Response response = await http.post(
         Uri.parse(Apis.postAddCardUrl),

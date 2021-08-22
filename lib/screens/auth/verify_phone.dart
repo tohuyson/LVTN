@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
@@ -106,12 +107,13 @@ class _VerifyPhone extends State<VerifyPhone> {
                       onPressed: () async {
                         if (isLoading == false) {
                           print(code!.text);
-                          var isSignSMS = await AuthService()
-                              .signInWithOTP(code!.text.trim(), verificationId, numberPhone);
+                          print(verificationId);
+                          var isSignSMS = await AuthService().signInWithOTP(
+                              code!.text.trim(), verificationId.trim());
                           print(isSignSMS);
 
                           if (isSignSMS == true) {
-                            print("vào ddaa7f true đi bạn $isSignSMS");
+                            //   print("vào ddaa7f true đi bạn $isSignSMS");
                             //check user đã có tồn tại hay chưa
                             bool isCheckUser = await checkUser();
                             if (isCheckUser) {
@@ -212,5 +214,5 @@ class _VerifyPhone extends State<VerifyPhone> {
       showError(e.toString());
     }
     return false;
-  }
+   }
 }

@@ -11,6 +11,7 @@ import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/testzalo.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
@@ -30,8 +31,17 @@ class _OrderDetail extends State<OrderComing> {
   bool isLoading = false;
   late Rx<Order> order;
 
+  Future<void> checkPermision() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+  }
+
   @override
   void initState() {
+    checkPermision();
     order = new Rx(new Order());
     fetchOrder();
     super.initState();

@@ -158,6 +158,7 @@ class SplashScreenState extends State<MyHome> {
   void _showDialog() {
     // flutter defined function
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -172,16 +173,16 @@ class SplashScreenState extends State<MyHome> {
               onPressed: () {
                 Get.back();
                 setState(() {
-                  address = 'Vị trí ngƯời dùng không xác định'.obs;
+                  address = 'Vị trí người dùng không xác định'.obs;
                 });
-                Timer(Duration(seconds: 5), () => Get.to(MyHomePage()));
+                Timer(Duration(seconds: 5), () => Get.offAll(MyHomePage()));
               },
             ),
             new TextButton(
               child: new Text("Đồng ý"),
-              onPressed: () {
+              onPressed: () async {
                 Get.back();
-                loadData();
+                await loadData();
               },
             ),
           ],
@@ -191,6 +192,12 @@ class SplashScreenState extends State<MyHome> {
   }
 
   Future<void> checkPermission() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      showToast('Vui lòng bật vị trí!');
+    }
+
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       _showDialog();
@@ -203,19 +210,11 @@ class SplashScreenState extends State<MyHome> {
   String longitude = '';
 
   Future<void> loadData() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      showToast('Vui lòng bật vị trí!');
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        showToast('Vui lòng cung cấp vị trí!');
-      }
-    }
+    // LocationPermission permission = await Geolocator.checkPermission();
+    //
+    // if (permission == LocationPermission.denied) {
+    //   permission = await Geolocator.requestPermission();
+    // }
 
     List<Placemark> placemark = await getPosition();
     String street = await getStreet(placemark);
@@ -223,11 +222,11 @@ class SplashScreenState extends State<MyHome> {
     String a = await getAddress(placemark);
     setState(() {
       address = (street + ', ' + locality + ', ' + a).obs;
-      setValue('street', street);
-      setValue('address', address.value);
-      setValue("latitude", latitude);
-      setValue('longitude', longitude);
     });
+    await setValue('street', street);
+    await setValue('address', address.value);
+    await setValue("latitude", latitude);
+    await setValue('longitude', longitude);
 
     print(address.value);
     Timer(Duration(seconds: 3), () => Get.to(MyHomePage()));
@@ -278,15 +277,13 @@ class SplashScreenState extends State<MyHome> {
     Position position = await Geolocator.getCurrentPosition(
         // desiredAccuracy: LocationAccuracy.low,
         // forceAndroidLocationManager: true
-    );
+        );
     latitude = position.latitude.toString();
     longitude = position.longitude.toString();
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     return placemarks;
   }
-
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -302,10 +299,18 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseMessaging.instance.getToken().then((token) => print(token));
   }
 
+  Future<void> checkPermision() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    checkPermision();
     if (user != null) {
       _registerOnFirebase();
     }

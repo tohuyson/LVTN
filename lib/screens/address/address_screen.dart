@@ -37,6 +37,7 @@ class _AddressScreen extends State<AddressScreen> {
 
   @override
   void initState() {
+    checkPermision();
     address = new RxList<Address>();
     // getAd();
     fetchAddress();
@@ -51,6 +52,14 @@ class _AddressScreen extends State<AddressScreen> {
     print(addressDetail);
   }
 
+  Future<void> checkPermision() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+  }
+
   Future<void> loadData() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -61,9 +70,6 @@ class _AddressScreen extends State<AddressScreen> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        showToast('Vui lòng cung cấp vị trí!');
-      }
     }
 
     List<Placemark> placemark = await getPosition();
@@ -73,11 +79,11 @@ class _AddressScreen extends State<AddressScreen> {
     setState(() {
       street = s.obs;
       addressDetail = (s + ', ' + locality + ', ' + a).obs;
-      setValue('street', s);
-      setValue('address', addressDetail.value);
-      setValue("latitude", latitude);
-      setValue('longitude', longitude);
     });
+    await setValue('street', s);
+    await setValue('address', addressDetail.value);
+    await setValue("latitude", latitude);
+    await setValue('longitude', longitude);
   }
 
   String latitude = '';
@@ -746,9 +752,9 @@ class _AddressScreen extends State<AddressScreen> {
   }
 
   Future<bool?> checkload() async {
-    await getAd();
     await fetchUsers();
     await fetchAddress();
+    await getAd();
     return user.isBlank;
   }
 

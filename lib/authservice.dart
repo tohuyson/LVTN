@@ -15,11 +15,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   handleAuth() {
-    return FutureBuilder(
-        future: checkLogin(),
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            return BottomNavigation(selectedIndex: 2);
+            return FutureBuilder(
+                future: checkLogin(),
+                builder: (BuildContext context, snapshot) {
+                  if (snapshot.hasData) {
+                    return BottomNavigation(selectedIndex: 2);
+                  } else {
+                    return SignIn();
+                  }
+                });
           } else {
             return SignIn();
           }
@@ -28,6 +36,7 @@ class AuthService {
 
   Future<bool> checkLogin() async {
     var token = await getToken();
+
     return token!.isNotEmpty;
   }
 
@@ -44,31 +53,67 @@ class AuthService {
   }
 
   //SignIn
-  Future<UserCredential> signIn(AuthCredential authCreds) async {
-    UserCredential user = await FirebaseAuth.instance
+  // Future<UserCredential> signIn(AuthCredential authCreds) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   auth.userChanges();
+  //   UserCredential user =
+  //       await auth.signInWithCredential(authCreds).catchError((onError) {
+  //     showToast('Mã xác minh không chính xác!');
+  //   });
+  //   return user;
+  // }
+
+  Future<UserCredential>? signIn(AuthCredential authCreds) {
+    Future<UserCredential> user = FirebaseAuth.instance
         .signInWithCredential(authCreds)
         .catchError((onError) {
       showToast('Mã xác minh không chính xác!');
+      // print('mã k chính xac');
     });
-    return user;
+    if (user != null) {
+      return user;
+    }
+    return null;
   }
 
-  Future<bool> signInWithOTP(smsCode, verId, phoneNumber) async {
+  Future<bool> signInWithOTP(String smsCode, String verId) async {
     print(smsCode);
     print(verId);
     AuthCredential authCreds =
         PhoneAuthProvider.credential(verificationId: verId, smsCode: smsCode);
-    final UserCredential user =
-        await FirebaseAuth.instance.signInWithCredential(authCreds);
+    print(authCreds.token);
+    // FirebaseAuth auth = FirebaseAuth.instance;
+    // auth.userChanges();
+    // final UserCredential user =
+    //     await auth.signInWithCredential(authCreds).catchError((onError) {
+    //   showToast('Mã xác minh không chính xác!');
+    // });
     // print(authCreds.providerId);
-    // UserCredential result = await signIn(authCreds);
-    // print(result.user);
-    if (user != null) {
-      return true;
-    }
-    // if (result.user != null) {
+    // UserCredential? result = await signIn(authCreds);
+    // print(result?.user);
+    // if (user != null) {
     //   return true;
     // }
+    // if (result?.user == null) {
+    //   return true;
+    // }
+
+    UserCredential? result = await signIn(authCreds);
+    print(result?.user);
+    // if (user != null) {
+    //   return true;
+    // }
+    if (result?.user != null) {
+      return true;
+    }
+
     return false;
   }
+// signInWithOTP(smsCode, verId) {
+//   print(smsCode);
+//   AuthCredential authCreds =
+//       PhoneAuthProvider.credential(verificationId: verId, smsCode: smsCode);
+//   print(authCreds.token);
+//   signIn(authCreds);
+// }
 }

@@ -35,12 +35,13 @@ class _ReviewScreen extends State<ReviewScreen> {
         child: Container(
           color: Color(0xFFFFFFFF),
           height: 834.h,
+          width: 414.w,
           alignment: Alignment.centerRight,
           child: Column(
             children: [
               Container(
+                width: 414.w,
                 margin: EdgeInsets.all(10.h),
-                // padding: EdgeInsets.only(bottom: 12.h, left: 12.w, right: 12.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -55,7 +56,7 @@ class _ReviewScreen extends State<ReviewScreen> {
                           child: o.value.foodOrder![0].food!.restaurant == null
                               ? Container(
                                   width: 80.w,
-                                  height: 80.w,
+                                  height: 80.h,
                                   padding: EdgeInsets.only(
                                       right: 12.w,
                                       bottom: 12.h,
@@ -63,7 +64,7 @@ class _ReviewScreen extends State<ReviewScreen> {
                                       top: 12.h),
                                   child: Image.asset(
                                     'assets/images/user.png',
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                     color: Colors.black26,
                                   ),
                                 )
@@ -75,7 +76,7 @@ class _ReviewScreen extends State<ReviewScreen> {
                                       Apis.baseURL +
                                           o.value.foodOrder![0].food!
                                               .restaurant!.image!,
-                                      width: 72.w,
+                                      width: 80.w,
                                       height: 80.h,
                                       fit: BoxFit.cover,
                                     ),
@@ -83,8 +84,8 @@ class _ReviewScreen extends State<ReviewScreen> {
                                 ),
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 15.w, right: 10.w),
-                          height: 92.h,
+                          width: 282.w,
+                          padding: EdgeInsets.only(left: 12.w),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,117 +111,120 @@ class _ReviewScreen extends State<ReviewScreen> {
                               Text('Địa chỉ : ' +
                                   o.value.foodOrder![0].food!.restaurant!
                                       .address
-                                      .toString()),
+                                      .toString(), overflow: TextOverflow.ellipsis,),
                               Text('Giá : ' + o.value.price.toString() + ' đ'),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.navigate_next),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                  title: Text('Thông tin đơn hàng'),
-                                  content: SingleChildScrollView(
-                                    child: Container(
-                                      width: 384.w,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: o.value.foodOrder!.length,
-                                          itemBuilder: (context, ind) {
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: 24.w,
-                                                  child: Text(o
-                                                          .value
-                                                          .foodOrder![ind]
-                                                          .quantity
-                                                          .toString() +
-                                                      ' x'),
-                                                ),
-                                                Container(
-                                                  width: 180.w,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        o.value.foodOrder![ind]
-                                                            .food!.name!,
-                                                        style: TextStyle(
-                                                            fontSize: 18.sp),
-                                                      ),
-                                                      Container(
-                                                        width: 180.w,
-                                                        child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount: o
-                                                                .value
-                                                                .foodOrder![ind]
-                                                                .toppings!
-                                                                .length,
-                                                            itemBuilder:
-                                                                (context, i) {
-                                                              return Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    "+ " +
-                                                                        '${o.value.foodOrder![ind].toppings![i].name!}: ' +
-                                                                        ' ${o.value.foodOrder![ind].toppings![i].price!}',
-                                                                    style: TextStyle(
-                                                                        fontSize: 15
-                                                                            .sp,
-                                                                        color: Colors
-                                                                            .grey),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 1.h,
-                                                                  )
-                                                                ],
-                                                              );
-                                                            }),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.h,
-                                                      )
-                                                    ],
+                    Container(
+                      width: 30.w,
+                      child: IconButton(
+                        icon: Icon(Icons.navigate_next),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    title: Text('Thông tin đơn hàng'),
+                                    content: SingleChildScrollView(
+                                      child: Container(
+                                        width: 384.w,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: o.value.foodOrder!.length,
+                                            itemBuilder: (context, ind) {
+                                              return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: 24.w,
+                                                    child: Text(o
+                                                            .value
+                                                            .foodOrder![ind]
+                                                            .quantity
+                                                            .toString() +
+                                                        ' x'),
                                                   ),
-                                                ),
-                                                Container(
-                                                  width: 70.w,
-                                                  child: Text(
-                                                    o.value.foodOrder![ind]
-                                                        .price
-                                                        .toString(),
-                                                    textAlign: TextAlign.right,
+                                                  Container(
+                                                    width: 180.w,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          o.value.foodOrder![ind]
+                                                              .food!.name!,
+                                                          style: TextStyle(
+                                                              fontSize: 18.sp),
+                                                        ),
+                                                        Container(
+                                                          width: 180.w,
+                                                          child: ListView.builder(
+                                                              shrinkWrap: true,
+                                                              itemCount: o
+                                                                  .value
+                                                                  .foodOrder![ind]
+                                                                  .toppings!
+                                                                  .length,
+                                                              itemBuilder:
+                                                                  (context, i) {
+                                                                return Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "+ " +
+                                                                          '${o.value.foodOrder![ind].toppings![i].name!}: ' +
+                                                                          ' ${o.value.foodOrder![ind].toppings![i].price!}',
+                                                                      style: TextStyle(
+                                                                          fontSize: 15
+                                                                              .sp,
+                                                                          color: Colors
+                                                                              .grey),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 1.h,
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              }),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5.h,
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          }),
+                                                  Container(
+                                                    width: 70.w,
+                                                    child: Text(
+                                                      o.value.foodOrder![ind]
+                                                          .price
+                                                          .toString(),
+                                                      textAlign: TextAlign.right,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                      ),
                                     ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ]);
-                            });
-                      },
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Get.back(),
+                                        child: const Text('Ok'),
+                                      ),
+                                    ]);
+                              });
+                        },
+                      ),
                     )
                   ],
                 ),

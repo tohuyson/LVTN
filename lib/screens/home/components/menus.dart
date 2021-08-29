@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
@@ -73,7 +72,7 @@ class _Menu extends State<Menu> {
                       Container(
                         height: 30.h,
                         child: Center(
-                            child: AutoSizeText(
+                            child: Text(
                           listItemCategory[index].name!,
                           style: TextStyle(
                             fontSize: 14.sp,

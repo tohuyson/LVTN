@@ -15,6 +15,7 @@ class EmptyScreen extends StatelessWidget {
         children: [
           Container(
             height: 630.h,
+            width: 414.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -26,9 +27,13 @@ class EmptyScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Text(
-                  text,
-                  style: TextStyle(color: Colors.blue, fontSize: 20.sp),
+                Padding(
+                  padding: EdgeInsets.only(left: 30.w, right: 30.w),
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.blue, fontSize: 20.sp),
+                  ),
                 )
               ],
             ),

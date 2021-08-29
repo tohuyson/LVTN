@@ -10,6 +10,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
+import 'package:fooddelivery/networking.dart';
 import 'package:fooddelivery/screens/auth/is_signin.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:fooddelivery/splash_screen.dart';
@@ -210,12 +211,6 @@ class SplashScreenState extends State<MyHome> {
   String longitude = '';
 
   Future<void> loadData() async {
-    // LocationPermission permission = await Geolocator.checkPermission();
-    //
-    // if (permission == LocationPermission.denied) {
-    //   permission = await Geolocator.requestPermission();
-    // }
-
     List<Placemark> placemark = await getPosition();
     String street = await getStreet(placemark);
     String locality = await getLocality(placemark);
@@ -344,6 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       Navigator.of(context).pushNamed(routeFromMessage);
     });
+
   }
 
   @override

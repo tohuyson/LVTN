@@ -9,7 +9,6 @@ import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/controllers/address_controller.dart';
 import 'package:fooddelivery/model/address.dart';
-import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/add_address.dart';

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/model/notify.dart';
 import 'package:fooddelivery/screens/notify/notify_item.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,8 @@ class NotifyScreen extends StatefulWidget {
 
 class _NotifyScreen extends State<NotifyScreen> {
   late RxList<Notify> listNotify;
+
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -48,26 +51,24 @@ class _NotifyScreen extends State<NotifyScreen> {
                 size: 24.sp,
               ),
               onPressed: () {
-                print("Map");
               }),
         ],
       ),
       body: Container(
         color: Color(0xFFEEEEEE),
         height: 834.h,
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              child: Obx(
-                () => ListView.builder(
-                    itemCount: listNotify.length,
-                    itemBuilder: (context, index) {
-                      return NotifyItem(
-                        notify: listNotify[index],
-                      );
-                    }),
-              ),
+            Obx(
+              () => ListView.builder(
+                  itemCount: listNotify.length,
+                  itemBuilder: (context, index) {
+                    return NotifyItem(
+                      notify: listNotify[index],
+                    );
+                  }),
             ),
+            Positioned.fill(child: isLoading ? const Loading() : Container()),
           ],
         ),
       ),
@@ -75,11 +76,18 @@ class _NotifyScreen extends State<NotifyScreen> {
   }
 
   Future<void> fetchNotify() async {
+    setState(() {
+      isLoading = true;
+    });
     var n = await getNotify();
     print(n);
     if (n != null) {
+      setState(() {
+        isLoading = false;
+      });
       listNotify.assignAll(n);
       listNotify.refresh();
+
     }
   }
 

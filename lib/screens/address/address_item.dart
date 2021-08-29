@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/controllers/address_controller.dart';
 import 'package:fooddelivery/model/address.dart';

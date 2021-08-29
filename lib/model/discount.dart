@@ -4,7 +4,7 @@ class Discount {
   String? code;
   int? percent;
   String? image;
-  String? status;
+  int? status;
   String? startDate;
   String? endDate;
   int? restaurantId;

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/model/data_fake.dart';
-import 'package:fooddelivery/model/order.dart';
-import 'package:fooddelivery/screens/order/order_delivery_item.dart';
 
 class OrderDelivery extends StatelessWidget {
 

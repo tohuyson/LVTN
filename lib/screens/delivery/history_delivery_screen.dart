@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/widget/empty_screen.dart';
@@ -190,30 +189,29 @@ class OrderHistoryCard extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                                insetPadding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                contentPadding: EdgeInsets.only(left: 15.w, right: 15.w),
                                 title: Text('Thông tin người giao hàng'),
                                 content: SingleChildScrollView(
                                   child: Container(
-                                    width: 384.w,
+                                    width: 344.w,
                                     child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                AutoSizeText(
-                                                  'Quán ăn: ' +
-                                                      item!.foodOrder![0].food!.restaurant!.name!,
-                                                  style: TextStyle(fontSize: 16),
-                                                ),
-                                              ],
+                                            width: 344.w,
+                                            padding: EdgeInsets.only(left: 8.w),
+                                            child: Text(
+                                              'Quán ăn: ' +
+                                                  item!.foodOrder![0].food!.restaurant!.name!,
+                                              style: TextStyle(fontSize: 16),
                                             ),
                                           ),
                                           SizedBox(
                                             height: 5.h,
                                           ),
                                           Container(
-                                            width: double.infinity,
+                                            width: 344.w,
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,31 +223,48 @@ class OrderHistoryCard extends StatelessWidget {
                                                 SizedBox(
                                                   width: 10.w,
                                                 ),
-                                                Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Địa chỉ quán: ',
-                                                      style: TextStyle(fontSize: 16.sp),
-                                                    ),
-                                                    Text(
-                                                      item!.foodOrder![0].food!.restaurant!.name!,
-                                                      style: TextStyle(color: Colors.grey),
-                                                    ),
-                                                    Text(
-                                                      item!.foodOrder![0].food!.restaurant!.phone!,
-                                                      style: TextStyle(color: Colors.grey),
-                                                    ),
-                                                    AutoSizeText(
-                                                      item!.foodOrder![0].food!.restaurant!.address!,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey,
+                                                Container(
+                                                  width: 308.w,
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        width: 308.w,
+                                                        child: Text(
+                                                          'Địa chỉ quán: ',
+                                                          style: TextStyle(fontSize: 16.sp),
+                                                        ),
                                                       ),
-                                                      maxLines: 1,
-                                                    ),
-                                                  ],
+                                                      Container(
+                                                        width: 308.w,
+                                                        child: Text(
+                                                          item!.foodOrder![0].food!.restaurant!.name!,
+                                                          style: TextStyle(color: Colors.grey),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 308.w,
+                                                        child: Text(
+                                                          item!.foodOrder![0].food!.restaurant!.phone!,
+                                                          style: TextStyle(color: Colors.grey),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 5.h,),
+                                                      Container(
+                                                        width: 308.w,
+                                                        child: Text(
+                                                          item!.foodOrder![0].food!.restaurant!.address!,
+                                                          softWrap: true,
+                                                          overflow: TextOverflow.clip,
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -333,14 +348,13 @@ class OrderHistoryCard extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                                insetPadding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                contentPadding: EdgeInsets.only(left: 15.w, right: 15.w),
                                 title: Text('Thông tin người giao hàng'),
                                 content: SingleChildScrollView(
                                   child:Container(
-                                    width: 384.w,
-                                    margin: EdgeInsets.only(
-                                      top: 2.h,
-                                      left: 10.w,
-                                    ),
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    width: 344.w,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,31 +366,49 @@ class OrderHistoryCard extends StatelessWidget {
                                         SizedBox(
                                           width: 10.w,
                                         ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Địa chỉ nhận hàng: ',
-                                              style: TextStyle(fontSize: 16.sp),
-                                            ),
-                                            Text(
-                                              item!.user!.username!,
-                                              style: TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              item!.user!.phone!,
-                                              style: TextStyle(color: Colors.grey),
-                                            ),
-                                            AutoSizeText(
-                                              item!.addressDelivery!,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey,
+                                        Container(
+                                          width: 308.w,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 308.w,
+                                                child: Text(
+                                                  'Địa chỉ nhận hàng: ',
+                                                  style: TextStyle(fontSize: 16.sp),
+                                                ),
                                               ),
-                                              maxLines: 1,
-                                            ),
-                                          ],
+                                              Container(
+                                                width: 308.w,
+                                                child: Text(
+                                                  item!.user!.username!,
+                                                  overflow: TextOverflow.clip,
+                                                  style: TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 308.w,
+                                                child: Text(
+                                                  item!.user!.phone!,
+                                                  overflow: TextOverflow.clip,
+                                                  style: TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 308.w,
+                                                child: Text(
+                                                  item!.addressDelivery!,
+                                                  overflow: TextOverflow.clip,
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

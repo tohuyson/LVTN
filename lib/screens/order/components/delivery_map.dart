@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/networking.dart';
 import 'package:fooddelivery/utils.dart';
@@ -13,22 +14,24 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DeliveryMap extends StatefulWidget {
-  final double? height;
-  final Restaurant? restaurant;
+  final double height;
+  final Restaurant restaurant;
+  final Order order;
 
-  DeliveryMap({this.height, this.restaurant});
+  DeliveryMap({required this.height, required this.restaurant, required this.order});
 
   @override
   State<StatefulWidget> createState() {
-    return _DeliveryMap(height: height, restaurant: restaurant);
+    return _DeliveryMap(height: height, restaurant: restaurant, order: order);
   }
 }
 
 class _DeliveryMap extends State<DeliveryMap> {
-  final double? height;
-  final Restaurant? restaurant;
+  final double height;
+  final Restaurant restaurant;
+  final Order order;
 
-  _DeliveryMap({this.height, this.restaurant});
+  _DeliveryMap({required this.height, required this.restaurant,required this.order});
 
   //draw line
 
@@ -40,9 +43,9 @@ class _DeliveryMap extends State<DeliveryMap> {
   late var data;
 
   // Dummy Start and Destination Points
-  late double startLat = 10.8780557;
+  late double startLat;
 
-  late double startLng = 106.77468599999997;
+  late double startLng;
 
   late double endLat;
   late double endLng;
@@ -72,7 +75,6 @@ class _DeliveryMap extends State<DeliveryMap> {
         snippet: "5 star ratted place",
       ),
     ));
-    setState(() {});
   }
 
   void getJsonData() async {
@@ -113,84 +115,102 @@ class _DeliveryMap extends State<DeliveryMap> {
       points: polyPoints,
     );
     polyLines.add(polyline);
-    setState(() {});
   }
 
   @override
   void initState() {
-    endLat = double.parse(restaurant!.lattitude!);
-    endLng = double.parse(restaurant!.longtitude!);
+    startLat= double.parse(order.latitude!);
+    startLng = double.parse(order.longitude!);
+    endLat = double.parse(restaurant.lattitude!);
+    endLng = double.parse(restaurant.longtitude!);
 
-    _getUserLocation();
+    currentPostion =
+        LatLng(double.parse(restaurant.lattitude!),double.parse(restaurant.longtitude!));
+
+    // _getUserLocation();
     getJsonData();
     super.initState();
   }
 
   @override
   void dispose() {
-    locateUser();
+    // locateUser();
     super.dispose();
   }
 
-  static LatLng currentPostion = new LatLng(10.873286, 106.7914436);
+  LatLng currentPostion = new LatLng(10.873286, 106.7914436);
   late Position currentLocation;
 
-  Future<Position> locateUser() async {
-    return Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
+  // Future<Position> locateUser() async {
+  //   return Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+  // }
 
-  _getUserLocation() async {
-    currentLocation = await locateUser();
-    setState(() {
-      currentPostion =
-          LatLng(currentLocation.latitude, currentLocation.longitude);
-      startLat = currentLocation.latitude;
-      startLng = currentLocation.longitude;
-    });
-    print('center $currentPostion');
-  }
+  // _getUserLocation() async {
+  //   currentLocation = await locateUser();
+  //   setState(() {
+  //     startLat = currentLocation.latitude;
+  //     startLng = currentLocation.longitude;
+  //   });
+  //   print('center $currentPostion');
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _getUserLocation(),
-        builder: (context, snapshot) {
-          return Container(
-            height: height!.h,
-            width: double.infinity,
-            color: Colors.white,
-            child: GoogleMap(
-              myLocationEnabled: true,
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: currentPostion,
-                zoom: 16,
-              ),
-              markers: markers,
-              polylines: polyLines,
-              mapType: MapType.normal,
-              gestureRecognizers: Set()
-                ..add(
-                    Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-                ..add(Factory<ScaleGestureRecognizer>(
-                    () => ScaleGestureRecognizer()))
-                ..add(
-                    Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
-                ..add(Factory<VerticalDragGestureRecognizer>(
-                    () => VerticalDragGestureRecognizer())),
-            ),
-            // child: GoogleMap(
-            //   mapType: MapType.normal,
-            //   myLocationEnabled: true,
-            //   initialCameraPosition: CameraPosition(
-            //     target: currentPostion,
-            //     zoom: 10,
-            //   ),
-            //   onMapCreated: (GoogleMapController controller) {},
-            // ),
-          );
-        });
+    return Container(
+      height: height.h,
+      width: double.infinity,
+      color: Colors.white,
+      child: GoogleMap(
+        myLocationEnabled: true,
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: currentPostion,
+          zoom: 16,
+        ),
+        markers: markers,
+        polylines: polyLines,
+        mapType: MapType.normal,
+        gestureRecognizers: Set()
+          ..add(
+              Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+          ..add(Factory<ScaleGestureRecognizer>(
+                  () => ScaleGestureRecognizer()))
+          ..add(
+              Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+          ..add(Factory<VerticalDragGestureRecognizer>(
+                  () => VerticalDragGestureRecognizer())),
+      ),
+    );
+      // FutureBuilder(
+      //   future: _getUserLocation(),
+      //   builder: (context, snapshot) {
+      //     return Container(
+      //       height: height!.h,
+      //       width: double.infinity,
+      //       color: Colors.white,
+      //       child: GoogleMap(
+      //         myLocationEnabled: true,
+      //         onMapCreated: _onMapCreated,
+      //         initialCameraPosition: CameraPosition(
+      //           target: currentPostion,
+      //           zoom: 16,
+      //         ),
+      //         markers: markers,
+      //         polylines: polyLines,
+      //         mapType: MapType.normal,
+      //         gestureRecognizers: Set()
+      //           ..add(
+      //               Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+      //           ..add(Factory<ScaleGestureRecognizer>(
+      //               () => ScaleGestureRecognizer()))
+      //           ..add(
+      //               Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+      //           ..add(Factory<VerticalDragGestureRecognizer>(
+      //               () => VerticalDragGestureRecognizer())),
+      //       ),
+      //     );
+      //   });
   }
 }
 

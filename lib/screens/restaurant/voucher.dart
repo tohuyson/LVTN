@@ -113,11 +113,10 @@ class _Voucher extends State<Voucher> {
                     left: 12.w, right: 12.w, bottom: 5.w, top: 5.w),
                 child: Row(
                   children: [
-                    Image.network(
-                      Apis.baseURL + list[index].image!,
-                      fit: BoxFit.cover,
+                    Container(
                       width: 80.w,
                       height: 80.h,
+                      child: Icon(Icons.sell_rounded, color: Theme.of(context).primaryColor,),
                     ),
                     Container(
                       width: 308.w,

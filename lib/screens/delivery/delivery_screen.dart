@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/model/order.dart';
+import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/chat/widget/loading.dart';
 import 'package:fooddelivery/screens/delivery/received_screen.dart';
 import 'package:fooddelivery/screens/widget/empty_screen.dart';
@@ -27,7 +28,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Giao hàng'),
+        title: Text('Nhận đơn'),
       ),
       body: Container(
         child: FutureBuilder(
@@ -283,43 +284,43 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                     ),
                                                     Container(
                                                       alignment:
-                                                      Alignment.topLeft,
+                                                          Alignment.topLeft,
                                                       padding:
-                                                      EdgeInsets.all(10.sp),
+                                                          EdgeInsets.all(10.sp),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                8.sp)),
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    8.sp)),
                                                         color: Colors.grey[100],
                                                       ),
                                                       child: Column(
                                                         children: [
                                                           Container(
                                                             width:
-                                                            double.infinity,
+                                                                double.infinity,
                                                             child: Text(
                                                               'Ghi chú của khách hàng:',
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                  16.sp),
+                                                                      16.sp),
                                                             ),
                                                           ),
                                                           Container(
                                                             width:
-                                                            double.infinity,
+                                                                double.infinity,
                                                             child: Text(
                                                               listOrder[index]
-                                                                  .note ==
-                                                                  null
+                                                                          .note ==
+                                                                      null
                                                                   ? "Chưa có"
                                                                   : listOrder[
-                                                              index]
-                                                                  .note!,
+                                                                          index]
+                                                                      .note!,
                                                               softWrap: true,
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                  15.sp,
+                                                                      15.sp,
                                                                   color: Colors
                                                                       .grey),
                                                             ),
@@ -395,18 +396,26 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                         await received(
                                                                             listOrder[index].id);
                                                                         Get.back();
+                                                                        bool isNotify = await notification(
+                                                                            listOrder[index].foodOrder![0].food!.restaurant!.user!.uid!,
+                                                                            'Nhận đơn',
+                                                                            'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}');
+                                                                        if (isNotify ==
+                                                                            true) {
+                                                                          await saveNotification(
+                                                                              'Nhận đơn',
+                                                                              'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
+                                                                              '${listOrder[index].foodOrder![0].food!.restaurant!.user!.id}',
+                                                                              2);
+                                                                        }
                                                                         await Get.off(
                                                                             () =>
                                                                                 ReceivedScreen(),
                                                                             arguments: {
-                                                                              'userId': userId
+                                                                              'userId': user.id
                                                                             });
                                                                         showToast(
                                                                             "Nhận đơn hàng thành công");
-                                                                        // Get.back();
-                                                                        // setState(() {
-                                                                        //
-                                                                        // });
                                                                       },
                                                                       child:
                                                                           const Text(
@@ -453,7 +462,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
   }
 
   late RxList<Order> listOrder;
-  late int userId;
+  late Users user;
   late bool isDelivery = false;
 
   @override
@@ -461,9 +470,8 @@ class _DeliveryScreen extends State<DeliveryScreen> {
     listOrder = new RxList<Order>();
     // fetch();
     fetch();
-    userId = Get.arguments['userId'];
-    print(userId);
-    // listStaff=
+    user = Get.arguments['user'];
+    print(user);
     super.initState();
   }
 
@@ -511,7 +519,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
     String? token = await getToken();
     print(token);
     print(id);
-    print(userId);
     try {
       // EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
@@ -522,7 +529,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
         },
         body: jsonEncode(<String, dynamic>{
           'orderId': id,
-          'userId': userId,
+          'userId': user.id,
         }),
       );
 

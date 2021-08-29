@@ -12,7 +12,6 @@ import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/card.dart';
-import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/discount.dart';
 import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/order.dart';
@@ -314,8 +313,10 @@ class _OrderDetail extends State<OrderDetail> {
                                 });
                             print(result);
                             setState(() {
-                              voucher.value = result;
-                              voucher.refresh();
+                              if(result != null){
+                                voucher.value = result;
+                                voucher.refresh();
+                              }
                             });
                           },
                           child: Container(
@@ -793,7 +794,7 @@ class _OrderDetail extends State<OrderDetail> {
                 'Bạn có một đơn hàng mới');
             if (isNotify == true) {
               await saveNotification(
-                  'Đơn hàng mới', 'Bạn có một đơn hàng mới');
+                  'Đơn hàng mới', 'Bạn có một đơn hàng mới','${order.food![0].restaurant!.user!.id}',1);
             }
 
             Get.off(

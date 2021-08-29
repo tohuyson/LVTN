@@ -7,7 +7,6 @@ import 'food.dart';
 
 class Order {
   int? id;
-  int? tax;
   int? price;
   int? priceDelivery;
   String? addressDelivery;
@@ -26,32 +25,37 @@ class Order {
   String? updatedAt;
   Users? user;
   List<FoodOrder>? foodOrder;
+  Users? userDelivery;
+  String? latitude;
+  String? longitude;
 
-  Order(
-      {this.id,
-      this.tax,
-      this.price,
-      this.priceDelivery,
-      this.addressDelivery,
-      this.date,
-      this.orderStatusId,
-      this.paymentId,
-      this.discountId,
-      this.note,
-      this.status,
-      this.userId,
-      this.userDeliveryId,
-      this.statusOrder,
-      this.food,
-      this.payment,
-      this.createdAt,
-      this.updatedAt,
-      this.user,
-      this.foodOrder});
+  Order({
+    this.id,
+    this.price,
+    this.priceDelivery,
+    this.addressDelivery,
+    this.date,
+    this.orderStatusId,
+    this.paymentId,
+    this.discountId,
+    this.note,
+    this.status,
+    this.userId,
+    this.userDeliveryId,
+    this.statusOrder,
+    this.food,
+    this.payment,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
+    this.foodOrder,
+    this.userDelivery,
+    this.latitude,
+    this.longitude,
+  });
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    tax = json['tax'];
     price = json['price'];
     priceDelivery = json['price_delivery'];
     addressDelivery = json['address_delivery'];
@@ -83,12 +87,16 @@ class Order {
         foodOrder!.add(new FoodOrder.fromJson(v));
       });
     }
+    userDelivery = json['user_delivery'] != null
+        ? new Users.fromJson(json['user_delivery'])
+        : null;
+    latitude = json['latitude'];
+    longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['tax'] = this.tax;
     data['price'] = this.price;
     data['price_delivery'] = this.priceDelivery;
     data['address_delivery'] = this.addressDelivery;
@@ -115,6 +123,11 @@ class Order {
     if (this.foodOrder != null) {
       data['food_order'] = this.foodOrder!.map((v) => v.toJson()).toList();
     }
+    if (this.userDelivery != null) {
+      data['user_delivery'] = this.userDelivery!.toJson();
+    }
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
     return data;
   }
 }

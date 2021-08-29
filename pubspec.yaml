@@ -35,9 +35,6 @@ dependencies:
   #A powerful extension library of Sliver, which include SliverPinnedPersistentHeader, SliverPinnedToBoxAdapter and ExtendedSliverAppbar.
   extended_sliver: ^2.0.0
 
-  #Flutter widget that automatically resizes text to fit perfectly within its bounds.
-  auto_size_text: ^3.0.0-nullsafety.0
-
   #A Flutter plugin that provides a Google Maps widget.
   google_maps_flutter: ^2.0.6
   geocoding: ^2.0.0

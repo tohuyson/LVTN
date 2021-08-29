@@ -56,3 +56,23 @@ class CardOrder {
     return data;
   }
 }
+
+class CardOrderJson {
+  CardOrder? cardOrder;
+
+  CardOrderJson({this.cardOrder});
+
+  CardOrderJson.fromJson(Map<String, dynamic> json) {
+    cardOrder = (json['cardOrder'] != null
+        ? new CardOrder.fromJson(json['cardOrder'])
+        : null)!;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.cardOrder != null) {
+      data['cardOrder'] = this.cardOrder!.toJson();
+    }
+    return data;
+  }
+}

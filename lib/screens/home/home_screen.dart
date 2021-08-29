@@ -31,10 +31,13 @@ class _HomeScreen extends State<HomeScreen> {
 
   late RxList<Restaurant> restaurants;
 
+  late double startLat;
+  late double startLong;
+
   @override
   void initState() {
     restaurants = new RxList<Restaurant>();
-    fetchRestaurants();
+    // fetchRestaurants();
 
     super.initState();
   }
@@ -122,6 +125,8 @@ class _HomeScreen extends State<HomeScreen> {
                               itemBuilder: (BuildContext context, int index) {
                                 return RestaurantItem(
                                   restaurant: restaurants[index],
+                                  startLat: startLat,
+                                  startLong: startLong,
                                 );
                               },
                             ),
@@ -140,6 +145,13 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   Future<bool> checkLoad() async {
+    String? latitude = await getValue('latitude');
+    String? longitude = await getValue('longitude');
+    print(latitude);
+    print(longitude);
+
+    startLat = double.parse(latitude!);
+    startLong = double.parse(longitude!);
     await fetchRestaurants();
     return restaurants.isNotEmpty;
   }

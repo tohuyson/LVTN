@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:crypto/crypto.dart';
 
+import 'networking.dart';
+
 String keyGoogleMap = 'AIzaSyBFRhlxolpDTOnWONYQ-VdctzKzlsN5hAY';
 
 /// Function Format DateTime to String with layout string
@@ -140,7 +142,8 @@ Future<bool> notification(String uid, String title, String body) async {
   return false;
 }
 
-Future<void> saveNotification(String title, String body) async {
+Future<void> saveNotification(
+    String title, String body, String user_id, int notification_type_id) async {
   var token = await getToken();
   try {
     print(title);
@@ -151,9 +154,11 @@ Future<void> saveNotification(String title, String body) async {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token",
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String, dynamic>{
+        'user_id': user_id,
         'title': title,
         'body': body,
+        'notification_type_id': notification_type_id,
       }),
     );
     print(response.statusCode);
@@ -163,4 +168,23 @@ Future<void> saveNotification(String title, String body) async {
   } on SocketException catch (e) {
     showError(e.toString());
   }
+}
+
+Future<double> distanceRestaurant(
+    double startLat, double startLng, double endLat, double endLng) async {
+  Distance distance = new Distance(
+    startLat: startLat,
+    startLng: startLng,
+    endLat: endLat,
+    endLng: endLng,
+  );
+  var data = await distance.postData();
+  // print(data);
+
+  if (data != 404) {
+    var arrarDistance = data['distances'][0];
+    print(arrarDistance);
+    return arrarDistance[1];
+  }
+  return 0.0;
 }

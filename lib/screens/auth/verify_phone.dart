@@ -133,6 +133,18 @@ class _VerifyPhone extends State<VerifyPhone> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await verifyPhone(numberPhone);
+                    },
+                    child: Container(
+                      width: 414.w,
+                      alignment: Alignment.center,
+                        child: Text('Gửi lại mã xác minh')),
+                  ),
                 ],
               ),
               Positioned.fill(
@@ -214,5 +226,48 @@ class _VerifyPhone extends State<VerifyPhone> {
       showError(e.toString());
     }
     return false;
-   }
+  }
+
+  bool codeSent = false;
+
+  Future<void> verifyPhone(phoneNo) async {
+    setState(() {
+      isLoading = true;
+    });
+    final PhoneVerificationCompleted verified =
+        (AuthCredential authResult) async {
+      //login với firebase
+      // await AuthService().signIn(authResult);
+    };
+
+    final PhoneVerificationFailed verificationfailed =
+        (FirebaseAuthException authException) {
+      setState(() {
+        isLoading = false;
+      });
+      showToast('Số điện thoại không chính xác');
+      print('${authException.message}');
+    };
+
+    final PhoneCodeSent smsSent = (String? verId, [int? forceResend]) {
+      this.verificationId = verId!;
+      print(verId);
+      setState(() {
+        this.codeSent = true;
+        isLoading = false;
+      });
+    };
+
+    final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
+      this.verificationId = verId;
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '+84' + phoneNo,
+        timeout: const Duration(seconds: 120),
+        verificationCompleted: verified,
+        verificationFailed: verificationfailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoTimeout);
+  }
 }

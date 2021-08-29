@@ -1,23 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/screens/restaurant/restaurant_screen.dart';
+import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 
-class RestaurantItem extends StatelessWidget {
-  final Restaurant? restaurant;
+class RestaurantItem extends StatefulWidget {
+  final Restaurant restaurant;
+  final double startLat;
+  final double startLong;
 
-  RestaurantItem({this.restaurant});
+  const RestaurantItem(
+      {required this.restaurant,
+      required this.startLat,
+      required this.startLong});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _RestaurantItem(
+        restaurant: restaurant, startLat: startLat, startLong: startLong);
+  }
+}
+
+class _RestaurantItem extends State<RestaurantItem> {
+  final Restaurant restaurant;
+  final double startLat;
+  final double startLong;
+
+  RxDouble distance = 0.0.obs;
+
+  _RestaurantItem({
+    required this.restaurant,
+    required this.startLat,
+    required this.startLong,
+  });
+
+  @override
+  void initState() {
+    distanceRes();
+    super.initState();
+  }
+
+  Future<void> distanceRes() async {
+    double d = await distanceRestaurant(
+        startLat,
+        startLong,
+        double.parse(restaurant.lattitude!),
+        double.parse(restaurant.longtitude!));
+    setState(() {
+      distance = d.obs;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () async {
-        await Get.to(() => RestaurantsScreen(),
-            arguments: {'restaurant_id': restaurant!.id});
+        await Get.to(() => RestaurantsScreen(), arguments: {
+          'restaurant_id': restaurant.id,
+          'distance': distance.value
+        });
       },
       child: Container(
         width: 414.w,
@@ -33,7 +77,7 @@ class RestaurantItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               child: Image.network(
-                Apis.baseURL + restaurant!.image!,
+                Apis.baseURL + restaurant.image!,
                 fit: BoxFit.cover,
                 width: 100.w,
                 height: 100.h,
@@ -48,7 +92,7 @@ class RestaurantItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    restaurant!.name!,
+                    restaurant.name!,
                     style:
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
                     overflow: TextOverflow.clip,
@@ -68,7 +112,7 @@ class RestaurantItem extends StatelessWidget {
                             SizedBox(
                               width: 5.w,
                             ),
-                            Text(restaurant!.rating!),
+                            Text(restaurant.rating!),
                           ],
                         ),
                         Row(
@@ -81,7 +125,7 @@ class RestaurantItem extends StatelessWidget {
                             SizedBox(
                               width: 5.w,
                             ),
-                            Text('2.5 km'),
+                            Text('$distance km'),
                           ],
                         )
                       ],

@@ -16,6 +16,7 @@ import 'package:fooddelivery/model/topping.dart';
 import 'package:fooddelivery/screens/restaurant/restaurant_screen.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:http/http.dart' as http;
 
@@ -412,8 +413,8 @@ class _FoodRestaurant extends State<FoodRestaurant> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            food![i]!.price.toString() + 'đ',
+                          Text(NumberFormat.currency(locale: 'vi')
+                          .format(food![i]!.price),
                             style: TextStyle(
                                 fontSize: 18.sp, fontWeight: FontWeight.w500),
                           ),

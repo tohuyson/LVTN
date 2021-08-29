@@ -14,6 +14,7 @@ import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class DraftOrder extends StatefulWidget {
   @override
@@ -55,25 +56,24 @@ class _DraftOrder extends State<DraftOrder> {
                           return Slidable(
                             actionPane: SlidableDrawerActionPane(),
                             actionExtentRatio: 0.18,
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 Get.to(RestaurantsScreen(), arguments: {
                                   'restaurant_id': card[index].restaurantId
                                 });
                               },
                               child: Container(
+                                width: 414.w,
                                 padding: EdgeInsets.only(
                                   top: 3.h,
-                                  left: 8.h,
                                 ),
                                 margin: EdgeInsets.only(
-                                    top: 10.h, left: 12.h, right: 10.w),
+                                    top: 10.h, left: 10.h, right: 10.w),
                                 decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(8.sp)),
                                   color: Colors.white,
                                 ),
-                                // height: 100.h,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -128,9 +128,10 @@ class _DraftOrder extends State<DraftOrder> {
                                                   ),
                                           ),
                                           Container(
+                                            width: 290.w,
                                             padding: EdgeInsets.only(
-                                                left: 12.w, right: 10.w),
-                                            height: 92.h,
+                                                left: 10.w, right: 10.w),
+                                            // height: 92.h,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -148,12 +149,16 @@ class _DraftOrder extends State<DraftOrder> {
                                                     card[index]
                                                         .restaurant!
                                                         .address
-                                                        .toString()),
-                                                Text('Giá : ' +
+                                                        .toString(),
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                Text('Giá : ' + NumberFormat.currency(
+                                                    locale: 'vi')
+                                                    .format(
                                                     card[index]
-                                                        .sumPrice
-                                                        .toString() +
-                                                    ' đ'),
+                                                        .sumPrice),
+                                                ),
                                               ],
                                             ),
                                           )

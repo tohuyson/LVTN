@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
-import 'package:fooddelivery/model/data_fake.dart';
 import 'package:fooddelivery/model/food.dart';
 import 'package:fooddelivery/model/list_restaurant.dart';
 import 'package:fooddelivery/model/restaurant.dart';

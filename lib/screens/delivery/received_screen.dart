@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fooddelivery/screens/widget/empty_screen.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +29,8 @@ class _ReceivedScreen extends State<ReceivedScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(),
+        title: Text('Giao hàng'),
+        centerTitle: true,
       ),
       body: Container(
         child: Center(
@@ -38,158 +40,188 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Loading();
                 } else {
-                  return ListView(
-                    children: [
-                      DeliveryMap(
-                        height: 240,
-                      ),
-                      Container(
-                        // height: 450.h,
-                        width: double.infinity,
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: 10.w,
-                                right: 10.w,
-                                top: 6.h,
+                  if (snapshot.hasError) {
+                    return EmptyScreen(text: 'Không có đơn hàng nào!');
+                  } else if (snapshot.hasData) {
+                    return ListView(
+                      children: [
+                        DeliveryMap(
+                          height: 240,
+                          restaurant: order.foodOrder![0].food!.restaurant!,
+                          order: order,
+                        ),
+                        Container(
+                          // height: 450.h,
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
+                                  top: 6.h,
+                                ),
+                                padding: EdgeInsets.only(
+                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1, color: Colors.black12))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        child: Text(
+                                      'Đồ ăn',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    )),
+                                    Container(
+                                        child: Text(
+                                      'Đang đến trong 20 phút',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    )),
+                                  ],
+                                ),
                               ),
-                              padding: EdgeInsets.only(
-                                  bottom: 6.h, left: 5.w, right: 5.w),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          width: 1, color: Colors.black12))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      child: Text(
-                                    'Đồ ăn',
-                                    style: TextStyle(fontSize: 16.sp),
-                                  )),
-                                  Container(
-                                      child: Text(
-                                    'Đang đến trong 20 phút',
-                                    style: TextStyle(fontSize: 16.sp),
-                                  )),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: 6.h, left: 10.w, right: 10.w),
-                              padding: EdgeInsets.only(
-                                  bottom: 6.h, left: 5.w, right: 5.w),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          width: 1, color: Colors.black12))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: 384.w,
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                AutoSizeText(
-                                                  'Quán ăn: ' +
-                                                      order.foodOrder![0].food!
-                                                          .restaurant!.name!,
-                                                  style:
-                                                      TextStyle(fontSize: 16),
-                                                ),
-                                                Container(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: IconButton(
-                                                      onPressed: () {},
-                                                      icon: Icon(
-                                                        Icons.call,
-                                                        size: 20,
-                                                        color: Colors.grey,
-                                                      )),
-                                                ),
-                                              ],
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: 6.h, left: 10.w, right: 10.w),
+                                padding: EdgeInsets.only(
+                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1, color: Colors.black12))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 384.w,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Quán ăn: ' +
+                                                        order
+                                                            .foodOrder![0]
+                                                            .food!
+                                                            .restaurant!
+                                                            .name!,
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: IconButton(
+                                                        onPressed: () {},
+                                                        icon: Icon(
+                                                          Icons.call,
+                                                          size: 20,
+                                                          color: Colors.grey,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.grey,
-                                                ),
-                                                SizedBox(
-                                                  width: 10.w,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Địa chỉ quán: ',
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp),
-                                                    ),
-                                                    Text(
-                                                      order.foodOrder![0].food!
-                                                          .restaurant!.name!,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                    Text(
-                                                      order.foodOrder![0].food!
-                                                          .restaurant!.phone!,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                    AutoSizeText(
-                                                      order.foodOrder![0].food!
-                                                          .restaurant!.address!,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey,
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Container(
+                                              width: 414.w,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'Địa chỉ quán: ',
+                                                        style: TextStyle(
+                                                            fontSize: 16.sp),
                                                       ),
-                                                      maxLines: 1,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                      Container(
+                                                        width: 346.w,
+                                                        child: Text(
+                                                          order
+                                                              .foodOrder![0]
+                                                              .food!
+                                                              .restaurant!
+                                                              .name!,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 346.w,
+                                                        child: Text(
+                                                          order
+                                                              .foodOrder![0]
+                                                              .food!
+                                                              .restaurant!
+                                                              .phone!,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 346.w,
+                                                        child: Text(
+                                                          order
+                                                              .foodOrder![0]
+                                                              .food!
+                                                              .restaurant!
+                                                              .address!,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          maxLines: 1,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ]),
-                                  ),
-                                ],
+                                          ]),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              alignment: FractionalOffset.topCenter,
-                              margin: new EdgeInsets.only(top: 1.h),
-                              child: Card(
+                              Container(
+                                alignment: FractionalOffset.topCenter,
+                                margin: new EdgeInsets.only(top: 1.h),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -322,23 +354,34 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                 style:
                                                     TextStyle(fontSize: 16.sp),
                                               ),
-                                              Text(
-                                                order.user!.username!,
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              Text(
-                                                order.user!.phone!,
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              AutoSizeText(
-                                                order.addressDelivery!,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.grey,
+                                              Container(
+                                                width: 346.w,
+                                                child: Text(
+                                                  order.user!.username!,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
                                                 ),
-                                                maxLines: 1,
+                                              ),
+                                              Container(
+                                                width: 346.w,
+                                                child: Text(
+                                                  order.user!.phone!,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 346.w,
+                                                child: Text(
+                                                  order.addressDelivery!,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  maxLines: 1,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -469,12 +512,12 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                 Container(
                                                   alignment: Alignment.topLeft,
                                                   padding:
-                                                  EdgeInsets.all(10.sp),
+                                                      EdgeInsets.all(10.sp),
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                    BorderRadius.all(
-                                                        Radius.circular(
-                                                            8.sp)),
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8.sp)),
                                                     color: Colors.grey[100],
                                                   ),
                                                   child: Column(
@@ -497,7 +540,7 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                           style: TextStyle(
                                                               fontSize: 15.sp,
                                                               color:
-                                                              Colors.grey),
+                                                                  Colors.grey),
                                                         ),
                                                       )
                                                     ],
@@ -555,8 +598,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                         fontSize: 20.sp),
                                                   ),
                                                 ),
-
-
                                               ],
                                             ),
                                           ),
@@ -566,74 +607,98 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                   ],
                                 ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                          title: Text('Xác nhận đơn hàng'),
-                                          content: SingleChildScrollView(
-                                              child: Text(
-                                                  'Xác nhận đơn hàng đã giao thành công.')),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () => Get.back(),
-                                              child: const Text(
-                                                'Hủy',
-                                                style: TextStyle(
-                                                    color: Colors.red),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            title: Text('Xác nhận đơn hàng'),
+                                            content: SingleChildScrollView(
+                                                child: Text(
+                                                    'Xác nhận đơn hàng đã giao thành công.')),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Get.back(),
+                                                child: const Text(
+                                                  'Hủy',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
                                               ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                print(order.id);
-                                                await changeDelivery(order.id);
-                                                Get.back();
-                                                showToast(
-                                                    "Giao hàng thành công");
-                                                await Get.off(
-                                                    () =>
-                                                        HistoryDeliveryScreen(),
-                                                    arguments: {
-                                                      'userId': userId
-                                                    });
-                                                // Get.back();
-                                              },
-                                              child: const Text(
-                                                'Nhận đơn',
-                                                style: TextStyle(
-                                                    color: Colors.blue),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  print(order.id);
+                                                  await changeDelivery(
+                                                      order.id);
+                                                  Get.back();
+                                                  bool isNotify =
+                                                      await notification(
+                                                          order
+                                                              .foodOrder![0]
+                                                              .food!
+                                                              .restaurant!
+                                                              .user!
+                                                              .uid!,
+                                                          'Giao hàng',
+                                                          'Đơn hàng #${order.id} đã giao thành công bởi ${order.userDelivery!.username}');
+                                                  if (isNotify == true) {
+                                                    await saveNotification(
+                                                        'Giao hàng',
+                                                        'Đơn hàng #${order.id} đã giao thành công bởi ${order.userDelivery!.username}',
+                                                        '${order.foodOrder![0].food!.restaurant!.user!.id}',
+                                                        3);
+                                                  }
+                                                  await Get.off(
+                                                      () =>
+                                                          HistoryDeliveryScreen(),
+                                                      arguments: {
+                                                        'userId': userId
+                                                      });
+                                                  // Get.back();
+                                                },
+                                                child: const Text(
+                                                  'Xác nhận',
+                                                  style: TextStyle(
+                                                      color: Colors.blue),
+                                                ),
                                               ),
-                                            ),
-                                          ]);
-                                    });
-                              },
-                              child: Container(
-                                height: 45.h,
-                                width: 360.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                    border: Border.all(
-                                        width: 1, color: Colors.blue)),
-                                child: Center(
-                                  child: Text(
-                                    'Xác nhận đã giao',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold),
+                                            ]);
+                                      });
+                                },
+                                child: Container(
+                                  height: 45.h,
+                                  width: 360.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      border: Border.all(
+                                          width: 1, color: Colors.blue)),
+                                  child: Center(
+                                    child: Text(
+                                      'Xác nhận đã giao',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
+                      ],
+                    );
+                  } else {
+                    return EmptyScreen(text: 'Không có đơn hàng nào!');
+                  }
                 }
               }),
         ),
@@ -688,9 +753,7 @@ class _ReceivedScreen extends State<ReceivedScreen> {
         // print(users);
         return order;
       }
-      if (response.statusCode == 401) {
-        showToast("Loading faild");
-      }
+      if (response.statusCode == 401) {}
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {

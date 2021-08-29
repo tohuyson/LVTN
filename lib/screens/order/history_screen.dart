@@ -58,28 +58,34 @@ class _HistoryScreen extends State<HistoryScreen> {
                             itemCount: order!.length,
                             itemBuilder: (context, index) {
                               return Container(
+                                width: 414.w,
                                 padding: EdgeInsets.only(
                                   top: 3.h,
-                                  left: 8.h,
                                 ),
-                                margin: EdgeInsets.only(top: 10.h, left: 12.h, right: 10.w),
+                                margin: EdgeInsets.only(
+                                    top: 10.h, left: 10.h, right: 10.w),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.sp)),
                                   color: Colors.white,
                                 ),
-                                // height: 100.h,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                                      padding: EdgeInsets.only(
+                                          left: 12.w, right: 12.w),
                                       height: 50.h,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(DateFormat('yyyy-MM-dd HH:mm')
-                                              .format(DateTime.parse(order![index].updatedAt!))),
-                                          order![index].orderStatusId == 5 ? Text('Đã hủy') : Text('Đã giao')
+                                              .format(DateTime.parse(
+                                                  order![index].updatedAt!))),
+                                          order![index].orderStatusId == 5
+                                              ? Text('Đã hủy')
+                                              : Text('Đã giao')
                                         ],
                                       ),
                                     ),
@@ -87,46 +93,73 @@ class _HistoryScreen extends State<HistoryScreen> {
                                         decoration: BoxDecoration(
                                             border: Border(
                                                 bottom: BorderSide(
-                                                    width: 0.5, color: Colors.grey.shade300)))),
+                                                    width: 0.5,
+                                                    color: Colors
+                                                        .grey.shade300)))),
                                     Padding(
-                                      padding: EdgeInsets.only(bottom: 12.h, left: 12.w, right: 12.w),
+                                      padding: EdgeInsets.only(
+                                        top: 12.h,
+                                          bottom: 12.h,
+                                          left: 12.w,
+                                          right: 12.w),
                                       child: Row(
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              border: Border.all(width: 1, color: Colors.black12),
-                                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.black12),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
                                             ),
-                                            child: order![index].foodOrder![0].food!.restaurant == null
+                                            child: order![index]
+                                                        .foodOrder![0]
+                                                        .food!
+                                                        .restaurant ==
+                                                    null
                                                 ? Container(
-                                              width: 80.w,
-                                              height: 80.w,
-                                              padding: EdgeInsets.only(
-                                                  right: 12.w, bottom: 12.h, left: 12.w, top: 12.h),
-                                              child: Image.asset(
-                                                'assets/images/user.png',
-                                                fit: BoxFit.fill,
-                                                color: Colors.black26,
-                                              ),
-                                            )
+                                                    width: 80.w,
+                                                    height: 80.w,
+                                                    padding: EdgeInsets.only(
+                                                        right: 12.w,
+                                                        bottom: 12.h,
+                                                        left: 12.w,
+                                                        top: 12.h),
+                                                    child: Image.asset(
+                                                      'assets/images/user.png',
+                                                      fit: BoxFit.fill,
+                                                      color: Colors.black26,
+                                                    ),
+                                                  )
                                                 : Container(
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                                child: Image.network(
-                                                  Apis.baseURL + order![index].foodOrder![0].food!.restaurant!.image!,
-                                                  width: 72.w,
-                                                  height: 80.h,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5)),
+                                                      child: Image.network(
+                                                        Apis.baseURL +
+                                                            order![index]
+                                                                .foodOrder![0]
+                                                                .food!
+                                                                .restaurant!
+                                                                .image!,
+                                                        width: 72.w,
+                                                        height: 80.h,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.only(left: 15.w, right: 10.w),
-                                            height: 92.h,
+                                            width: 290.w,
+                                            padding: EdgeInsets.only(
+                                                left: 12.w, right: 12.w),
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Row(
                                                   children: [
@@ -138,15 +171,37 @@ class _HistoryScreen extends State<HistoryScreen> {
                                                       width: 10.w,
                                                     ),
                                                     Text(
-                                                      order![index].foodOrder![0].food!.restaurant!.name!,
+                                                      order![index]
+                                                          .foodOrder![0]
+                                                          .food!
+                                                          .restaurant!
+                                                          .name!,
                                                       style: TextStyle(
-                                                          fontSize: 20.sp, fontWeight: FontWeight.w600),
+                                                          fontSize: 20.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600),
                                                     ),
                                                   ],
                                                 ),
-                                                Text('Địa chỉ : ' +
-                                                    order![index].foodOrder![0].food!.restaurant!.address.toString()),
-                                                Text('Giá : ' + order![index].price.toString() + ' đ'),
+                                                SizedBox(height: 4,),
+                                                Text(
+                                                  'Địa chỉ : ' +
+                                                      order![index]
+                                                          .foodOrder![0]
+                                                          .food!
+                                                          .restaurant!
+                                                          .address
+                                                          .toString(),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 4,),
+                                                Text('Giá : ' +
+                                                    NumberFormat.currency(
+                                                            locale: 'vi')
+                                                        .format(order![index]
+                                                            .price)),
                                               ],
                                             ),
                                           )
@@ -157,21 +212,27 @@ class _HistoryScreen extends State<HistoryScreen> {
                                         decoration: BoxDecoration(
                                             border: Border(
                                                 bottom: BorderSide(
-                                                    width: 0.5, color: Colors.grey.shade300)))),
+                                                    width: 0.5,
+                                                    color: Colors
+                                                        .grey.shade300)))),
                                     Center(
                                       child: Container(
                                         height: 55.h,
                                         child: InkWell(
                                           onTap: () {
                                             print('ddaay laf danh gia');
-                                            Get.to(ReviewScreen(), arguments: {'order': order![index]});
+                                            Get.to(ReviewScreen(), arguments: {
+                                              'order': order![index]
+                                            });
                                           },
                                           child: Container(
                                             alignment: Alignment.center,
                                             width: 190.w,
                                             child: Text(
                                               'Đánh giá',
-                                              style: TextStyle(fontSize: 16, color: Colors.blue),
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.blue),
                                             ),
                                           ),
                                         ),
@@ -194,11 +255,8 @@ class _HistoryScreen extends State<HistoryScreen> {
   Future<void> fetch() async {
     var list = await getHistory();
     if (list != null) {
-      // printInfo(info: listFood.length.toString());
-      // print(listFood.length);
       order!.assignAll(list);
       order!.refresh();
-      // print(food.length);
     }
   }
 

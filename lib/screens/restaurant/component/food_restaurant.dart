@@ -413,8 +413,9 @@ class _FoodRestaurant extends State<FoodRestaurant> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(NumberFormat.currency(locale: 'vi')
-                          .format(food![i]!.price),
+                          Text(
+                            NumberFormat.currency(locale: 'vi')
+                                .format(food![i]!.price),
                             style: TextStyle(
                                 fontSize: 18.sp, fontWeight: FontWeight.w500),
                           ),
@@ -526,7 +527,7 @@ class _FoodDetail extends State<FoodDetail> {
               Container(
                 padding: EdgeInsets.only(right: 12.w),
                 child: Text(
-                  '+' + topping.price.toString(),
+                  '+ ${NumberFormat.currency(locale: 'vi').format(topping.price)}',
                   style: TextStyle(
                     fontSize: 16.sp,
                   ),
@@ -587,120 +588,116 @@ class _FoodDetail extends State<FoodDetail> {
                 },
                 body: Container(
                   color: Colors.white,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(12.w),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: kPrimaryColorBackground,
-                                      width: 8))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                food!.name!,
-                                softWrap: true,
-                                style: TextStyle(
-                                    fontSize: 22.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                food!.price.toString(),
-                                style: TextStyle(
-                                    fontSize: 22.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                color: kPrimaryColorBackground, width: 8),
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(12.w),
-                                width: 414.w,
-                                child: Text(
-                                  'Chọn Topping',
-                                  style: TextStyle(fontSize: 18.sp),
-                                ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              food!.name!,
+                              softWrap: true,
+                              style: TextStyle(
+                                  fontSize: 22.sp, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              NumberFormat.currency(locale: 'vi')
+                                  .format(food!.price),
+                              style: TextStyle(
+                                  fontSize: 22.sp, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(12.w),
+                              width: 414.w,
+                              child: Text(
+                                'Chọn Topping',
+                                style: TextStyle(fontSize: 18.sp),
                               ),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: food!.toppings!.length,
-                                  itemBuilder: (context, index) {
-                                    return checkWidget(food!.toppings![index]);
-                                  }),
-                              Container(
-                                padding: EdgeInsets.only(top: 12.h),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        if (productCounter > 0) {
-                                          setState(() {
-                                            productCounter--;
-                                          });
-                                        }
-                                      },
-                                      child: Container(
+                            ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: food!.toppings!.length,
+                                itemBuilder: (context, index) {
+                                  return checkWidget(food!.toppings![index]);
+                                }),
+                            Container(
+                              padding: EdgeInsets.only(top: 12.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      if (productCounter > 0) {
+                                        setState(() {
+                                          productCounter--;
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: kPrimaryColorBackground,
+                                              width: 2)),
+                                      child: Icon(
+                                        Icons.remove,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 50.w,
+                                    child: Center(
+                                      child: Obx(
+                                        () => Text(
+                                          productCounter.value.toString(),
+                                          style: new TextStyle(
+                                              fontSize: 18.sp,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        productCounter++;
+                                      });
+                                    },
+                                    child: Container(
                                         padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                             border: Border.all(
                                                 color: kPrimaryColorBackground,
                                                 width: 2)),
                                         child: Icon(
-                                          Icons.remove,
+                                          Icons.add,
                                           color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 50.w,
-                                      child: Center(
-                                        child: Obx(
-                                          () => Text(
-                                            productCounter.value.toString(),
-                                            style: new TextStyle(
-                                                fontSize: 18.sp,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          productCounter++;
-                                        });
-                                      },
-                                      child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color:
-                                                      kPrimaryColorBackground,
-                                                  width: 2)),
-                                          child: Icon(
-                                            Icons.add,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          )),
-                                    )
-                                  ],
-                                ),
+                                        )),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

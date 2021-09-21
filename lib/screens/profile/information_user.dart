@@ -154,12 +154,10 @@ class _InformationUser extends State<InformationUser> {
                             // Obx(
                             //   () =>
                             Container(
-                              // margin: EdgeInsets.only(top: 5.h),
+                              margin: EdgeInsets.only(top: 0.2.h),
                               color: Color(0xFFFFFFFF),
                               child: Column(
                                 children: [
-                                  // Obx(
-                                  //   () =>
                                   Container(
                                     margin: EdgeInsets.only(
                                         left: 15.w, right: 10.w),
@@ -173,7 +171,6 @@ class _InformationUser extends State<InformationUser> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // LineDecoration(),
                                         Container(
                                           child: Text(
                                             'Số điện thoại',
@@ -181,23 +178,19 @@ class _InformationUser extends State<InformationUser> {
                                           ),
                                         ),
                                         Container(
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                user.value!.phone!,
-                                                softWrap: true,
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    size: 14,
-                                                  ))
-                                            ],
+                                          height: 55.h,
+                                          margin: EdgeInsets.only(right: 20.w),
+                                          child: Center(
+                                            child: user.value!.phone! == null
+                                                ? Text('')
+                                                : Text(
+                                                    user.value!.phone!,
+                                                    softWrap: true,
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
                                           ),
                                         )
                                       ],
@@ -205,7 +198,7 @@ class _InformationUser extends State<InformationUser> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                             // ),
                           ],
                         ),
@@ -315,8 +308,52 @@ class _InformationUser extends State<InformationUser> {
                           ],
                         ),
                       ),
+                      // Container(
+                      //   margin: EdgeInsets.only(top: 0.2.h),
+                      //   color: Color(0xFFFFFFFF),
+                      //   child: Column(
+                      //     children: [
+                      //       Container(
+                      //         margin: EdgeInsets.only(left: 15.w, right: 10.w),
+                      //         decoration: BoxDecoration(
+                      //             border: Border(
+                      //                 bottom: BorderSide(
+                      //                     width: 0.3, color: Colors.black12))),
+                      //         width: MediaQuery.of(context).size.width,
+                      //         child: Row(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             Container(
+                      //               child: Text(
+                      //                 'Email',
+                      //                 style: TextStyle(fontSize: 17.sp),
+                      //               ),
+                      //             ),
+                      //             Container(
+                      //               height: 55.h,
+                      //               margin: EdgeInsets.only(right: 20.w),
+                      //               child: Center(
+                      //                 child: user.value!.email == null
+                      //                     ? Text('')
+                      //                     : Text(
+                      //                         user.value!.email!,
+                      //                         softWrap: true,
+                      //                         style: TextStyle(
+                      //                           fontSize: 16.sp,
+                      //                           color: Colors.grey,
+                      //                         ),
+                      //                       ),
+                      //               ),
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       Container(
-                        margin: EdgeInsets.only(top: 0.2.h),
+                        // margin: EdgeInsets.only(top: 5.h),
                         color: Color(0xFFFFFFFF),
                         child: Column(
                           children: [
@@ -331,6 +368,7 @@ class _InformationUser extends State<InformationUser> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+                                  // LineDecoration(),
                                   Container(
                                     child: Text(
                                       'Email',
@@ -338,19 +376,78 @@ class _InformationUser extends State<InformationUser> {
                                     ),
                                   ),
                                   Container(
-                                    height: 55.h,
-                                    margin: EdgeInsets.only(right: 20.w),
-                                    child: Center(
-                                      child: user.value!.email == null
-                                          ? Text('')
-                                          : Text(
-                                              user.value!.email!,
-                                              softWrap: true,
-                                              style: TextStyle(
-                                                fontSize: 16.sp,
-                                                color: Colors.grey,
+                                    child: Row(
+                                      children: [
+                                        user.value!.email == null
+                                            ? Text('')
+                                            : Text(
+                                                user.value!.email!,
+                                                softWrap: true,
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.blue,
+                                                ),
                                               ),
-                                            ),
+                                        IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                        title: Text('Email'),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            children: [
+                                                              ItemField(
+                                                                controller:
+                                                                    email,
+                                                                hintText:
+                                                                    "Email",
+                                                                type:
+                                                                    TextInputType
+                                                                        .text,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Get.back(),
+                                                            child: const Text(
+                                                              'Hủy',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red),
+                                                            ),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await changeEmail();
+                                                              setState(() {
+                                                                user.refresh();
+                                                                Get.back();
+                                                                showToast(
+                                                                    "Cập nhật thành công");
+                                                              });
+                                                            },
+                                                            child: const Text(
+                                                              'Lưu lại',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .blue),
+                                                            ),
+                                                          ),
+                                                        ]);
+                                                  });
+                                            },
+                                            icon: Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 14,
+                                            ))
+                                      ],
                                     ),
                                   )
                                 ],
@@ -396,10 +493,13 @@ class _InformationUser extends State<InformationUser> {
                                                   color: Colors.blue,
                                                 ),
                                               )
-                                            : Text('Vui lòng thêm', style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: Colors.blue,
-                                        ),),
+                                            : Text(
+                                                'Vui lòng thêm',
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.blue,
+                                                ),
+                                              ),
                                         IconButton(
                                             onPressed: () {
                                               showDialog(
@@ -524,14 +624,22 @@ class _InformationUser extends State<InformationUser> {
                                   Container(
                                     child: Row(
                                       children: [
-                                        Text(
-                                          user.value!.dob.toString(),
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
+                                        user.value!.dob != null
+                                            ? Text(
+                                                user.value!.dob.toString(),
+                                                softWrap: true,
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.blue,
+                                                ),
+                                              )
+                                            : Text(
+                                                'Vui lòng thêm',
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.blue,
+                                                ),
+                                              ),
                                         IconButton(
                                             onPressed: () {
                                               // controller.selectDateDob(context);
@@ -728,6 +836,37 @@ class _InformationUser extends State<InformationUser> {
         },
         body: jsonEncode(<String, dynamic>{
           'username': username.text,
+        }),
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        var parsedJson = jsonDecode(response.body);
+        // print(parsedJson['success']);
+        Users users = Users.fromJson(parsedJson['user']);
+        return users;
+      }
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+  }
+
+  Future<Users?> changeEmail() async {
+    String? token = await getToken();
+    print(token);
+    try {
+      EasyLoading.show(status: 'Loading...');
+      http.Response response = await http.post(
+        Uri.parse(Apis.changeEmailUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token",
+        },
+        body: jsonEncode(<String, dynamic>{
+          'email': email.text,
         }),
       );
 

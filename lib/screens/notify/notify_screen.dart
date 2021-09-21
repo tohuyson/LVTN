@@ -43,16 +43,16 @@ class _NotifyScreen extends State<NotifyScreen> {
           'Thông báo',
           style: TextStyle(color: Colors.white),
         ),
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.white,
-                size: 24.sp,
-              ),
-              onPressed: () {
-              }),
-        ],
+        // actions: [
+        //   IconButton(
+        //       icon: Icon(
+        //         Icons.settings,
+        //         color: Colors.white,
+        //         size: 24.sp,
+        //       ),
+        //       onPressed: () {
+        //       }),
+        // ],
       ),
       body: Container(
         color: Color(0xFFEEEEEE),

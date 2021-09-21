@@ -193,36 +193,36 @@ class _AddAddress extends State<AddAddress> {
                               ],
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: kPrimaryColorBackground,
-                                        width: 2))),
-                            padding: EdgeInsets.only(left: 12.w),
-                            width: 414.w,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Đặt làm địa chỉ mặc định',
-                                  style: TextStyle(fontSize: 18.sp),
-                                ),
-                                new Radio(
-                                  toggleable: true,
-                                  value: '1',
-                                  groupValue: group.toString(),
-                                  onChanged: (val) {
-                                    setState(() {
-                                      group = val.toString();
-                                      print(group);
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
+                          // Container(
+                          //   decoration: BoxDecoration(
+                          //       border: Border(
+                          //           bottom: BorderSide(
+                          //               color: kPrimaryColorBackground,
+                          //               width: 2))),
+                          //   padding: EdgeInsets.only(left: 12.w),
+                          //   width: 414.w,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text(
+                          //         'Đặt làm địa chỉ mặc định',
+                          //         style: TextStyle(fontSize: 18.sp),
+                          //       ),
+                          //       new Radio(
+                          //         toggleable: true,
+                          //         value: '1',
+                          //         groupValue: group.toString(),
+                          //         onChanged: (val) {
+                          //           setState(() {
+                          //             group = val.toString();
+                          //             print(group);
+                          //           });
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          GestureDetector(
                             onTap: () {
                               addLocationAddress(ctx);
                             },

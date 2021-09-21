@@ -18,7 +18,7 @@ class NetworkHelper {
     http.Response response = await http.get(Uri.parse(
         '$url$journeyMode?api_key=$apiKey&start=$startLng,$startLat&end=$endLng,$endLat'));
     print(
-        "$url$journeyMode?$apiKey&start=$startLng,$startLat&end=$endLng,$endLat");
+        "$url$journeyMode?api_key=$apiKey&start=$startLng,$startLat&end=$endLng,$endLat");
 
     if (response.statusCode == 200) {
       String data = response.body;

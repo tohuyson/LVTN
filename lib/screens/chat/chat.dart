@@ -6,53 +6,61 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fooddelivery/screens/chat/widget/full_photo.dart';
-import 'package:fooddelivery/screens/chat/widget/loading.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'const.dart';
 
-class Chat extends StatelessWidget {
+// class Chat extends StatelessWidget {
+//   final String peerId;
+//   final String peerAvatar;
+//
+//   Chat({required this.peerId, required this.peerAvatar});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(
+//           'CHAT',
+//           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+//         ),
+//         // centerTitle: true,
+//       ),
+//       body: ChatScreen(
+//         peerId: peerId,
+//         peerAvatar: peerAvatar,
+//       ),
+//     );
+//   }
+// }
+
+class Chat extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
+  final String peerNickname;
 
-  Chat({required this.peerId, required this.peerAvatar});
+  Chat(
+      {required this.peerId,
+      required this.peerNickname,
+      required this.peerAvatar});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'CHAT',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: ChatScreen(
-        peerId: peerId,
-        peerAvatar: peerAvatar,
-      ),
-    );
-  }
+  State createState() => ChatScreenState(
+      peerId: peerId, peerNickname: peerNickname, peerAvatar: peerAvatar);
 }
 
-class ChatScreen extends StatefulWidget {
-  final String peerId;
-  final String peerAvatar;
-
-  ChatScreen({required this.peerId, required this.peerAvatar});
-
-  @override
-  State createState() =>
-      ChatScreenState(peerId: peerId, peerAvatar: peerAvatar);
-}
-
-class ChatScreenState extends State<ChatScreen> {
-  ChatScreenState({required this.peerId, required this.peerAvatar});
+class ChatScreenState extends State<Chat> {
+  ChatScreenState(
+      {required this.peerId,
+      required this.peerNickname,
+      required this.peerAvatar});
 
   final String peerId;
   final String peerAvatar;
+  final String peerNickname;
   late String id;
 
   List<QueryDocumentSnapshot> listMessage = new List.from([]);
@@ -525,27 +533,36 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              // List of messages
-              buildListMessage(),
-
-              // Sticker
-              // isShowSticker ? buildSticker() : Container(),
-
-              // Input content
-              buildInput(),
-            ],
-          ),
-
-          // Loading
-          buildLoading()
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          '${peerNickname}',
+          style: TextStyle(color: Colors.white),
+        ),
+        // centerTitle: true,
       ),
-      onWillPop: onBackPress,
+      body: WillPopScope(
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                // List of messages
+                buildListMessage(),
+
+                // Sticker
+                // isShowSticker ? buildSticker() : Container(),
+
+                // Input content
+                buildInput(),
+              ],
+            ),
+
+            // Loading
+            buildLoading()
+          ],
+        ),
+        onWillPop: onBackPress,
+      ),
     );
   }
 
@@ -684,17 +701,17 @@ class ChatScreenState extends State<ChatScreen> {
             ),
             color: Colors.white,
           ),
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.face),
-                onPressed: getSticker,
-                color: primaryColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
+          // Material(
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(horizontal: 1.0),
+          //     child: IconButton(
+          //       icon: Icon(Icons.face),
+          //       onPressed: getSticker,
+          //       color: primaryColor,
+          //     ),
+          //   ),
+          //   color: Colors.white,
+          // ),
 
           // Edit text
           Flexible(
@@ -706,7 +723,7 @@ class ChatScreenState extends State<ChatScreen> {
                 style: TextStyle(color: primaryColor, fontSize: 15.0),
                 controller: textEditingController,
                 decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
+                  hintText: 'Nhập tin nhắn...',
                   hintStyle: TextStyle(color: greyColor),
                 ),
                 focusNode: focusNode,

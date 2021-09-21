@@ -90,7 +90,7 @@ class DeliveryItem extends StatelessWidget {
           ),
           Container(
             width: 28.w,
-            child: InkWell(
+            child: GestureDetector(
                 onTap: () {
                   Get.to(page);
                 },

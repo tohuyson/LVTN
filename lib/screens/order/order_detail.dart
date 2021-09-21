@@ -20,6 +20,7 @@ import 'package:fooddelivery/payment.dart';
 import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
 import 'package:fooddelivery/screens/order/components/food_item.dart';
+import 'package:fooddelivery/screens/order/components/list_address_delivery.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
 import 'package:fooddelivery/screens/order/order_screen.dart';
 import 'package:fooddelivery/screens/restaurant/delivery.dart';
@@ -28,6 +29,7 @@ import 'package:fooddelivery/screens/restaurant/voucher.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class OrderDetail extends StatefulWidget {
   @override
@@ -38,7 +40,8 @@ class OrderDetail extends StatefulWidget {
 
 class _OrderDetail extends State<OrderDetail> {
   late Rx<Users> users;
-  late String address = '';
+
+  // late String address = '';
   late Rx<CardModel> card;
 
   late RxString person;
@@ -46,6 +49,8 @@ class _OrderDetail extends State<OrderDetail> {
   late RxString payment;
   late int card_id;
   late int delivery_fee;
+  late double distance;
+
   static const EventChannel eventChannel =
       EventChannel('flutter.native/eventPayOrder');
   static const MethodChannel platform =
@@ -65,6 +70,9 @@ class _OrderDetail extends State<OrderDetail> {
     voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: 0));
     payment = ''.obs;
     delivery_fee = 10000;
+    distance = Get.arguments['distance'];
+    print('khoảng cách ${distance}');
+
     if (Platform.isIOS) {
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
     }
@@ -73,7 +81,10 @@ class _OrderDetail extends State<OrderDetail> {
   }
 
   Future<void> getAd() async {
-    a = (await getValue('address'))!.obs;
+    String? street = await getValue('street');
+    String? add = await getValue('address');
+    a = (street! + ', ' + add!).obs;
+
     longitude = (await getValue('longitude'))!;
     latitude = (await getValue('latitude'))!;
     print(a);
@@ -207,14 +218,113 @@ class _OrderDetail extends State<OrderDetail> {
                                 padding: EdgeInsets.only(
                                     left: 12.w, right: 12.w, bottom: 4.h),
                                 child: Obx(
-                                  () => DeliveryItem(
-                                    iconData_4: Icons.edit,
-                                    page: AddressScreen(),
-                                    deliveryModel: DeliveryModel(
-                                        iconData: Icons.location_on,
-                                        name: users.value.username,
-                                        address: a.value),
+                                  () => Container(
+                                    height: 52.h,
+                                    width: 414.w,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 28.w,
+                                          child: Icon(
+                                            Icons.location_on,
+                                            color: Colors.black,
+                                            size: 28.sp,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 328.w,
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          height: 50.h,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: 6.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      users.value.username!,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    // Container(
+                                                    //   width: 65.w,
+                                                    //   padding: EdgeInsets.only(bottom: 4.h),
+                                                    //   child: Row(
+                                                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    //     children: [
+                                                    //       Icon(
+                                                    //         iconData_1,
+                                                    //         size: 15.sp,
+                                                    //       ),
+                                                    //       Icon(
+                                                    //         iconData_2,
+                                                    //         size: 15.sp,
+                                                    //       ),
+                                                    //       Icon(
+                                                    //         iconData_3,
+                                                    //         size: 15.sp,
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: 348.w,
+                                                child: Text(
+                                                  a.value,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 28.w,
+                                          child: GestureDetector(
+                                              onTap: () async {
+                                                var result = await Get.to(
+                                                    ListAddressDelivery());
+                                                print(result);
+                                                if (result != null) {
+                                                  setState(() {
+                                                    getAd();
+                                                  });
+                                                }
+                                              },
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 28.sp,
+                                              )),
+                                        )
+                                      ],
+                                    ),
                                   ),
+                                  //     DeliveryItem(
+                                  //   iconData_4: Icons.edit,
+                                  //   page: ListAddressDelivery(),
+                                  //   deliveryModel: DeliveryModel(
+                                  //       iconData: Icons.location_on,
+                                  //       name: users.value.username,
+                                  //       address: a.value),
+                                  // ),
                                 ),
                               ),
                               Container(
@@ -229,11 +339,12 @@ class _OrderDetail extends State<OrderDetail> {
                                     bottom: 4.h,
                                     top: 8.h),
                                 child: DeliveryItem(
-                                  page: AddressScreen(),
+                                  // page: AddressScreen(),
                                   deliveryModel: DeliveryModel(
                                       iconData: Icons.timer_rounded,
                                       name: 'Thời giao hàng dự kiến',
-                                      address: 'Trong 20 phút'),
+                                      // address: 'Trong ${((distance / 5) * 60).round()} phút'),
+                                      address: 'Trong ${timeDelivery()} phút'),
                                 ),
                               ),
                             ],
@@ -305,7 +416,7 @@ class _OrderDetail extends State<OrderDetail> {
                         //     ),
                         //   ),
                         // ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () async {
                             var result = await Get.to(() => Voucher(),
                                 arguments: {
@@ -313,7 +424,7 @@ class _OrderDetail extends State<OrderDetail> {
                                 });
                             print(result);
                             setState(() {
-                              if(result != null){
+                              if (result != null) {
                                 voucher.value = result;
                                 voucher.refresh();
                               }
@@ -370,7 +481,7 @@ class _OrderDetail extends State<OrderDetail> {
                             ),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () async {
                             var result = await Get.to(Payment());
                             setState(() {
@@ -413,7 +524,7 @@ class _OrderDetail extends State<OrderDetail> {
                             ),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             showPicker();
                           },
@@ -469,7 +580,7 @@ class _OrderDetail extends State<OrderDetail> {
                                   ),
                                 ),
                                 Text(
-                                  '${card.value.sumPrice}đ',
+                                  '${NumberFormat.currency(locale: 'vi').format(card.value.sumPrice)}',
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                   ),
@@ -495,7 +606,7 @@ class _OrderDetail extends State<OrderDetail> {
                                 ),
                               ),
                               Text(
-                                '$delivery_feeđ',
+                                '${NumberFormat.currency(locale: 'vi').format(delivery_fee)}',
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                 ),
@@ -522,7 +633,7 @@ class _OrderDetail extends State<OrderDetail> {
                                       ),
                                     ),
                                     Text(
-                                      '-${priceVocher().round()}đ',
+                                      '-${NumberFormat.currency(locale: 'vi').format(priceVocher().round())}',
                                       style: TextStyle(
                                         fontSize: 18.sp,
                                       ),
@@ -549,7 +660,7 @@ class _OrderDetail extends State<OrderDetail> {
                                 ),
                               ),
                               Text(
-                                '${sumPrice()}đ',
+                                '${NumberFormat.currency(locale: 'vi').format(sumPrice())}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.sp,
@@ -563,7 +674,7 @@ class _OrderDetail extends State<OrderDetail> {
                           width: 414.w,
                           color: Colors.white,
                           padding: EdgeInsets.all(12.w),
-                          child: InkWell(
+                          child: GestureDetector(
                             onTap: () async {
                               print('Thanh toán');
                               if (payment.value == 'Zalopay') {
@@ -583,11 +694,17 @@ class _OrderDetail extends State<OrderDetail> {
                                 setState(() {
                                   if (response == 'Payment Success') {
                                     payResult = 'Thanh toán thành công';
+                                    addOrder();
                                   } else
                                     payResult = response;
                                 });
                                 if (payResult != 'User Canceled') {
-                                  addOrder();
+                                  // addOrder();
+                                  showToast('Người dùng chưa thanh toán!');
+                                }else
+                                if (payResult != 'Payment failed') {
+                                  // addOrder();
+                                  showToast('Thanh toán thất bại!');
                                 }
                               } else {
                                 setState(() {
@@ -657,16 +774,20 @@ class _OrderDetail extends State<OrderDetail> {
     return card.value.sumPrice! + delivery_fee - priceVocher().round();
   }
 
+  int timeDelivery() {
+    return ((distance / 5) * 60).round();
+  }
+
   Future<bool?> checkUser() async {
     await fetchCard();
     await fetchUser();
 
-    for (int i = 0; i < users.value.address!.length; i++) {
-      if (users.value.address![i].status == 1) {
-        print(users.value.address![i].address!);
-        address = users.value.address![i].address!;
-      }
-    }
+    // for (int i = 0; i < users.value.address!.length; i++) {
+    //   if (users.value.address![i].status == 1) {
+    //     print(users.value.address![i].address!);
+    //     // address = users.value.address![i].address!;
+    //   }
+    // }
     return users.isBlank;
   }
 
@@ -745,7 +866,8 @@ class _OrderDetail extends State<OrderDetail> {
   Future<void> addOrder() async {
     var token = await getToken();
     print(' trang thái  $payResult');
-    if (address.isNotEmpty) {
+    EasyLoading.show();
+    if (a.isNotEmpty) {
       if (payment.value.isNotEmpty) {
         try {
           int sumprice = sumPrice();
@@ -767,7 +889,7 @@ class _OrderDetail extends State<OrderDetail> {
             body: jsonEncode(<String, dynamic>{
               'sumprice': sumprice,
               'method_payment': payment.value,
-              'address': address,
+              'address': a.value,
               'price_delivery': delivery_fee,
               'note': note,
               'discount_id': discount_id,
@@ -775,6 +897,7 @@ class _OrderDetail extends State<OrderDetail> {
               'status': payResult,
               'latitude': latitude,
               'longitude': longitude,
+              'time_delivery': timeDelivery(),
             }),
           );
           print(response.statusCode);
@@ -794,8 +917,12 @@ class _OrderDetail extends State<OrderDetail> {
                 'Bạn có một đơn hàng mới');
             if (isNotify == true) {
               await saveNotification(
-                  'Đơn hàng mới', 'Bạn có một đơn hàng mới','${order.food![0].restaurant!.user!.id}',1);
+                  'Đơn hàng mới',
+                  'Bạn có một đơn hàng mới',
+                  '${order.food![0].restaurant!.user!.id}',
+                  1);
             }
+            EasyLoading.dismiss();
 
             Get.off(
                 BottomNavigation(
@@ -803,8 +930,8 @@ class _OrderDetail extends State<OrderDetail> {
                 ),
                 arguments: {'order_id': order.id});
           }
-          if (response.statusCode == 500) {
-            showToast("Hệ thống bị lỗi, Vui lòng thử lại sau!");
+          if (response.statusCode == 204) {
+            showToast("Bạn đang có một đang hàng đang giao, vui lòng mua hàng sau!");
           }
         } on TimeoutException catch (e) {
           showError(e.toString());

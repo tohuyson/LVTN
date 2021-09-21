@@ -10,10 +10,10 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
+import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/networking.dart';
 import 'package:fooddelivery/screens/auth/is_signin.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
-import 'package:fooddelivery/splash_screen.dart';
 import 'package:fooddelivery/testzalo.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:geocoding/geocoding.dart';
@@ -52,7 +52,6 @@ class MyApp extends StatelessWidget {
         // home: AuthService().handleAuth(),
         // home: IsSignIn(),
         // home: MyHomePage(),
-        // home: SplashScreen(),
         home: MyHome(),
         // home: SignIn(),
         builder: EasyLoading.init(),
@@ -143,10 +142,13 @@ class SplashScreenState extends State<MyHome> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
-                  child: Obx(() => Text(
-                        address.value != '' ? address.value : 'Loading...',
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                  child: Obx(
+                    () => Text(
+                      address.value != '' ? address.value : 'Loading...',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                  ),
                 ),
               ],
             )),
@@ -215,12 +217,13 @@ class SplashScreenState extends State<MyHome> {
     String street = await getStreet(placemark);
     String locality = await getLocality(placemark);
     String a = await getAddress(placemark);
+    String add = locality + ', ' + a;
     setState(() {
       address = (street + ', ' + locality + ', ' + a).obs;
     });
     await setValue('street', street);
-    await setValue('address', address.value);
-    await setValue("latitude", latitude);
+    await setValue('address', add);
+    await setValue('latitude', latitude);
     await setValue('longitude', longitude);
 
     print(address.value);
@@ -339,7 +342,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       Navigator.of(context).pushNamed(routeFromMessage);
     });
-
   }
 
   @override

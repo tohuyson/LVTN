@@ -75,7 +75,7 @@ class _RestaurantItem extends State<RestaurantItem> {
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: BorderRadius.all(Radius.circular(2)),
               child: Image.network(
                 Apis.baseURL + restaurant.image!,
                 fit: BoxFit.cover,

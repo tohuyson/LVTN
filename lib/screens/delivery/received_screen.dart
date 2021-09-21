@@ -2,8 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/model/order.dart';
+import 'package:fooddelivery/screens/chat/chat.dart';
+import 'package:fooddelivery/screens/chat/model/user_chat.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/screens/widget/empty_screen.dart';
@@ -11,6 +15,8 @@ import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../apis.dart';
 import '../../utils.dart';
@@ -57,13 +63,13 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(
-                                  left: 10.w,
-                                  right: 10.w,
-                                  top: 6.h,
-                                ),
+                                // margin: EdgeInsets.only(
+                                //   left: 10.w,
+                                //   right: 10.w,
+                                //   top: 6.h,
+                                // ),
                                 padding: EdgeInsets.only(
-                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                    bottom: 12.h,top: 12.h, left: 12.w, right: 12.w),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border(
@@ -79,18 +85,19 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                       style: TextStyle(fontSize: 16.sp),
                                     )),
                                     Container(
-                                        child: Text(
-                                      'Đang đến trong 20 phút',
-                                      style: TextStyle(fontSize: 16.sp),
-                                    )),
+                                      child: Text(
+                                        'Đang đến trong ${order.time_delivery != null ? order.time_delivery : 0} phút',
+                                        style: TextStyle(fontSize: 16.sp),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(
-                                    top: 6.h, left: 10.w, right: 10.w),
+                                // margin: EdgeInsets.only(
+                                //     top: 6.h, left: 10.w),
                                 padding: EdgeInsets.only(
-                                    bottom: 6.h, left: 5.w, right: 5.w),
+                                    bottom: 6.h, left: 12.w),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border(
@@ -101,7 +108,7 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      width: 384.w,
+                                      width: 402.w,
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -122,16 +129,132 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                     style:
                                                         TextStyle(fontSize: 16),
                                                   ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: IconButton(
-                                                        onPressed: () {},
-                                                        icon: Icon(
-                                                          Icons.call,
-                                                          size: 20,
-                                                          color: Colors.grey,
-                                                        )),
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            launch(
+                                                                "tel: ${order
+                                                                    .foodOrder![0]
+                                                                    .food!
+                                                                    .restaurant!
+                                                                    .phone}");
+                                                          },
+                                                          icon: Icon(
+                                                            Icons.call,
+                                                            size: 20,
+                                                            color: Colors.grey,
+                                                          ),),
+                                                      IconButton(
+                                                          onPressed: () async {
+                                                            SharedPreferences prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                            print('chát');
+                                                            User? user = FirebaseAuth
+                                                                .instance
+                                                                .currentUser!;
+                                                            print(user);
+                                                            if (user != null) {
+                                                              // Check is already sign up
+                                                              final querySnapshotresult =
+                                                              await FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                  'users')
+                                                                  .where('id',
+                                                                  isEqualTo:
+                                                                  user.uid)
+                                                                  .get();
+                                                              print(
+                                                                  querySnapshotresult
+                                                                      .docs);
+                                                              // final List<DocumentSnapshot>documents = result.docs;
+                                                              if (querySnapshotresult
+                                                                  .docs.length ==
+                                                                  0) {
+                                                                // Update data to server if new user
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                    'users')
+                                                                    .doc(user.uid)
+                                                                    .set({
+                                                                  'nickname': user
+                                                                      .displayName,
+                                                                  'photoUrl':
+                                                                  user.photoURL,
+                                                                  'id': user.uid,
+                                                                  'createdAt': DateTime
+                                                                      .now()
+                                                                      .millisecondsSinceEpoch
+                                                                      .toString(),
+                                                                  'chattingWith':
+                                                                  order
+                                                                      .foodOrder![0]
+                                                                      .food!
+                                                                      .restaurant!.user!.uid!
+                                                                });
+
+                                                                // Write data to local
+                                                                // currentUser = user;
+                                                                // print(currentUser.uid);
+                                                                await prefs.setString(
+                                                                    'id', user.uid);
+                                                                await prefs.setString(
+                                                                    'nickname',
+                                                                    user.displayName ??
+                                                                        "");
+                                                                await prefs.setString(
+                                                                    'photoUrl',
+                                                                    user.photoURL ??
+                                                                        "");
+                                                              } else {
+                                                                DocumentSnapshot
+                                                                documentSnapshot =
+                                                                querySnapshotresult
+                                                                    .docs[0];
+                                                                UserChat userChat =
+                                                                UserChat.fromDocument(
+                                                                    documentSnapshot);
+                                                                // Write data to local
+                                                                print(userChat.id);
+                                                                await prefs.setString(
+                                                                    'id',
+                                                                    userChat.id!);
+                                                                await prefs.setString(
+                                                                    'nickname',
+                                                                    userChat
+                                                                        .nickname!);
+                                                                await prefs.setString(
+                                                                    'photoUrl',
+                                                                    userChat.photoUrl ??
+                                                                        "");
+                                                              }
+                                                              String avatar =
+                                                                  Apis.baseURL +
+                                                                      order
+                                                                          .foodOrder![0]
+                                                                          .food!
+                                                                          .restaurant!.user!.avatar!;
+                                                              Get.to(Chat(
+                                                                peerId: order
+                                                                    .foodOrder![0]
+                                                                    .food!
+                                                                    .restaurant!.user!.uid!,
+                                                                peerNickname:
+                                                                order
+                                                                    .foodOrder![0]
+                                                                    .food!
+                                                                    .restaurant!.user!.username!,
+                                                                peerAvatar: avatar,
+                                                              ));
+                                                            }
+                                                          },
+                                                          icon: Icon(Icons.message,
+                                                              size: 20,
+                                                              color: Colors.grey),),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -141,6 +264,7 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                             ),
                                             Container(
                                               width: 414.w,
+                                              padding: EdgeInsets.only(bottom: 10.h),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -306,14 +430,109 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      launch(
+                                                          "tel: ${order.user!.phone!}");
+                                                    },
                                                     icon: Icon(
                                                       Icons.call,
                                                       size: 20,
                                                       color: Colors.grey,
                                                     )),
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () async {
+                                                      SharedPreferences prefs =
+                                                          await SharedPreferences
+                                                          .getInstance();
+                                                      print('chát');
+                                                      User? user = FirebaseAuth
+                                                          .instance
+                                                          .currentUser!;
+                                                      print(user);
+                                                      if (user != null) {
+                                                        // Check is already sign up
+                                                        final querySnapshotresult =
+                                                            await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                            'users')
+                                                            .where('id',
+                                                            isEqualTo:
+                                                            user.uid)
+                                                            .get();
+                                                        print(
+                                                            querySnapshotresult
+                                                                .docs);
+                                                        // final List<DocumentSnapshot>documents = result.docs;
+                                                        if (querySnapshotresult
+                                                            .docs.length ==
+                                                            0) {
+                                                          // Update data to server if new user
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              'users')
+                                                              .doc(user.uid)
+                                                              .set({
+                                                            'nickname': user
+                                                                .displayName,
+                                                            'photoUrl':
+                                                            user.photoURL,
+                                                            'id': user.uid,
+                                                            'createdAt': DateTime
+                                                                .now()
+                                                                .millisecondsSinceEpoch
+                                                                .toString(),
+                                                            'chattingWith':
+                                                            order.user!.uid,
+                                                          });
+
+                                                          // Write data to local
+                                                          // currentUser = user;
+                                                          // print(currentUser.uid);
+                                                          await prefs.setString(
+                                                              'id', user.uid);
+                                                          await prefs.setString(
+                                                              'nickname',
+                                                              user.displayName ??
+                                                                  "");
+                                                          await prefs.setString(
+                                                              'photoUrl',
+                                                              user.photoURL ??
+                                                                  "");
+                                                        } else {
+                                                          DocumentSnapshot
+                                                          documentSnapshot =
+                                                          querySnapshotresult
+                                                              .docs[0];
+                                                          UserChat userChat =
+                                                          UserChat.fromDocument(
+                                                              documentSnapshot);
+                                                          // Write data to local
+                                                          print(userChat.id);
+                                                          await prefs.setString(
+                                                              'id',
+                                                              userChat.id!);
+                                                          await prefs.setString(
+                                                              'nickname',
+                                                              userChat
+                                                                  .nickname!);
+                                                          await prefs.setString(
+                                                              'photoUrl',
+                                                              userChat.photoUrl ??
+                                                                  "");
+                                                        }
+                                                        String avatar =
+                                                            Apis.baseURL +
+                                                                order.user!.avatar!;
+                                                        Get.to(Chat(
+                                                          peerId: order.user!.uid!,
+                                                          peerNickname:
+                                                          order.user!.username!,
+                                                          peerAvatar: avatar,
+                                                        ));
+                                                      }
+                                                    },
                                                     icon: Icon(Icons.message,
                                                         size: 20,
                                                         color: Colors.grey)),

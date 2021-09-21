@@ -266,7 +266,10 @@ class _ReviewScreen extends State<ReviewScreen> {
               Container(
                 margin: EdgeInsets.only(left: 10.h, right: 10.h),
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300)),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(color: Colors.grey.shade300)
+                  ),
+                padding: EdgeInsets.all(12.w),
                 child: TextField(
                   controller: review,
                   maxLines: 15,

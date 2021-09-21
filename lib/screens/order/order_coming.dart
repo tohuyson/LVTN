@@ -10,7 +10,6 @@ import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/order/components/delivery_map.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
-import 'package:fooddelivery/testzalo.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +26,6 @@ class OrderComing extends StatefulWidget {
 }
 
 class _OrderDetail extends State<OrderComing> {
-  // Order? o;
   int _index = 0;
   bool isLoading = false;
   late Rx<Order> order;
@@ -67,7 +65,9 @@ class _OrderDetail extends State<OrderComing> {
             if (snapshot.hasError) {
               return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
             } else {
-              return order.value.id != null && order.value.orderStatusId != 5 && order.value.orderStatusId != 4
+              return order.value.id != null &&
+                      order.value.orderStatusId != 5 &&
+                      order.value.orderStatusId != 4
                   ? SingleChildScrollView(
                       child: Column(
                       children: [
@@ -106,7 +106,7 @@ class _OrderDetail extends State<OrderComing> {
                                     )),
                                     Container(
                                         child: Text(
-                                      'Đang đến trong 20 phút',
+                                      'Đang đến trong ${order.value.time_delivery} phút',
                                       style: TextStyle(fontSize: 16.sp),
                                     )),
                                   ],
@@ -128,7 +128,9 @@ class _OrderDetail extends State<OrderComing> {
                                   children: [
                                     Container(
                                       width: 290.w,
-                                      height: 55.h,
+                                      // height: 65.h,
+                                      padding: EdgeInsets.only(
+                                          top: 4.h, bottom: 4.h),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -136,25 +138,24 @@ class _OrderDetail extends State<OrderComing> {
                                           Text(
                                             order.value.food![0].restaurant!
                                                 .name!,
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                          SizedBox(
-                                            height: 4.h,
-                                          ),
+                                          // SizedBox(
+                                          //   height: 4.h,
+                                          // ),
                                           Text(
-                                            'Tổng: ' +
-                                                order.value.price.toString() +
-                                                ' - ' +
-                                                order.value.payment!.method! +
-                                                ' - ' +
-                                                order.value.payment!.status!,
+                                            'Tổng: ${NumberFormat.currency(locale: 'vi').format(order.value.price)}',
                                             style: TextStyle(fontSize: 14),
                                             maxLines: 1,
                                           ),
+                                          Text(
+                                              'Thanh toán: ${order.value.payment!.method! + ' - ' + order.value.payment!.status!}'),
                                         ],
                                       ),
                                     ),
-                                    InkWell(
+                                    GestureDetector(
                                       onTap: () {
                                         showDialog(
                                             context: context,
@@ -497,8 +498,9 @@ class _OrderDetail extends State<OrderComing> {
     String token = (await getToken())!;
     print(token);
     try {
+      print(Apis.getOrderComingUrl);
       http.Response response = await http.get(
-        Uri.parse(Apis.getOrderUrl),
+        Uri.parse(Apis.getOrderComingUrl),
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -510,15 +512,12 @@ class _OrderDetail extends State<OrderComing> {
         var parsedJson = jsonDecode(response.body);
         print(parsedJson['order']);
 
-        if (parsedJson['order'] != null) {
-          order = OrderJson.fromJson(parsedJson).order!;
-        } else {
-          order = new Order();
-        }
+        order = OrderJson.fromJson(parsedJson).order!;
+
         return order;
       }
       if (response.statusCode == 401) {
-        showToast("Tải dữ liệu thất bại");
+        order = new Order();
       }
       if (response.statusCode == 500) {
         showToast("Hệ thống bị lỗi, Vui lòng quay lại sau!");

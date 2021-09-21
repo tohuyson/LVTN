@@ -34,6 +34,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'information_restaurant.dart';
 
@@ -70,7 +71,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     // card = Rx<CardModel>(new CardModel());
     idRestaurant = Get.arguments['restaurant_id'];
 
-    distance.value = Get.arguments['distance'];
+    // distance.value = Get.arguments['distance'];
 
     restaurant = Rx<Restaurant>(new Restaurant());
 
@@ -100,7 +101,9 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
   final List<Tab> myTabs = <Tab>[
     Tab(
       child: Container(
-        width: 56.w,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        width: 60.w,
         child: Text(
           'Đặt đơn',
           style: TextStyle(color: Colors.black, fontSize: 16.sp),
@@ -111,7 +114,9 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     ),
     Tab(
       child: Container(
-        width: 66.w,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        width: 72.w,
         child: Text(
           'Bình luận',
           style: TextStyle(color: Colors.black, fontSize: 16.sp),
@@ -122,7 +127,9 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     ),
     Tab(
       child: Container(
-        width: 86.w,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        width: 84.w,
         child: Text(
           'Khuyến mãi',
           style: TextStyle(color: Colors.black, fontSize: 16.sp),
@@ -133,7 +140,9 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     ),
     Tab(
       child: Container(
-        width: 66.w,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        width: 70.w,
         child: Text(
           'Thông tin',
           style: TextStyle(color: Colors.black, fontSize: 16.sp),
@@ -165,6 +174,29 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     }).toList();
 
     this.query = query;
+  }
+
+  Future<double> distanceRes() async {
+    double startLat;
+    double startLong;
+
+    String? latitude = await getValue('latitude');
+    String? longitude = await getValue('longitude');
+    print(latitude);
+    print(longitude);
+
+    startLat = double.parse(latitude!);
+    startLong = double.parse(longitude!);
+
+    double d = await distanceRestaurant(
+        startLat,
+        startLong,
+        double.parse(restaurant.value!.lattitude!),
+        double.parse(restaurant.value!.longtitude!));
+    // setState(() {
+    // distance = d.obs;
+    // });
+    return d;
   }
 
   @override
@@ -242,94 +274,124 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                                                         FontWeight.bold),
                                               ),
                                             ),
-                                            IconButton(
-                                                icon: Icon(Icons.chat_outlined),
-                                                onPressed: () async {
-                                                  SharedPreferences prefs =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  print('chát');
-                                                  User? user = FirebaseAuth
-                                                      .instance.currentUser!;
-                                                  print(user);
-                                                  if (user != null) {
-                                                    // Check is already sign up
-                                                    final querySnapshotresult =
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('users')
-                                                            .where('id',
-                                                                isEqualTo:
-                                                                    user.uid)
-                                                            .get();
-                                                    print(querySnapshotresult
-                                                        .docs);
-                                                    // final List<DocumentSnapshot>documents = result.docs;
-                                                    if (querySnapshotresult
-                                                            .docs.length ==
-                                                        0) {
-                                                      // Update data to server if new user
-                                                      FirebaseFirestore.instance
-                                                          .collection('users')
-                                                          .doc(user.uid)
-                                                          .set({
-                                                        'nickname':
-                                                            user.displayName,
-                                                        'photoUrl':
-                                                            user.photoURL,
-                                                        'id': user.uid,
-                                                        'createdAt': DateTime
-                                                                .now()
-                                                            .millisecondsSinceEpoch
-                                                            .toString(),
-                                                        'chattingWith':
-                                                            restaurant.value!
-                                                                .user!.uid,
-                                                      });
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      launch(
+                                                          "tel: ${restaurant.value!.phone}");
+                                                    },
+                                                    icon: Icon(Icons.phone)),
+                                                IconButton(
+                                                    icon: Icon(
+                                                        Icons.chat_outlined),
+                                                    onPressed: () async {
+                                                      SharedPreferences prefs =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      print('chát');
+                                                      User? user = FirebaseAuth
+                                                          .instance
+                                                          .currentUser!;
+                                                      print(user);
+                                                      if (user != null) {
+                                                        // Check is already sign up
+                                                        final querySnapshotresult =
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'users')
+                                                                .where('id',
+                                                                    isEqualTo:
+                                                                        user.uid)
+                                                                .get();
+                                                        print(
+                                                            querySnapshotresult
+                                                                .docs);
+                                                        // final List<DocumentSnapshot>documents = result.docs;
+                                                        if (querySnapshotresult
+                                                                .docs.length ==
+                                                            0) {
+                                                          // Update data to server if new user
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'users')
+                                                              .doc(user.uid)
+                                                              .set({
+                                                            'nickname': user
+                                                                .displayName,
+                                                            'photoUrl':
+                                                                user.photoURL,
+                                                            'id': user.uid,
+                                                            'createdAt': DateTime
+                                                                    .now()
+                                                                .millisecondsSinceEpoch
+                                                                .toString(),
+                                                            'chattingWith':
+                                                                restaurant
+                                                                    .value!
+                                                                    .user!
+                                                                    .uid,
+                                                          });
 
-                                                      // Write data to local
-                                                      // currentUser = user;
-                                                      // print(currentUser.uid);
-                                                      await prefs.setString(
-                                                          'id', user.uid);
-                                                      await prefs.setString(
-                                                          'nickname',
-                                                          user.displayName ??
-                                                              "");
-                                                      await prefs.setString(
-                                                          'photoUrl',
-                                                          user.photoURL ?? "");
-                                                    } else {
-                                                      DocumentSnapshot
-                                                          documentSnapshot =
-                                                          querySnapshotresult
-                                                              .docs[0];
-                                                      UserChat userChat =
-                                                          UserChat.fromDocument(
-                                                              documentSnapshot);
-                                                      // Write data to local
-                                                      print(userChat.id);
-                                                      await prefs.setString(
-                                                          'id', userChat.id!);
-                                                      await prefs.setString(
-                                                          'nickname',
-                                                          userChat.nickname!);
-                                                      await prefs.setString(
-                                                          'photoUrl',
-                                                          userChat.photoUrl ??
-                                                              "");
-                                                    }
-                                                    String avatar =
-                                                        Apis.baseURL +
-                                                            restaurant.value!
-                                                                .user!.avatar!;
-                                                    Get.to(Chat(
-                                                      peerId: restaurant
-                                                          .value!.user!.uid!,
-                                                      peerAvatar: avatar,
-                                                    ));
-                                                  }
-                                                })
+                                                          // Write data to local
+                                                          // currentUser = user;
+                                                          // print(currentUser.uid);
+                                                          await prefs.setString(
+                                                              'id', user.uid);
+                                                          await prefs.setString(
+                                                              'nickname',
+                                                              user.displayName ??
+                                                                  "");
+                                                          await prefs.setString(
+                                                              'photoUrl',
+                                                              user.photoURL ??
+                                                                  "");
+                                                        } else {
+                                                          DocumentSnapshot
+                                                              documentSnapshot =
+                                                              querySnapshotresult
+                                                                  .docs[0];
+                                                          UserChat userChat =
+                                                              UserChat.fromDocument(
+                                                                  documentSnapshot);
+                                                          // Write data to local
+                                                          print(userChat.id);
+                                                          await prefs.setString(
+                                                              'id',
+                                                              userChat.id!);
+                                                          await prefs.setString(
+                                                              'nickname',
+                                                              userChat
+                                                                  .nickname!);
+                                                          await prefs.setString(
+                                                              'photoUrl',
+                                                              userChat.photoUrl ??
+                                                                  "");
+                                                        }
+                                                        String avatar =
+                                                            Apis.baseURL +
+                                                                restaurant
+                                                                    .value!
+                                                                    .user!
+                                                                    .avatar!;
+                                                        Get.to(Chat(
+                                                          peerId: restaurant
+                                                              .value!
+                                                              .user!
+                                                              .uid!,
+                                                          peerNickname:
+                                                              restaurant
+                                                                  .value!
+                                                                  .user!
+                                                                  .username!,
+                                                          peerAvatar: avatar,
+                                                        ));
+                                                      }
+                                                    }),
+                                              ],
+                                            )
                                           ],
                                         ),
                                       ),
@@ -380,6 +442,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                                 elevation: 0,
                                 toolbarHeight: 20,
                                 flexibleSpace: Container(
+                                  width: 414.w,
                                   color: Colors.white,
                                   child: TabBar(
                                     isScrollable: true,
@@ -399,7 +462,7 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                             children: [
                               restaurant.value!.foods!.length > 0
                                   ? ListFoodRestaurant(
-                                      restaurant: restaurant.value!)
+                                      restaurant: restaurant.value!, distance: distance.value,)
                                   // Container(
                                   //
                                   //         child: Column(
@@ -821,6 +884,8 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
     if (res != null) {
       restaurant = res.obs;
     }
+    double d = await distanceRes();
+    distance = d.obs;
     return restaurant.isBlank;
   }
 

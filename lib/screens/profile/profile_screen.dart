@@ -215,7 +215,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         ],
                                       ),
                                     ),
-                                    Container(
+                                    lu.value!.roleId ==
+                                        4 ? Container(
                                       margin: EdgeInsets.only(
                                           left: 15.w, right: 10.w),
                                       decoration: BoxDecoration(
@@ -263,7 +264,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                           )
                                         ],
                                       ),
-                                    ),
+                                    ): Container(),
                                     // ItemProfile(
                                     //   itemProfile: ItemProfileModel(
                                     //     title: 'Đơn hàng của tôi',

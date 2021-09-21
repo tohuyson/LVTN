@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
@@ -209,35 +211,35 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                               ],
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: kPrimaryColorBackground,
-                                        width: 2))),
-                            padding: EdgeInsets.only(left: 12.w),
-                            width: 414.w,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Đặt làm địa chỉ mặc định',
-                                  style: TextStyle(fontSize: 18.sp),
-                                ),
-                                new Radio(
-                                  toggleable: true,
-                                  value: '1',
-                                  groupValue: group.toString(),
-                                  onChanged: (val) {
-                                    setState(() {
-                                      group = val.toString();
-                                      print(group);
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   decoration: BoxDecoration(
+                          //       border: Border(
+                          //           bottom: BorderSide(
+                          //               color: kPrimaryColorBackground,
+                          //               width: 2))),
+                          //   padding: EdgeInsets.only(left: 12.w),
+                          //   width: 414.w,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text(
+                          //         'Đặt làm địa chỉ mặc định',
+                          //         style: TextStyle(fontSize: 18.sp),
+                          //       ),
+                          //       new Radio(
+                          //         toggleable: true,
+                          //         value: '1',
+                          //         groupValue: group.toString(),
+                          //         onChanged: (val) {
+                          //           setState(() {
+                          //             group = val.toString();
+                          //             print(group);
+                          //           });
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           Container(
                             height: 280.h,
                             width: 414.w,
@@ -296,6 +298,12 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                                     ),
                                     onMapCreated: _onMapCreated,
                                     markers: Set.from(allMarkers),
+                                    gestureRecognizers: Set()
+                                      ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                                      ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
+                                      ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+                                      ..add(Factory<VerticalDragGestureRecognizer>(
+                                              () => VerticalDragGestureRecognizer())),
                                     // onTap: handleTap,
                                   ),
                                 ),

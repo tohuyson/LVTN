@@ -13,6 +13,7 @@ import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/add_address.dart';
 import 'package:fooddelivery/screens/address/address_item.dart';
+import 'package:fooddelivery/screens/address/address_map_now.dart';
 import 'package:fooddelivery/screens/address/edit_address.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
@@ -20,6 +21,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import 'address_map.dart';
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -33,6 +36,9 @@ class _AddressScreen extends State<AddressScreen> {
   late Users user;
   RxString street = ''.obs;
   RxString addressDetail = ''.obs;
+  RxString latitude = ''.obs;
+  RxString longitude = ''.obs;
+  late Address add;
 
   @override
   void initState() {
@@ -47,8 +53,17 @@ class _AddressScreen extends State<AddressScreen> {
   Future<void> getAd() async {
     street = (await getValue('street'))!.obs;
     addressDetail = (await getValue('address'))!.obs;
+    latitude = (await getValue('latitude'))!.obs;
+    longitude = (await getValue('longitude'))!.obs;
+    add = Address(
+        detail: street.value,
+        address: addressDetail.value,
+        lattitude: latitude.value,
+        longtitude: longitude.value);
     print(street);
     print(addressDetail);
+    print(latitude);
+    print(longitude);
   }
 
   Future<void> checkPermision() async {
@@ -59,34 +74,31 @@ class _AddressScreen extends State<AddressScreen> {
     }
   }
 
-  Future<void> loadData() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      showToast('Vui lòng bật vị trí!');
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    List<Placemark> placemark = await getPosition();
-    String s = await getStreet(placemark);
-    String locality = await getLocality(placemark);
-    String a = await getAdd(placemark);
-    setState(() {
-      street = s.obs;
-      addressDetail = (s + ', ' + locality + ', ' + a).obs;
-    });
-    await setValue('street', s);
-    await setValue('address', addressDetail.value);
-    await setValue("latitude", latitude);
-    await setValue('longitude', longitude);
-  }
-
-  String latitude = '';
-  String longitude = '';
+  // Future<void> loadData() async {
+  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //
+  //   if (!serviceEnabled) {
+  //     showToast('Vui lòng bật vị trí!');
+  //   }
+  //
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //   }
+  //
+  //   List<Placemark> placemark = await getPosition();
+  //   String s = await getStreet(placemark);
+  //   String locality = await getLocality(placemark);
+  //   String a = await getAdd(placemark);
+  //   setState(() {
+  //     street = s.obs;
+  //     addressDetail = (s + ', ' + locality + ', ' + a).obs;
+  //   });
+  //   await setValue('street', s);
+  //   await setValue('address', addressDetail.value);
+  //   await setValue("latitude", latitude);
+  //   await setValue('longitude', longitude);
+  // }
 
   Future<String> getStreet(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
@@ -129,14 +141,9 @@ class _AddressScreen extends State<AddressScreen> {
     return address;
   }
 
-  Future<List<Placemark>> getPosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true);
-    latitude = position.latitude.toString();
-    longitude = position.longitude.toString();
+  Future<List<Placemark>> getLocation(double latitude, double longitude) async {
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    await placemarkFromCoordinates(latitude, longitude);
     return placemarks;
   }
 
@@ -147,7 +154,9 @@ class _AddressScreen extends State<AddressScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
         centerTitle: true,
         title: Text(
           'Địa chỉ',
@@ -158,9 +167,27 @@ class _AddressScreen extends State<AddressScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                await loadData();
+                // await loadData();
+                var result = await Get.to(
+                    AddressMapNow(), arguments: {'address': add});
+                // if (result != null) {
+                  // add = result;
+                  // print(add);
+                  //
+                  // List<Placemark> placemarks =await getLocation(double.parse(add.lattitude!), double.parse(add.longtitude!));
+                  //
+                  // String s = await getStreet(placemarks);
+                  // print(s);
+                  //
+                  //
+                  // setState(() {
+                  //
+                  //   street = s.obs;
+                  //   // addressDetail = (add.address)!.obs;
+                  // });
+                // }
               },
-              icon: Icon(Icons.my_location))
+              icon: Icon(Icons.map_outlined))
         ],
       ),
       body: FutureBuilder(
@@ -172,13 +199,14 @@ class _AddressScreen extends State<AddressScreen> {
               if (snapshot.hasData) {
                 return Container(
                   width: 414.w,
-                  height: 834.h,
                   color: kPrimaryColorBackground,
-                  child: Column(children: [
+                  child: Column(
+                      children: [
                     Container(
+                      height: 674.h,
                       width: 414.w,
                       padding: EdgeInsets.only(
-                          left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
+                          left: 12.w, right: 12.w, top: 10.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -189,58 +217,59 @@ class _AddressScreen extends State<AddressScreen> {
                           ),
                           addressDetail.value != '' && street.value != ''
                               ? Container(
-                                  width: 390.w,
-                                  margin: EdgeInsets.only(top: 8.h),
-                                  padding:
-                                      EdgeInsets.only(top: 8.h, bottom: 8.h),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
+                            width: 390.w,
+                            margin: EdgeInsets.only(top: 8.h),
+                            padding:
+                            EdgeInsets.only(top: 8.h, bottom: 8.h),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.location_on,
+                                    size: 20,
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(
-                                          Icons.location_on,
-                                          size: 20,
-                                        ),
+                                ),
+                                Obx(
+                                      () =>
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            street.value,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8.h,
+                                          ),
+                                          Container(
+                                              width: 350.w,
+                                              child: Text(
+                                                addressDetail.value,
+                                                overflow:
+                                                TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w300),
+                                              )),
+                                          SizedBox(
+                                            height: 8.h,
+                                          ),
+                                          Row(
+                                            children: [],
+                                          )
+                                        ],
                                       ),
-                                      Obx(
-                                        () => Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              street.value,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              height: 8.h,
-                                            ),
-                                            Container(
-                                                width: 350.w,
-                                                child: Text(
-                                                  addressDetail.value,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                )),
-                                            SizedBox(
-                                              height: 8.h,
-                                            ),
-                                            Row(
-                                              children: [],
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
                                 )
+                              ],
+                            ),
+                          )
                               : Container(),
                           Padding(
                             padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
@@ -251,9 +280,10 @@ class _AddressScreen extends State<AddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 510.h,
+                            height: 520.h,
                             child: address.length > 0
-                                ? Obx(() => ListView.builder(
+                                ? Obx(() =>
+                                ListView.builder(
                                     itemCount: address.length,
                                     itemBuilder: (context, index) {
                                       return Slidable(
@@ -268,46 +298,47 @@ class _AddressScreen extends State<AddressScreen> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                BorderRadius.circular(5),
+                                            BorderRadius.circular(5),
                                           ),
                                           margin: EdgeInsets.only(bottom: 10.h),
                                           child: Center(
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                               children: [
                                                 Icon(
                                                   Icons.location_on,
-                                                  size: 20.sp,
+                                                  size: 28.sp,
                                                 ),
+                                                SizedBox(width: 20.w,),
                                                 Container(
                                                   width: 290.w,
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                     children: [
                                                       Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                         children: [
                                                           Row(
                                                             children: [
                                                               Text(
                                                                 user.username!,
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .clip,
+                                                                TextOverflow
+                                                                    .clip,
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        18.sp,
+                                                                    18.sp,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
+                                                                    FontWeight
+                                                                        .w500),
                                                               ),
                                                               SizedBox(
                                                                 width: 10.w,
@@ -330,10 +361,10 @@ class _AddressScreen extends State<AddressScreen> {
                                                             user.phone!,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                                FontWeight
+                                                                    .w400,
                                                                 fontSize:
-                                                                    16.sp),
+                                                                16.sp),
                                                           ),
                                                         ],
                                                       ),
@@ -344,23 +375,23 @@ class _AddressScreen extends State<AddressScreen> {
                                                         address[index].detail!,
                                                         // address.addressDetail!,
                                                         overflow:
-                                                            TextOverflow.clip,
+                                                        TextOverflow.clip,
                                                         style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                            FontWeight
+                                                                .w400),
                                                       ),
                                                       Text(
                                                         address[index].address!,
                                                         // address.addressDetail!,
                                                         overflow:
-                                                            TextOverflow.clip,
+                                                        TextOverflow.clip,
                                                         style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                            FontWeight
+                                                                .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -369,28 +400,30 @@ class _AddressScreen extends State<AddressScreen> {
                                                 //   width: 10.w,
                                                 // ),
                                                 Container(
-                                                  width: 50.w,
+                                                  width: 34.w,
                                                   child: TextButton(
                                                     onPressed: () async {
                                                       await Get.to(
                                                           EditAddress(),
                                                           arguments: {
                                                             'address_id':
-                                                                address[index]
-                                                                    .id,
+                                                            address[index]
+                                                                .id,
                                                             'user_id': user.id,
                                                           });
                                                       setState(() {
                                                         fetchAddress();
                                                       });
                                                     },
-                                                    child: Text(
-                                                      'Sửa',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                      ),
-                                                    ),
+                                                    child: Icon(Icons.edit),
+                                                    // Text(
+                                                    //   'Sửa',
+                                                    //   style: TextStyle(
+                                                    //     color: Theme
+                                                    //         .of(context)
+                                                    //         .primaryColor,
+                                                    //   ),
+                                                    // ),
                                                   ),
                                                 ),
                                               ],
@@ -430,7 +463,7 @@ class _AddressScreen extends State<AddressScreen> {
                                                                 setState(() {
                                                                   address
                                                                       .removeAt(
-                                                                          index);
+                                                                      index);
                                                                   address
                                                                       .refresh();
                                                                   Get.back();
@@ -456,15 +489,15 @@ class _AddressScreen extends State<AddressScreen> {
                                       );
                                     }))
                                 : Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                          'Bạn chưa có địa chỉ đã lưu'),
-                                    ),
-                                  ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: Text(
+                                    'Bạn chưa có địa chỉ đã lưu'),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -682,28 +715,33 @@ class _AddressScreen extends State<AddressScreen> {
                     //     ),
                     //   ],
                     // ),
-                    InkWell(
-                      onTap: () async {
-                        var result = await Get.to(AddAddress());
-                        setState(() {
-                          address.add(result);
-                          address.refresh();
-                          fetchAddress();
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            top: 10.h, bottom: 10.h, left: 10.w, right: 10.w),
-                        height: 45.h,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        child: Center(
-                          child: Text(
-                            'Thêm địa chỉ mới'.toUpperCase(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                    Container(
+                      height: 65.h,
+                      child: GestureDetector(
+                        onTap: () async {
+                          var result = await Get.to(AddAddress());
+                          setState(() {
+                            address.add(result);
+                            address.refresh();
+                            fetchAddress();
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: 10.h, bottom: 10.h, left: 10.w, right: 10.w),
+                          height: 45.h,
+                          decoration: BoxDecoration(
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              borderRadius: BorderRadius.all(Radius.circular(5))),
+                          child: Center(
+                            child: Text(
+                              'Thêm địa chỉ mới'.toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
@@ -736,7 +774,9 @@ class _AddressScreen extends State<AddressScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        Address address = AddressJson.fromJson(parsedJson).address!;
+        Address address = AddressJson
+            .fromJson(parsedJson)
+            .address!;
         return address;
       }
       if (response.statusCode == 404) {
@@ -781,7 +821,9 @@ class _AddressScreen extends State<AddressScreen> {
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         print(parsedJson['users']);
-        users = UsersJson.fromJson(parsedJson).users;
+        users = UsersJson
+            .fromJson(parsedJson)
+            .users;
         print(users);
         return users;
       }
@@ -821,7 +863,9 @@ class _AddressScreen extends State<AddressScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        list = ListAddress.fromJson(parsedJson).listAddress!;
+        list = ListAddress
+            .fromJson(parsedJson)
+            .listAddress!;
         return list;
       }
       if (response.statusCode == 401) {

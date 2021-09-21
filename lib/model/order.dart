@@ -28,6 +28,7 @@ class Order {
   Users? userDelivery;
   String? latitude;
   String? longitude;
+  int? time_delivery;
 
   Order({
     this.id,
@@ -52,6 +53,7 @@ class Order {
     this.userDelivery,
     this.latitude,
     this.longitude,
+    this.time_delivery,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -92,6 +94,7 @@ class Order {
         : null;
     latitude = json['latitude'];
     longitude = json['longitude'];
+    time_delivery = json['time_delivery'];
   }
 
   Map<String, dynamic> toJson() {
@@ -128,6 +131,8 @@ class Order {
     }
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
+    data['time_delivery'] = this.time_delivery;
+
     return data;
   }
 }

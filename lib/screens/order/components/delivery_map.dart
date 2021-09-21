@@ -18,7 +18,8 @@ class DeliveryMap extends StatefulWidget {
   final Restaurant restaurant;
   final Order order;
 
-  DeliveryMap({required this.height, required this.restaurant, required this.order});
+  DeliveryMap(
+      {required this.height, required this.restaurant, required this.order});
 
   @override
   State<StatefulWidget> createState() {
@@ -31,7 +32,8 @@ class _DeliveryMap extends State<DeliveryMap> {
   final Restaurant restaurant;
   final Order order;
 
-  _DeliveryMap({required this.height, required this.restaurant,required this.order});
+  _DeliveryMap(
+      {required this.height, required this.restaurant, required this.order});
 
   //draw line
 
@@ -52,7 +54,10 @@ class _DeliveryMap extends State<DeliveryMap> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    setMarkers();
+    setState(() {
+      setMarkers();
+    });
+
   }
 
   setMarkers() {
@@ -96,6 +101,8 @@ class _DeliveryMap extends State<DeliveryMap> {
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
+
+
       for (int i = 0; i < ls.lineString.length; i++) {
         polyPoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
       }
@@ -115,17 +122,18 @@ class _DeliveryMap extends State<DeliveryMap> {
       points: polyPoints,
     );
     polyLines.add(polyline);
+    setState(() {});
   }
 
   @override
   void initState() {
-    startLat= double.parse(order.latitude!);
+    startLat = double.parse(order.latitude!);
     startLng = double.parse(order.longitude!);
     endLat = double.parse(restaurant.lattitude!);
     endLng = double.parse(restaurant.longtitude!);
 
-    currentPostion =
-        LatLng(double.parse(restaurant.lattitude!),double.parse(restaurant.longtitude!));
+    currentPostion = LatLng(double.parse(restaurant.lattitude!),
+        double.parse(restaurant.longtitude!));
 
     // _getUserLocation();
     getJsonData();
@@ -172,45 +180,42 @@ class _DeliveryMap extends State<DeliveryMap> {
         polylines: polyLines,
         mapType: MapType.normal,
         gestureRecognizers: Set()
-          ..add(
-              Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-          ..add(Factory<ScaleGestureRecognizer>(
-                  () => ScaleGestureRecognizer()))
-          ..add(
-              Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+          ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+          ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
+          ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
           ..add(Factory<VerticalDragGestureRecognizer>(
-                  () => VerticalDragGestureRecognizer())),
+              () => VerticalDragGestureRecognizer())),
       ),
     );
-      // FutureBuilder(
-      //   future: _getUserLocation(),
-      //   builder: (context, snapshot) {
-      //     return Container(
-      //       height: height!.h,
-      //       width: double.infinity,
-      //       color: Colors.white,
-      //       child: GoogleMap(
-      //         myLocationEnabled: true,
-      //         onMapCreated: _onMapCreated,
-      //         initialCameraPosition: CameraPosition(
-      //           target: currentPostion,
-      //           zoom: 16,
-      //         ),
-      //         markers: markers,
-      //         polylines: polyLines,
-      //         mapType: MapType.normal,
-      //         gestureRecognizers: Set()
-      //           ..add(
-      //               Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-      //           ..add(Factory<ScaleGestureRecognizer>(
-      //               () => ScaleGestureRecognizer()))
-      //           ..add(
-      //               Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
-      //           ..add(Factory<VerticalDragGestureRecognizer>(
-      //               () => VerticalDragGestureRecognizer())),
-      //       ),
-      //     );
-      //   });
+    // FutureBuilder(
+    //   future: _getUserLocation(),
+    //   builder: (context, snapshot) {
+    //     return Container(
+    //       height: height!.h,
+    //       width: double.infinity,
+    //       color: Colors.white,
+    //       child: GoogleMap(
+    //         myLocationEnabled: true,
+    //         onMapCreated: _onMapCreated,
+    //         initialCameraPosition: CameraPosition(
+    //           target: currentPostion,
+    //           zoom: 16,
+    //         ),
+    //         markers: markers,
+    //         polylines: polyLines,
+    //         mapType: MapType.normal,
+    //         gestureRecognizers: Set()
+    //           ..add(
+    //               Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+    //           ..add(Factory<ScaleGestureRecognizer>(
+    //               () => ScaleGestureRecognizer()))
+    //           ..add(
+    //               Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+    //           ..add(Factory<VerticalDragGestureRecognizer>(
+    //               () => VerticalDragGestureRecognizer())),
+    //       ),
+    //     );
+    //   });
   }
 }
 

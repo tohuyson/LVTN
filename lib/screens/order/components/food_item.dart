@@ -4,6 +4,7 @@ import 'package:fooddelivery/model/card.dart';
 import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/toppings.dart';
+import 'package:intl/intl.dart';
 
 class FoodItem extends StatelessWidget {
   late CardModel? cardModel;
@@ -48,6 +49,8 @@ class FoodItem extends StatelessWidget {
                       Text(
                         '${cardModel!.cardOrder![index].food!.name}',
                         style: TextStyle(fontSize: 18.sp),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       ListView.builder(
                           shrinkWrap: true,
@@ -62,9 +65,9 @@ class FoodItem extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: 70.w,
+                  width: 92.w,
                   child: Text(
-                    '${cardModel!.cardOrder![index].price}',
+                    '${NumberFormat.currency(locale: 'vi').format(cardModel!.cardOrder![index].price)}',
                     textAlign: TextAlign.right,
                   ),
                 ),

@@ -78,7 +78,7 @@ class _InformationRestaurant extends State<InformationRestaurant> {
             height: 10.h,
           ),
           Container(width: 390.w, child: Text('Mô tả:')),
-          Container(width: 390.w, child: Text(restaurant.description!)),
+          Container(width: 390.w, child: Text(restaurant.description == null? '': restaurant.description!)),
           SizedBox(
             height: 5.h,
           ),

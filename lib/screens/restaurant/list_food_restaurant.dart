@@ -9,8 +9,8 @@ import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/card.dart';
 import 'package:fooddelivery/model/card_oder.dart';
 import 'package:fooddelivery/model/restaurant.dart';
-import 'package:fooddelivery/screens/chat/widget/loading.dart';
 import 'package:fooddelivery/screens/order/order_detail.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -20,19 +20,21 @@ import 'component/food_restaurant.dart';
 
 class ListFoodRestaurant extends StatefulWidget {
   final Restaurant restaurant;
+  final double distance;
 
-  ListFoodRestaurant({required this.restaurant});
+  ListFoodRestaurant({required this.restaurant, required this.distance});
 
   @override
   State<StatefulWidget> createState() {
-    return _ListFoodRestaurant(restaurant: restaurant);
+    return _ListFoodRestaurant(restaurant: restaurant, distance: distance);
   }
 }
 
 class _ListFoodRestaurant extends State<ListFoodRestaurant> {
   final Restaurant restaurant;
+  final double distance;
 
-  _ListFoodRestaurant({required this.restaurant});
+  _ListFoodRestaurant({required this.restaurant, required this.distance});
 
   late Rx<CardModel> card;
 
@@ -106,12 +108,13 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                 var result = await Get.to(FoodDetail(
                                   food: restaurant.foods![i],
                                 ));
-                                setState(() {
-                                  if (result != null) {
-                                    CardModel c = result;
-                                    fetchCard();
-                                  }
-                                });
+                                print(result);
+                                if (result != null) {
+                                  // setState(() {
+                                  // CardModel c = result;
+                                  await fetchCard();
+                                  // });
+                                }
                                 // showPicker(context, food![i]!);
                               },
                               child: Icon(
@@ -218,7 +221,7 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(OrderDetail(), arguments: {
-                                            'card_id': card.value.id
+                                            'card_id': card.value.id, 'distance': distance
                                           });
                                         },
                                         child: Container(

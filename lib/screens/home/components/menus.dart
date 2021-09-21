@@ -9,6 +9,7 @@ import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/controllers/home_controller.dart';
 import 'package:fooddelivery/model/food.dart';
 import 'package:fooddelivery/model/list_foods.dart';
+import 'package:fooddelivery/screens/home/menu_screen.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:fooddelivery/model/item_category.dart';
@@ -27,15 +28,15 @@ class _Menu extends State<Menu> {
     return Container(
       color: Colors.white,
       width: double.infinity,
-      height: 176.h,
+      height: 184.h,
       padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           GridView.builder(
             scrollDirection: Axis.horizontal,
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 100,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
             ),
             shrinkWrap: true,
             physics: ScrollPhysics(),
@@ -45,10 +46,11 @@ class _Menu extends State<Menu> {
                 onTap: () {
                   print('tap tap');
                   print(listItemCategory[index].name!);
-
+                  Get.to(MenuScreen(),
+                      arguments: {'menuName': listItemCategory[index].name!});
                 },
                 child: Container(
-                  height: 80.h,
+                  height: 84.h,
                   width: 80.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -70,7 +72,7 @@ class _Menu extends State<Menu> {
                             listItemCategory[index].url!),
                       ),
                       Container(
-                        height: 30.h,
+                        // height: 30.h,
                         child: Center(
                             child: Text(
                           listItemCategory[index].name!,
@@ -78,7 +80,7 @@ class _Menu extends State<Menu> {
                             fontSize: 14.sp,
                           ),
                           textAlign: TextAlign.center,
-                          maxLines: 2,
+                          maxLines: 1,
                         )),
                       )
                     ],

@@ -9,7 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fooddelivery/main.dart';
 import 'package:fooddelivery/screens/chat/settings.dart';
-import 'package:fooddelivery/screens/chat/widget/loading.dart';
+import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'chat.dart';
@@ -40,10 +40,6 @@ class _HomeScreenState extends State<ChatHomeScreen> {
   int _limit = 20;
   int _limitIncrement = 20;
   bool isLoading = false;
-  List<Choice> choices = const <Choice>[
-    const Choice(title: 'Settings', icon: Icons.settings),
-    const Choice(title: 'Log out', icon: Icons.exit_to_app),
-  ];
 
   @override
   void initState() {
@@ -96,21 +92,21 @@ class _HomeScreenState extends State<ChatHomeScreen> {
     }
   }
 
-  void onItemMenuPress(Choice choice) {
-    if (choice.title == 'Log out') {
-      handleSignOut();
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChatSettings()));
-    }
-  }
+  // void onItemMenuPress(Choice choice) {
+  //   if (choice.title == 'Log out') {
+  //     handleSignOut();
+  //   } else {
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => ChatSettings()));
+  //   }
+  // }
 
   void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.example.app_delivery'
-          : 'com.example.app_delivery',
+        AndroidNotificationDetails('com.nlu.fooddelivery',
+      // Platform.isAndroid
+      //     ? 'com.example.app_delivery'
+      //     : 'com.example.app_delivery',
       'Flutter chat demo',
       'your channel description',
       playSound: true,
@@ -228,61 +224,35 @@ class _HomeScreenState extends State<ChatHomeScreen> {
   //       exit(0);
   //   }
   // }
-
-  Future<Null> handleSignOut() async {
-    this.setState(() {
-      isLoading = true;
-    });
-
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
-
-    this.setState(() {
-      isLoading = false;
-    });
-
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MyApp()),
-        (Route<dynamic> route) => false);
-  }
+  //
+  // Future<Null> handleSignOut() async {
+  //   this.setState(() {
+  //     isLoading = true;
+  //   });
+  //
+  //   await FirebaseAuth.instance.signOut();
+  //   await googleSignIn.disconnect();
+  //   await googleSignIn.signOut();
+  //
+  //   this.setState(() {
+  //     isLoading = false;
+  //   });
+  //
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //       MaterialPageRoute(builder: (context) => MyApp()),
+  //       (Route<dynamic> route) => false);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         title: Text(
           'Tin nhắn',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white,),
         ),
         centerTitle: true,
-        // actions: <Widget>[
-        //   PopupMenuButton<Choice>(
-        //     onSelected: onItemMenuPress,
-        //     itemBuilder: (BuildContext context) {
-        //       return choices.map((Choice choice) {
-        //         return PopupMenuItem<Choice>(
-        //             value: choice,
-        //             child: Row(
-        //               children: <Widget>[
-        //                 Icon(
-        //                   choice.icon,
-        //                   color: primaryColor,
-        //                 ),
-        //                 Container(
-        //                   width: 10.0,
-        //                 ),
-        //                 Text(
-        //                   choice.title,
-        //                   style: TextStyle(color: primaryColor),
-        //                 ),
-        //               ],
-        //             ));
-        //       }).toList();
-        //     },
-        //   ),
-        // ],
       ),
       body: WillPopScope(
         onWillPop: null,
@@ -386,22 +356,22 @@ class _HomeScreenState extends State<ChatHomeScreen> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            'Nickname: ${userChat.nickname}',
+                            '${userChat.nickname}',
                             maxLines: 1,
                             style: TextStyle(color: primaryColor),
                           ),
                           alignment: Alignment.centerLeft,
                           margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
                         ),
-                        Container(
-                          child: Text(
-                            'About me: ${userChat.aboutMe}',
-                            maxLines: 1,
-                            style: TextStyle(color: primaryColor),
-                          ),
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                        )
+                        // Container(
+                        //   child: Text(
+                        //     'About me: ${userChat.aboutMe}',
+                        //     maxLines: 1,
+                        //     style: TextStyle(color: primaryColor),
+                        //   ),
+                        //   alignment: Alignment.centerLeft,
+                        //   margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                        // )
                       ],
                     ),
                     margin: EdgeInsets.only(left: 20.0),
@@ -415,6 +385,7 @@ class _HomeScreenState extends State<ChatHomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => Chat(
                     peerId: userChat.id!,
+                    peerNickname: userChat.nickname!,
                     peerAvatar: userChat.photoUrl!,
                   ),
                 ),

@@ -184,7 +184,9 @@ Future<double> distanceRestaurant(
   if (data != 404) {
     var arrarDistance = data['distances'][0];
     print(arrarDistance);
+    if(arrarDistance[1]!= null)
     return arrarDistance[1];
+    else return 0.0;
   }
   return 0.0;
 }

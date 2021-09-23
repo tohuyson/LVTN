@@ -142,9 +142,15 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                   Container(
                                                     padding: EdgeInsets.only(
                                                         left: 10.w),
-                                                    child: Text(listOrder[index]
-                                                        .user!
-                                                        .username!,style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                                                    child: Text(
+                                                      listOrder[index]
+                                                          .user!
+                                                          .username!,
+                                                      style: TextStyle(
+                                                          fontSize: 18.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -157,9 +163,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                     IconButton(
                                                         onPressed: () {
                                                           launch(
-                                                              "tel: ${listOrder[index]
-                                                                  .user!
-                                                                  .phone}");
+                                                              "tel: ${listOrder[index].user!.phone}");
                                                         },
                                                         icon: Icon(
                                                           Icons.call,
@@ -168,58 +172,65 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                         )),
                                                     IconButton(
                                                         onPressed: () async {
-                                                          SharedPreferences prefs =
+                                                          SharedPreferences
+                                                              prefs =
                                                               await SharedPreferences
-                                                              .getInstance();
+                                                                  .getInstance();
                                                           print('chát');
-                                                          User? user = FirebaseAuth
-                                                              .instance
-                                                              .currentUser!;
+                                                          User? user =
+                                                              FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser!;
                                                           print(user);
                                                           if (user != null) {
                                                             // Check is already sign up
                                                             final querySnapshotresult =
                                                                 await FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                'users')
-                                                                .where('id',
-                                                                isEqualTo:
-                                                                user.uid)
-                                                                .get();
+                                                                    .instance
+                                                                    .collection(
+                                                                        'users')
+                                                                    .where('id',
+                                                                        isEqualTo:
+                                                                            user.uid)
+                                                                    .get();
                                                             print(
                                                                 querySnapshotresult
                                                                     .docs);
                                                             // final List<DocumentSnapshot>documents = result.docs;
                                                             if (querySnapshotresult
-                                                                .docs.length ==
+                                                                    .docs
+                                                                    .length ==
                                                                 0) {
                                                               // Update data to server if new user
                                                               FirebaseFirestore
                                                                   .instance
                                                                   .collection(
-                                                                  'users')
+                                                                      'users')
                                                                   .doc(user.uid)
                                                                   .set({
                                                                 'nickname': user
                                                                     .displayName,
-                                                                'photoUrl':
-                                                                user.photoURL,
+                                                                'photoUrl': user
+                                                                    .photoURL,
                                                                 'id': user.uid,
                                                                 'createdAt': DateTime
-                                                                    .now()
+                                                                        .now()
                                                                     .millisecondsSinceEpoch
                                                                     .toString(),
                                                                 'chattingWith':
-                                                                listOrder[index]
-                                                                    .user!.uid,
+                                                                    listOrder[
+                                                                            index]
+                                                                        .user!
+                                                                        .uid,
                                                               });
 
                                                               // Write data to local
                                                               // currentUser = user;
                                                               // print(currentUser.uid);
-                                                              await prefs.setString(
-                                                                  'id', user.uid);
+                                                              await prefs
+                                                                  .setString(
+                                                                      'id',
+                                                                      user.uid);
                                                               await prefs.setString(
                                                                   'nickname',
                                                                   user.displayName ??
@@ -230,17 +241,21 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                       "");
                                                             } else {
                                                               DocumentSnapshot
-                                                              documentSnapshot =
-                                                              querySnapshotresult
-                                                                  .docs[0];
-                                                              UserChat userChat =
-                                                              UserChat.fromDocument(
-                                                                  documentSnapshot);
+                                                                  documentSnapshot =
+                                                                  querySnapshotresult
+                                                                      .docs[0];
+                                                              UserChat
+                                                                  userChat =
+                                                                  UserChat.fromDocument(
+                                                                      documentSnapshot);
                                                               // Write data to local
-                                                              print(userChat.id);
-                                                              await prefs.setString(
-                                                                  'id',
-                                                                  userChat.id!);
+                                                              print(
+                                                                  userChat.id);
+                                                              await prefs
+                                                                  .setString(
+                                                                      'id',
+                                                                      userChat
+                                                                          .id!);
                                                               await prefs.setString(
                                                                   'nickname',
                                                                   userChat
@@ -250,17 +265,23 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                   userChat.photoUrl ??
                                                                       "");
                                                             }
-                                                            String avatar =
-                                                                Apis.baseURL +
-                                                                    listOrder[index]
-                                                                        .user!.avatar!;
+                                                            String avatar = Apis
+                                                                    .baseURL +
+                                                                listOrder[index]
+                                                                    .user!
+                                                                    .avatar!;
                                                             Get.to(Chat(
-                                                              peerId: listOrder[index]
-                                                                  .user!.uid!,
+                                                              peerId: listOrder[
+                                                                      index]
+                                                                  .user!
+                                                                  .uid!,
                                                               peerNickname:
-                                                              listOrder[index]
-                                                                  .user!.username!,
-                                                              peerAvatar: avatar,
+                                                                  listOrder[
+                                                                          index]
+                                                                      .user!
+                                                                      .username!,
+                                                              peerAvatar:
+                                                                  avatar,
                                                             ));
                                                           }
                                                         },
@@ -372,13 +393,15 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                               ),
                                                               Container(
                                                                 width: 90.w,
-                                                                child: Text(NumberFormat.currency(locale: 'vi')
-                                                                  .format(listOrder[
-                                                                index]
-                                                                    .foodOrder![
-                                                                ind]
-                                                                    .price)
-                                                                  ,
+                                                                child: Text(
+                                                                  NumberFormat.currency(
+                                                                          locale:
+                                                                              'vi')
+                                                                      .format(listOrder[
+                                                                              index]
+                                                                          .foodOrder![
+                                                                              ind]
+                                                                          .price),
                                                                   textAlign:
                                                                       TextAlign
                                                                           .right,
@@ -444,10 +467,12 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                           right: 7.w),
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: Text('Tổng: ' + NumberFormat.currency(locale: 'vi')
-                                                          .format( listOrder[index]
-                                                          .price)
-                                                      ),
+                                                      child: Text('Tổng: ' +
+                                                          NumberFormat.currency(
+                                                                  locale: 'vi')
+                                                              .format(listOrder[
+                                                                      index]
+                                                                  .price)),
                                                     ),
                                                   ],
                                                 ),
@@ -504,18 +529,25 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                         await received(
                                                                             listOrder[index].id);
                                                                         Get.back();
-                                                                        bool isNotify = await notification(
+                                                                        // bool isNotify =
+                                                                        await notification(
                                                                             listOrder[index].foodOrder![0].food!.restaurant!.user!.uid!,
                                                                             'Nhận đơn',
-                                                                            'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}');
-                                                                        if (isNotify ==
-                                                                            true) {
-                                                                          await saveNotification(
-                                                                              'Nhận đơn',
-                                                                              'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
-                                                                              '${listOrder[index].foodOrder![0].food!.restaurant!.user!.id}',
-                                                                              2);
-                                                                        }
+                                                                            'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
+                                                                            2);
+                                                                        await notification(
+                                                                            listOrder[index].user!.uid!,
+                                                                            'Nhận đơn',
+                                                                            'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
+                                                                            2);
+                                                                        // if (isNotify ==
+                                                                        //     true) {
+                                                                        //   await saveNotification(
+                                                                        //       'Nhận đơn',
+                                                                        //       'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
+                                                                        //       '${listOrder[index].foodOrder![0].food!.restaurant!.user!.id}',
+                                                                        //       2);
+                                                                        // }
                                                                         await Get.off(
                                                                             () =>
                                                                                 ReceivedScreen(),

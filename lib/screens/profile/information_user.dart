@@ -46,6 +46,8 @@ class _InformationUser extends State<InformationUser> {
                   centerTitle: true,
                   elevation: 0,
                   title: Text("Thông tin người dùng"),
+                  leading: BackButton(
+                  ),
                 ),
                 body: Container(
                   padding: EdgeInsets.only(top: 5.h),

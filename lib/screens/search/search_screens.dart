@@ -108,8 +108,16 @@ class _SearchScreen extends State<SearchScreen> {
                         Icons.close,
                         color: Colors.black,
                       ),
-                      onTap: () {
+                      onTap: () async {
                         controller.clear();
+                        var r = await getRestaurants('');
+                        print(r);
+                        setState(() {
+                          print(r!.length);
+                          listRestaurant.assignAll(r);
+                          listRestaurant.refresh();
+                          isLoading = false;
+                        });
                         // widget.onChanged!('');
                         FocusScope.of(context).requestFocus(FocusNode());
                       },

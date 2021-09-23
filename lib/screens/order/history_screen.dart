@@ -82,7 +82,7 @@ class _HistoryScreen extends State<HistoryScreen> {
                                         children: [
                                           Text(DateFormat('yyyy-MM-dd HH:mm')
                                               .format(DateTime.parse(
-                                                  order![index].updatedAt!))),
+                                                  order![index].updatedAt!).toLocal())),
                                           order![index].orderStatusId == 5
                                               ? Text('Đã hủy')
                                               : Text('Đã giao')

@@ -10,6 +10,7 @@ import 'package:fooddelivery/controllers/profile_controllor.dart';
 import 'package:fooddelivery/model/item_profile.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/users.dart';
+import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/chat/home.dart';
 import 'package:fooddelivery/screens/delivery/delivery_screen.dart';
 import 'package:fooddelivery/screens/delivery/history_delivery_screen.dart';
@@ -17,6 +18,7 @@ import 'package:fooddelivery/screens/delivery/received_screen.dart';
 import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
+import 'package:fooddelivery/screens/profile/policy.dart';
 import 'package:fooddelivery/screens/profile/register_delivery.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:get/get.dart';
@@ -121,20 +123,20 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 color: Color(0xFFFFFFFF),
                                 child: Column(
                                   children: [
-                                    // ItemProfile(
-                                    //   itemProfile: ItemProfileModel(
-                                    //     title: 'Thanh toán',
-                                    //     description: '',
-                                    //     page: HomeScreen(),
-                                    //   ),
-                                    // ),
-                                    // ItemProfile(
-                                    //   itemProfile: ItemProfileModel(
-                                    //     title: 'Địa chỉ',
-                                    //     description: '',
-                                    //     page: HomeScreen(),
-                                    //   ),
-                                    // ),
+                                    ItemProfile(
+                                      itemProfile: ItemProfileModel(
+                                        title: 'Thông tin người đùng',
+                                        description: '',
+                                        page: InformationUser(),
+                                      ),
+                                    ),
+                                    ItemProfile(
+                                      itemProfile: ItemProfileModel(
+                                        title: 'Địa chỉ',
+                                        description: '',
+                                        page: AddressScreen(),
+                                      ),
+                                    ),
                                     // ItemProfile(
                                     //   itemProfile: ItemProfileModel(
                                     //     title: 'Người giao hàng',
@@ -183,6 +185,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   lu.value!.id,
                                                             });
                                                         if (user != null) {
+                                                          showToast('Bạn đã đăng ký thành công. Nhận đơn hàng ngay!');
                                                           fetchUsers();
                                                         }
                                                       } else if (lu
@@ -215,56 +218,64 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         ],
                                       ),
                                     ),
-                                    lu.value!.roleId ==
-                                        4 ? Container(
-                                      margin: EdgeInsets.only(
-                                          left: 15.w, right: 10.w),
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  width: 0.3,
-                                                  color: Colors.black12))),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // LineDecoration(),
-                                          Container(
-                                            child: Text(
-                                              'Lịch sử giao hàng',
-                                              style: TextStyle(fontSize: 17.sp),
-                                            ),
-                                          ),
-                                          Container(
+                                    // lu.value!.roleId == 4
+                                        // ?
+                                    Container(
+                                            margin: EdgeInsets.only(
+                                                left: 15.w, right: 10.w),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                        width: 0.3,
+                                                        color:
+                                                            Colors.black12))),
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Text(
-                                                  '',
-                                                  style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    color: Colors.blue,
+                                                // LineDecoration(),
+                                                Container(
+                                                  child: Text(
+                                                    'Lịch sử giao hàng',
+                                                    style: TextStyle(
+                                                        fontSize: 17.sp),
                                                   ),
                                                 ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      Get.to(
-                                                          HistoryDeliveryScreen(),
-                                                          arguments: {
-                                                            'userId':
-                                                                lu.value!.id
-                                                          });
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      size: 14,
-                                                    ))
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '',
+                                                        style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            Get.to(
+                                                                HistoryDeliveryScreen(),
+                                                                arguments: {
+                                                                  'userId': lu
+                                                                      .value!.id
+                                                                });
+                                                          },
+                                                          icon: Icon(
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            size: 14,
+                                                          ))
+                                                    ],
+                                                  ),
+                                                )
                                               ],
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ): Container(),
+                                          ),
+                                        // : Container(),
                                     // ItemProfile(
                                     //   itemProfile: ItemProfileModel(
                                     //     title: 'Đơn hàng của tôi',
@@ -282,36 +293,36 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   ],
                                 ),
                               ),
-                              // Container(
-                              //   margin: EdgeInsets.only(top: 10.h),
-                              //   color: Color(0xFFFFFFFF),
-                              //   child: Column(
-                              //     children: [
-                              //       // ColorLineBottom(),
-                              //       ItemProfile(
-                              //         itemProfile: ItemProfileModel(
-                              //           title: 'Trung tâm hỗ trợ',
-                              //           description: '',
-                              //           page: HomeScreen(),
-                              //         ),
-                              //       ),
-                              //       ItemProfile(
-                              //         itemProfile: ItemProfileModel(
-                              //           title: 'Chính sách và quy định',
-                              //           description: '',
-                              //           page: HomeScreen(),
-                              //         ),
-                              //       ),
-                              //       ItemProfile(
-                              //         itemProfile: ItemProfileModel(
-                              //           title: 'Cài đặt',
-                              //           description: '',
-                              //           page: HomeScreen(),
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.h),
+                                color: Color(0xFFFFFFFF),
+                                child: Column(
+                                  children: [
+                                    // ColorLineBottom(),
+                                    // ItemProfile(
+                                    //   itemProfile: ItemProfileModel(
+                                    //     title: 'Trung tâm hỗ trợ',
+                                    //     description: '',
+                                    //     page: HomeScreen(),
+                                    //   ),
+                                    // ),
+                                    ItemProfile(
+                                      itemProfile: ItemProfileModel(
+                                        title: 'Chính sách và quy định',
+                                        description: '',
+                                        page: Policy(),
+                                      ),
+                                    ),
+                                    //       ItemProfile(
+                                    //         itemProfile: ItemProfileModel(
+                                    //           title: 'Cài đặt',
+                                    //           description: '',
+                                    //           page: HomeScreen(),
+                                    //         ),
+                                    //       ),
+                                  ],
+                                ),
+                              ),
                               GestureDetector(
                                 onTap: () {
                                   controller.logout();

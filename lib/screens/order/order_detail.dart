@@ -701,8 +701,7 @@ class _OrderDetail extends State<OrderDetail> {
                                 if (payResult != 'User Canceled') {
                                   // addOrder();
                                   showToast('Người dùng chưa thanh toán!');
-                                }else
-                                if (payResult != 'Payment failed') {
+                                } else if (payResult != 'Payment failed') {
                                   // addOrder();
                                   showToast('Thanh toán thất bại!');
                                 }
@@ -911,17 +910,30 @@ class _OrderDetail extends State<OrderDetail> {
 
             print(order.food![0].restaurant!.user!.uid!);
 
-            var isNotify = await notification(
+            await notification(
                 order.food![0].restaurant!.user!.uid!,
-                'Đơn hàng mới',
-                'Bạn có một đơn hàng mới');
-            if (isNotify == true) {
-              await saveNotification(
-                  'Đơn hàng mới',
-                  'Bạn có một đơn hàng mới',
-                  '${order.food![0].restaurant!.user!.id}',
-                  1);
-            }
+                'Đơn hàng',
+                'Quán ăn có một đơn hàng mới từ ${users.value.username}',
+                1);
+            // if (isNotify == true) {
+            //   await saveNotification(
+            //       'Đơn hàng',
+            //       'Quán ăn có một đơn hàng mới từ ${users.value.username}',
+            //       '${order.food![0].restaurant!.user!.id}',
+            //       1);
+            // }
+            await notification(
+                users.value.uid!,
+                'Đơn hàng',
+                'Đơn hàng đang được xử lí bời quán ăn ${order.food![0].restaurant!.name}',
+                1);
+            // if (isNotifyPerson == true) {
+            //   await saveNotification(
+            //       'Đơn hàng',
+            //       'Đơn hàng đang được xử lí bời quán ăn ${order.food![0].restaurant!.name}',
+            //       '${users.value.id}',
+            //       1);
+            // }
             EasyLoading.dismiss();
 
             Get.off(
@@ -931,7 +943,8 @@ class _OrderDetail extends State<OrderDetail> {
                 arguments: {'order_id': order.id});
           }
           if (response.statusCode == 204) {
-            showToast("Bạn đang có một đang hàng đang giao, vui lòng mua hàng sau!");
+            showToast(
+                "Bạn đang có một đang hàng đang giao, vui lòng mua hàng sau!");
           }
         } on TimeoutException catch (e) {
           showError(e.toString());

@@ -117,17 +117,18 @@ Future<int?> uploadAvatar(File file, String filename) async {
   }
 }
 
-Future<bool> notification(String uid, String title, String body) async {
+Future<bool> notification(String uid, String title, String body,int notification_type_id) async {
   try {
     http.Response response = await http.post(
       Uri.parse(Apis.postNotificationUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String, dynamic>{
         'uid': uid,
         'title': title,
         'body': body,
+        'notification_type_id': notification_type_id,
       }),
     );
     print(response.statusCode);

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/model/notify.dart';
 import 'package:fooddelivery/screens/notify/notify_item.dart';
+import 'package:fooddelivery/screens/widget/empty_screen.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -54,41 +55,68 @@ class _NotifyScreen extends State<NotifyScreen> {
         //       }),
         // ],
       ),
-      body: Container(
-        color: Color(0xFFEEEEEE),
-        height: 834.h,
-        child: Stack(
-          children: [
-            Obx(
-              () => ListView.builder(
-                  itemCount: listNotify.length,
-                  itemBuilder: (context, index) {
-                    return NotifyItem(
-                      notify: listNotify[index],
-                    );
-                  }),
-            ),
-            Positioned.fill(child: isLoading ? const Loading() : Container()),
-          ],
-        ),
+      body: FutureBuilder(
+        future: fetchNotify(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Loading();
+          } else {
+            if (snapshot.hasData) {
+              return Container(
+                color: Color(0xFFEEEEEE),
+                height: 834.h,
+                child:Obx(
+                      () => ListView.builder(
+                      itemCount: listNotify.length,
+                      itemBuilder: (context, index) {
+                        return NotifyItem(
+                          notify: listNotify[index],
+                        );
+                      }),
+                ),
+                // Stack(
+                //   children: [
+                //     listNotify.length > 0
+                //         ? Obx(
+                //             () => ListView.builder(
+                //                 itemCount: listNotify.length,
+                //                 itemBuilder: (context, index) {
+                //                   return NotifyItem(
+                //                     notify: listNotify[index],
+                //                   );
+                //                 }),
+                //           )
+                //         : EmptyScreen(text: 'Bạn chưa có thông báo'),
+                //     Positioned.fill(
+                //         child: isLoading ? const Loading() : Container()),
+                //   ],
+                // ),
+              );
+            } else {
+              return EmptyScreen(
+                text: 'Bạn chưa có thông báo!',
+              );
+            }
+          }
+        },
       ),
     );
   }
 
-  Future<void> fetchNotify() async {
-    setState(() {
-      isLoading = true;
-    });
+  Future<bool> fetchNotify() async {
+    // setState(() {
+    //   isLoading = true;
+    // });
     var n = await getNotify();
     print(n);
     if (n != null) {
-      setState(() {
-        isLoading = false;
-      });
+      // setState(() {
+      //   isLoading = false;
+      // });
       listNotify.assignAll(n);
       listNotify.refresh();
-
     }
+    return listNotify.isNotEmpty;
   }
 
   Future<List<Notify>> getNotify() async {

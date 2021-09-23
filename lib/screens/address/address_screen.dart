@@ -203,7 +203,7 @@ class _AddressScreen extends State<AddressScreen> {
                   child: Column(
                       children: [
                     Container(
-                      height: 674.h,
+                      height: 664.h,
                       width: 414.w,
                       padding: EdgeInsets.only(
                           left: 12.w, right: 12.w, top: 10.h),
@@ -230,10 +230,12 @@ class _AddressScreen extends State<AddressScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Icon(
-                                    Icons.location_on,
-                                    size: 20,
+                                    Icons.location_on_outlined,
+                                    size: 24,
+                                    color: Colors.black54,
                                   ),
                                 ),
+                                SizedBox(width: 8.w,),
                                 Obx(
                                       () =>
                                       Column(
@@ -246,24 +248,18 @@ class _AddressScreen extends State<AddressScreen> {
                                                 fontWeight: FontWeight.w500),
                                           ),
                                           SizedBox(
-                                            height: 8.h,
+                                            height: 6.h,
                                           ),
                                           Container(
-                                              width: 350.w,
+                                              width: 336.w,
                                               child: Text(
                                                 addressDetail.value,
                                                 overflow:
                                                 TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.w300),
                                               )),
                                           SizedBox(
                                             height: 8.h,
                                           ),
-                                          Row(
-                                            children: [],
-                                          )
                                         ],
                                       ),
                                 )
@@ -307,10 +303,11 @@ class _AddressScreen extends State<AddressScreen> {
                                               MainAxisAlignment.spaceAround,
                                               children: [
                                                 Icon(
-                                                  Icons.location_on,
+                                                  Icons.location_on_outlined,
                                                   size: 28.sp,
+                                                  color: Colors.black54,
                                                 ),
-                                                SizedBox(width: 20.w,),
+                                                SizedBox(width: 10.w,),
                                                 Container(
                                                   width: 290.w,
                                                   child: Column(

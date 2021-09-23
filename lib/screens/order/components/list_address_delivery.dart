@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
+import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/list_address.dart';
+import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/order_detail.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -93,7 +95,7 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
                     }),
               ),
             ),
-            GestureDetector(
+           address.length>0? GestureDetector(
               onTap: () async {
                 print(group);
 
@@ -120,7 +122,35 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
                   ),
                 ),
               ),
-            ),
+            ):GestureDetector(
+             onTap: () async {
+               // print(group);
+               //
+               // print(chooseAddress.detail);
+               //
+               // await setValue('street', chooseAddress.detail!);
+               // await setValue('address', chooseAddress.address!);
+               // await setValue('latitude', chooseAddress.lattitude!);
+               // await setValue('longitude', chooseAddress.longtitude!);
+               // Get.back(result: group);
+               Get.to(BottomNavigation(selectedIndex: 1));
+             },
+             child: Container(
+               margin: EdgeInsets.only(
+                   top: 10.h, bottom: 10.h, left: 10.w, right: 10.w),
+               height: 45.h,
+               decoration: BoxDecoration(
+                   color: Theme.of(context).primaryColor,
+                   borderRadius: BorderRadius.all(Radius.circular(5))),
+               child: Center(
+                 child: Text(
+                   'Thêm địa chỉ'.toUpperCase(),
+                   style: TextStyle(
+                       color: Colors.white, fontWeight: FontWeight.bold),
+                 ),
+               ),
+             ),
+           ),
           ],
         ),
       ),

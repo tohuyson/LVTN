@@ -7,12 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/controllers/address_controller.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/add_address.dart';
-import 'package:fooddelivery/screens/address/address_item.dart';
 import 'package:fooddelivery/screens/address/address_map_now.dart';
 import 'package:fooddelivery/screens/address/edit_address.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
@@ -21,8 +19,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
-import 'address_map.dart';
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -44,7 +40,6 @@ class _AddressScreen extends State<AddressScreen> {
   void initState() {
     checkPermision();
     address = new RxList<Address>();
-    // getAd();
     fetchAddress();
     fetchUsers();
     super.initState();
@@ -60,10 +55,6 @@ class _AddressScreen extends State<AddressScreen> {
         address: addressDetail.value,
         lattitude: latitude.value,
         longtitude: longitude.value);
-    print(street);
-    print(addressDetail);
-    print(latitude);
-    print(longitude);
   }
 
   Future<void> checkPermision() async {
@@ -73,32 +64,6 @@ class _AddressScreen extends State<AddressScreen> {
       permission = await Geolocator.requestPermission();
     }
   }
-
-  // Future<void> loadData() async {
-  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //
-  //   if (!serviceEnabled) {
-  //     showToast('Vui lòng bật vị trí!');
-  //   }
-  //
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //   }
-  //
-  //   List<Placemark> placemark = await getPosition();
-  //   String s = await getStreet(placemark);
-  //   String locality = await getLocality(placemark);
-  //   String a = await getAdd(placemark);
-  //   setState(() {
-  //     street = s.obs;
-  //     addressDetail = (s + ', ' + locality + ', ' + a).obs;
-  //   });
-  //   await setValue('street', s);
-  //   await setValue('address', addressDetail.value);
-  //   await setValue("latitude", latitude);
-  //   await setValue('longitude', longitude);
-  // }
 
   Future<String> getStreet(List<Placemark> placemarks) async {
     for (int i = 0; i < placemarks.length; i++) {
@@ -119,7 +84,6 @@ class _AddressScreen extends State<AddressScreen> {
   }
 
   Future<String> getAdd(List<Placemark> placemarks) async {
-    // List<String> address = [];
     String address = '';
 
     for (int i = 0; i < placemarks.length; i++) {
@@ -127,10 +91,6 @@ class _AddressScreen extends State<AddressScreen> {
       if (placemarks[i].administrativeArea!.isNotEmpty &&
           placemarks[i].subAdministrativeArea!.isNotEmpty &&
           placemarks[i].country!.isNotEmpty) {
-        print('vào dât đi bạn');
-        // address.add(placemarks[i].administrativeArea!);
-        // address.add(placemarks[i].subAdministrativeArea!);
-        // address.add(placemarks[i].locality!);
         address = placemarks[i].subAdministrativeArea! +
             ', ' +
             placemarks[i].administrativeArea! +
@@ -143,7 +103,7 @@ class _AddressScreen extends State<AddressScreen> {
 
   Future<List<Placemark>> getLocation(double latitude, double longitude) async {
     List<Placemark> placemarks =
-    await placemarkFromCoordinates(latitude, longitude);
+        await placemarkFromCoordinates(latitude, longitude);
     return placemarks;
   }
 
@@ -154,9 +114,7 @@ class _AddressScreen extends State<AddressScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: Theme
-            .of(context)
-            .primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         title: Text(
           'Địa chỉ',
@@ -167,25 +125,7 @@ class _AddressScreen extends State<AddressScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                // await loadData();
-                var result = await Get.to(
-                    AddressMapNow(), arguments: {'address': add});
-                // if (result != null) {
-                  // add = result;
-                  // print(add);
-                  //
-                  // List<Placemark> placemarks =await getLocation(double.parse(add.lattitude!), double.parse(add.longtitude!));
-                  //
-                  // String s = await getStreet(placemarks);
-                  // print(s);
-                  //
-                  //
-                  // setState(() {
-                  //
-                  //   street = s.obs;
-                  //   // addressDetail = (add.address)!.obs;
-                  // });
-                // }
+                await Get.to(AddressMapNow(), arguments: {'address': add});
               },
               icon: Icon(Icons.map_outlined))
         ],
@@ -200,13 +140,12 @@ class _AddressScreen extends State<AddressScreen> {
                 return Container(
                   width: 414.w,
                   color: kPrimaryColorBackground,
-                  child: Column(
-                      children: [
+                  child: Column(children: [
                     Container(
                       height: 664.h,
                       width: 414.w,
-                      padding: EdgeInsets.only(
-                          left: 12.w, right: 12.w, top: 10.h),
+                      padding:
+                          EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -217,55 +156,56 @@ class _AddressScreen extends State<AddressScreen> {
                           ),
                           addressDetail.value != '' && street.value != ''
                               ? Container(
-                            width: 390.w,
-                            margin: EdgeInsets.only(top: 8.h),
-                            padding:
-                            EdgeInsets.only(top: 8.h, bottom: 8.h),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 24,
-                                    color: Colors.black54,
+                                  width: 390.w,
+                                  margin: EdgeInsets.only(top: 8.h),
+                                  padding:
+                                      EdgeInsets.only(top: 8.h, bottom: 8.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
-                                ),
-                                SizedBox(width: 8.w,),
-                                Obx(
-                                      () =>
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            street.value,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          SizedBox(
-                                            height: 6.h,
-                                          ),
-                                          Container(
-                                              width: 336.w,
-                                              child: Text(
-                                                addressDetail.value,
-                                                overflow:
-                                                TextOverflow.ellipsis,
-                                              )),
-                                          SizedBox(
-                                            height: 8.h,
-                                          ),
-                                        ],
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.location_on_outlined,
+                                          size: 24,
+                                          color: Colors.black54,
+                                        ),
                                       ),
+                                      SizedBox(
+                                        width: 8.w,
+                                      ),
+                                      Obx(
+                                        () => Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              street.value,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            SizedBox(
+                                              height: 6.h,
+                                            ),
+                                            Container(
+                                                width: 336.w,
+                                                child: Text(
+                                                  addressDetail.value,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                )),
+                                            SizedBox(
+                                              height: 8.h,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 )
-                              ],
-                            ),
-                          )
                               : Container(),
                           Padding(
                             padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
@@ -278,8 +218,7 @@ class _AddressScreen extends State<AddressScreen> {
                           Container(
                             height: 520.h,
                             child: address.length > 0
-                                ? Obx(() =>
-                                ListView.builder(
+                                ? Obx(() => ListView.builder(
                                     itemCount: address.length,
                                     itemBuilder: (context, index) {
                                       return Slidable(
@@ -294,61 +233,54 @@ class _AddressScreen extends State<AddressScreen> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                            BorderRadius.circular(5),
+                                                BorderRadius.circular(5),
                                           ),
                                           margin: EdgeInsets.only(bottom: 10.h),
                                           child: Center(
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                                  MainAxisAlignment.spaceAround,
                                               children: [
                                                 Icon(
                                                   Icons.location_on_outlined,
                                                   size: 28.sp,
                                                   color: Colors.black54,
                                                 ),
-                                                SizedBox(width: 10.w,),
+                                                SizedBox(
+                                                  width: 10.w,
+                                                ),
                                                 Container(
                                                   width: 290.w,
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: [
                                                       Column(
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Row(
                                                             children: [
                                                               Text(
                                                                 user.username!,
                                                                 overflow:
-                                                                TextOverflow
-                                                                    .clip,
+                                                                    TextOverflow
+                                                                        .clip,
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                    18.sp,
+                                                                        18.sp,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                                        FontWeight
+                                                                            .w500),
                                                               ),
                                                               SizedBox(
                                                                 width: 10.w,
                                                               ),
-                                                              // address[index].status == 1
-                                                              //     ? Text(
-                                                              //         '[Mặc định]',
-                                                              //         style: TextStyle(
-                                                              //             color: Theme.of(
-                                                              //                     context)
-                                                              //                 .primaryColor),
-                                                              //       )
-                                                              //     : Text(''),
                                                             ],
                                                           ),
                                                           SizedBox(
@@ -358,10 +290,10 @@ class _AddressScreen extends State<AddressScreen> {
                                                             user.phone!,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                FontWeight
-                                                                    .w400,
+                                                                    FontWeight
+                                                                        .w400,
                                                                 fontSize:
-                                                                16.sp),
+                                                                    16.sp),
                                                           ),
                                                         ],
                                                       ),
@@ -370,32 +302,27 @@ class _AddressScreen extends State<AddressScreen> {
                                                       ),
                                                       Text(
                                                         address[index].detail!,
-                                                        // address.addressDetail!,
                                                         overflow:
-                                                        TextOverflow.clip,
+                                                            TextOverflow.clip,
                                                         style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
-                                                            FontWeight
-                                                                .w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                       Text(
                                                         address[index].address!,
-                                                        // address.addressDetail!,
                                                         overflow:
-                                                        TextOverflow.clip,
+                                                            TextOverflow.clip,
                                                         style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
-                                                            FontWeight
-                                                                .w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                                // SizedBox(
-                                                //   width: 10.w,
-                                                // ),
                                                 Container(
                                                   width: 34.w,
                                                   child: TextButton(
@@ -404,23 +331,18 @@ class _AddressScreen extends State<AddressScreen> {
                                                           EditAddress(),
                                                           arguments: {
                                                             'address_id':
-                                                            address[index]
-                                                                .id,
+                                                                address[index]
+                                                                    .id,
                                                             'user_id': user.id,
                                                           });
                                                       setState(() {
                                                         fetchAddress();
                                                       });
                                                     },
-                                                    child: Icon(Icons.edit),
-                                                    // Text(
-                                                    //   'Sửa',
-                                                    //   style: TextStyle(
-                                                    //     color: Theme
-                                                    //         .of(context)
-                                                    //         .primaryColor,
-                                                    //   ),
-                                                    // ),
+                                                    child: Icon(
+                                                      Icons.edit,
+                                                      size: 18,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -460,15 +382,11 @@ class _AddressScreen extends State<AddressScreen> {
                                                                 setState(() {
                                                                   address
                                                                       .removeAt(
-                                                                      index);
+                                                                          index);
                                                                   address
                                                                       .refresh();
                                                                   Get.back();
                                                                 });
-
-                                                                // Get.to(ListProduct());
-
-                                                                // food.refresh();
                                                               },
                                                               child: const Text(
                                                                 'Xóa',
@@ -486,232 +404,19 @@ class _AddressScreen extends State<AddressScreen> {
                                       );
                                     }))
                                 : Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                    'Bạn chưa có địa chỉ đã lưu'),
-                              ),
-                            ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                          'Bạn chưa có địa chỉ đã lưu'),
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
                     ),
-                    // Column(
-                    //   children: [
-                    //     Text('Địa chỉ đã lưu'),
-                    //     Expanded(
-                    //       child: Obx(
-                    //         () => address.length > 0
-                    //             ? ListView.builder(
-                    //                 itemCount: address.length,
-                    //                 itemBuilder: (context, index) {
-                    //                   return Slidable(
-                    //                     actionPane: SlidableDrawerActionPane(),
-                    //                     actionExtentRatio: 0.12,
-                    //                     child: Container(
-                    //                       padding: EdgeInsets.only(
-                    //                           top: 8.h,
-                    //                           bottom: 8.h,
-                    //                           left: 10.w,
-                    //                           right: 10.w),
-                    //                       color: Colors.white,
-                    //                       margin: EdgeInsets.only(bottom: 10.h),
-                    //                       child: Center(
-                    //                         child: Row(
-                    //                           mainAxisAlignment:
-                    //                               MainAxisAlignment.spaceAround,
-                    //                           children: [
-                    //                             Container(
-                    //                               width: 40.w,
-                    //                               child: Icon(
-                    //                                 Icons.location_on,
-                    //                                 color: Colors.black,
-                    //                                 size: 28.sp,
-                    //                               ),
-                    //                             ),
-                    //                             Container(
-                    //                               width: 290.w,
-                    //                               child: Column(
-                    //                                 crossAxisAlignment:
-                    //                                     CrossAxisAlignment.start,
-                    //                                 mainAxisAlignment:
-                    //                                     MainAxisAlignment
-                    //                                         .spaceEvenly,
-                    //                                 children: [
-                    //                                   Column(
-                    //                                     crossAxisAlignment:
-                    //                                         CrossAxisAlignment
-                    //                                             .start,
-                    //                                     children: [
-                    //                                       Row(
-                    //                                         children: [
-                    //                                           Text(
-                    //                                             user.username!,
-                    //                                             overflow:
-                    //                                                 TextOverflow
-                    //                                                     .clip,
-                    //                                             style: TextStyle(
-                    //                                                 fontSize:
-                    //                                                     18.sp,
-                    //                                                 fontWeight:
-                    //                                                     FontWeight
-                    //                                                         .w500),
-                    //                                           ),
-                    //                                           SizedBox(
-                    //                                             width: 10.w,
-                    //                                           ),
-                    //                                           address[index]
-                    //                                                       .status ==
-                    //                                                   1
-                    //                                               ? Text(
-                    //                                                   '[Mặc định]',
-                    //                                                   style: TextStyle(
-                    //                                                       color: Theme.of(context)
-                    //                                                           .primaryColor),
-                    //                                                 )
-                    //                                               : Text(''),
-                    //                                         ],
-                    //                                       ),
-                    //                                       SizedBox(
-                    //                                         height: 5.h,
-                    //                                       ),
-                    //                                       Text(
-                    //                                         user.phone!,
-                    //                                         style: TextStyle(
-                    //                                             fontWeight:
-                    //                                                 FontWeight
-                    //                                                     .w400,
-                    //                                             fontSize: 16.sp),
-                    //                                       ),
-                    //                                     ],
-                    //                                   ),
-                    //                                   SizedBox(
-                    //                                     height: 5.h,
-                    //                                   ),
-                    //                                   Text(
-                    //                                     address[index].detail!,
-                    //                                     // address.addressDetail!,
-                    //                                     overflow:
-                    //                                         TextOverflow.clip,
-                    //                                     style: TextStyle(
-                    //                                         fontSize: 16.sp,
-                    //                                         fontWeight:
-                    //                                             FontWeight.w400),
-                    //                                   ),
-                    //                                   Text(
-                    //                                     address[index].address!,
-                    //                                     // address.addressDetail!,
-                    //                                     overflow:
-                    //                                         TextOverflow.clip,
-                    //                                     style: TextStyle(
-                    //                                         fontSize: 16.sp,
-                    //                                         fontWeight:
-                    //                                             FontWeight.w400),
-                    //                                   ),
-                    //                                 ],
-                    //                               ),
-                    //                             ),
-                    //                             // SizedBox(
-                    //                             //   width: 10.w,
-                    //                             // ),
-                    //                             Container(
-                    //                               width: 50.w,
-                    //                               child: TextButton(
-                    //                                 onPressed: () async {
-                    //                                   await Get.to(EditAddress(),
-                    //                                       arguments: {
-                    //                                         'address_id':
-                    //                                             address[index].id,
-                    //                                         'user_id': user.id,
-                    //                                       });
-                    //                                   setState(() {
-                    //                                     fetchAddress();
-                    //                                   });
-                    //                                 },
-                    //                                 child: Text(
-                    //                                   'Sửa',
-                    //                                   style: TextStyle(
-                    //                                     color: Theme.of(context)
-                    //                                         .primaryColor,
-                    //                                   ),
-                    //                                 ),
-                    //                               ),
-                    //                             ),
-                    //                           ],
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                     secondaryActions: <Widget>[
-                    //                       Container(
-                    //                         margin: EdgeInsets.only(top: 5),
-                    //                         child: IconSlideAction(
-                    //                           caption: 'Delete',
-                    //                           color: Color(0xFFEEEEEE),
-                    //                           icon: Icons.delete,
-                    //                           foregroundColor: Colors.red,
-                    //                           onTap: () {
-                    //                             showDialog(
-                    //                                 context: context,
-                    //                                 builder: (context) {
-                    //                                   return AlertDialog(
-                    //                                       title: Text(
-                    //                                           'Xóa địa chỉ'),
-                    //                                       content: const Text(
-                    //                                           'Bạn có chắc chắn muốn xóa không?'),
-                    //                                       actions: <Widget>[
-                    //                                         TextButton(
-                    //                                           onPressed: () =>
-                    //                                               Get.back(),
-                    //                                           child: const Text(
-                    //                                               'Hủy'),
-                    //                                         ),
-                    //                                         TextButton(
-                    //                                           onPressed:
-                    //                                               () async {
-                    //                                             await deleteAddress(
-                    //                                                 address[index]
-                    //                                                     .id!);
-                    //                                             setState(() {
-                    //                                               address
-                    //                                                   .removeAt(
-                    //                                                       index);
-                    //                                               address
-                    //                                                   .refresh();
-                    //                                               Get.back();
-                    //                                             });
-                    //
-                    //                                             // Get.to(ListProduct());
-                    //
-                    //                                             // food.refresh();
-                    //                                           },
-                    //                                           child: const Text(
-                    //                                             'Xóa',
-                    //                                             style: TextStyle(
-                    //                                                 color: Colors
-                    //                                                     .red),
-                    //                                           ),
-                    //                                         ),
-                    //                                       ]);
-                    //                                 });
-                    //                           },
-                    //                         ),
-                    //                       )
-                    //                     ],
-                    //                   );
-                    //                 })
-                    //             : Container(
-                    //                 color: Colors.white,
-                    //                 child: Center(
-                    //                   child: Text('Bạn chưa có địa chỉ'),
-                    //                 ),
-                    //               ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                     Container(
                       height: 65.h,
                       child: GestureDetector(
@@ -728,10 +433,9 @@ class _AddressScreen extends State<AddressScreen> {
                               top: 10.h, bottom: 10.h, left: 10.w, right: 10.w),
                           height: 45.h,
                           decoration: BoxDecoration(
-                              color: Theme
-                                  .of(context)
-                                  .primaryColor,
-                              borderRadius: BorderRadius.all(Radius.circular(5))),
+                              color: Theme.of(context).primaryColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
                           child: Center(
                             child: Text(
                               'Thêm địa chỉ mới'.toUpperCase(),
@@ -771,9 +475,7 @@ class _AddressScreen extends State<AddressScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        Address address = AddressJson
-            .fromJson(parsedJson)
-            .address!;
+        Address address = AddressJson.fromJson(parsedJson).address!;
         return address;
       }
       if (response.statusCode == 404) {
@@ -818,9 +520,7 @@ class _AddressScreen extends State<AddressScreen> {
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         print(parsedJson['users']);
-        users = UsersJson
-            .fromJson(parsedJson)
-            .users;
+        users = UsersJson.fromJson(parsedJson).users;
         print(users);
         return users;
       }
@@ -860,9 +560,7 @@ class _AddressScreen extends State<AddressScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        list = ListAddress
-            .fromJson(parsedJson)
-            .listAddress!;
+        list = ListAddress.fromJson(parsedJson).listAddress!;
         return list;
       }
       if (response.statusCode == 401) {

@@ -13,9 +13,8 @@ class NotifyItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
       width: double.infinity,
-      // height: 130.h,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black12, width: 1),
+          border: Border.all(color: Colors.black12, width: 0.5),
           borderRadius: BorderRadius.all(Radius.circular(5)),
           color: Colors.white),
       child: Column(
@@ -37,7 +36,6 @@ class NotifyItem extends StatelessWidget {
                           size: 22.sp,
                         ),
                         onPressed: () {
-                          print("setting");
                         }),
                     Text(
                       notify!.title!,
@@ -50,23 +48,12 @@ class NotifyItem extends StatelessWidget {
                   padding: EdgeInsets.only(right: 12.w),
                   child: Row(
                     children: [
-                      Text(DateFormat('yyyy-MM-dd hh:mm').format(
-                          DateTime.parse(notify!.createdAt!)), style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w300),),
-                      // Text(
-                      //   '10 phút',
-                      //   style: TextStyle(
-                      //       fontSize: 14.sp, fontWeight: FontWeight.w300),
-                      // ),
-                      // IconButton(
-                      //     icon: Icon(
-                      //       Icons.more_vert,
-                      //       color: Colors.black,
-                      //       size: 22.sp,
-                      //     ),
-                      //     onPressed: () {
-                      //       print("Map");
-                      //     }),
+                      Text(
+                        DateFormat('yyyy-MM-dd HH:mm').format(
+                            DateTime.parse(notify!.updatedAt!).toLocal()),
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w300),
+                      ),
                     ],
                   ),
                 )
@@ -76,8 +63,8 @@ class NotifyItem extends StatelessWidget {
           Container(
             width: double.infinity,
             // height: 50.h,
-            padding:
-                EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 30.h),
+            padding: EdgeInsets.only(
+                left: 10.w, right: 10.w, top: 10.h, bottom: 30.h),
             child: Text(
               notify!.body!,
               style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16.sp),

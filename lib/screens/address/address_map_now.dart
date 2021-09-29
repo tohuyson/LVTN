@@ -1,17 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/apis.dart';
+import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/model/address.dart';
-import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class AddressMapNow extends StatefulWidget {
   @override
@@ -84,16 +80,10 @@ class _AddressMapNow extends State<AddressMapNow> {
                 ),
                 onMapCreated: _onMapCreated,
                 markers: Set.from(allMarkers),
-                // onTap: handleTap,
               ),
             ),
             GestureDetector(
               onTap: () async {
-                // Address a = new Address(
-                //     lattitude: '${newLocation.latitude}',
-                //     longtitude: '${newLocation.longitude}');
-                //
-                // Get.back(result: a);
                 await loadData();
               },
               child: Container(
@@ -131,7 +121,7 @@ class _AddressMapNow extends State<AddressMapNow> {
     await setValue('latitude', newLocation.latitude.toString());
     await setValue('longitude', newLocation.longitude.toString());
 
-    Get.off(AddressScreen());
+    Get.off(BottomNavigation(selectedIndex: 1));
   }
 
   Future<List<Placemark>> getPosition() async {
@@ -167,10 +157,6 @@ class _AddressMapNow extends State<AddressMapNow> {
       if (placemarks[i].administrativeArea!.isNotEmpty &&
           placemarks[i].subAdministrativeArea!.isNotEmpty &&
           placemarks[i].country!.isNotEmpty) {
-        print('vào dât đi bạn');
-        // address.add(placemarks[i].administrativeArea!);
-        // address.add(placemarks[i].subAdministrativeArea!);
-        // address.add(placemarks[i].locality!);
         address = placemarks[i].subAdministrativeArea! +
             ', ' +
             placemarks[i].administrativeArea! +

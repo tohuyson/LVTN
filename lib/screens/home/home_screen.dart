@@ -41,8 +41,6 @@ class _HomeScreen extends State<HomeScreen> {
   void initState() {
     restaurants = new RxList<Restaurant>();
     foods = new RxList<Foods>();
-    // fetchRestaurants();
-    // fetchFood();
 
     super.initState();
   }
@@ -63,7 +61,8 @@ class _HomeScreen extends State<HomeScreen> {
                   child: AppBar(
                     elevation: 0,
                     automaticallyImplyLeading: false,
-                    flexibleSpace: Padding(
+                    flexibleSpace: Container(
+                      color: Theme.of(context).primaryColor,
                       padding: EdgeInsets.only(
                           left: 5.w, right: 0.w, bottom: 5.h, top: 5.h),
                       child: Column(
@@ -95,7 +94,7 @@ class _HomeScreen extends State<HomeScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Tìm nhà hàng món ăn',
+                                    'Tìm nhà hàng quán ăn',
                                     style: TextStyle(color: Colors.black38),
                                   ),
                                   Icon(
@@ -149,8 +148,6 @@ class _HomeScreen extends State<HomeScreen> {
                             child: Obx(
                               () => ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  // primary: false,
-                                  // physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: foods.length,
                                   itemBuilder: (context, index) {
@@ -166,6 +163,7 @@ class _HomeScreen extends State<HomeScreen> {
                                         margin: EdgeInsets.only(
                                             right: 5.w, left: 5.w),
                                         decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(5)),
                                             border: Border.all(
                                                 color: kPrimaryColorBackground,
                                                 width: 1)),
@@ -248,8 +246,6 @@ class _HomeScreen extends State<HomeScreen> {
   Future<bool> checkLoad() async {
     String? latitude = await getValue('latitude');
     String? longitude = await getValue('longitude');
-    print(latitude);
-    print(longitude);
 
     startLat = double.parse(latitude!);
     startLong = double.parse(longitude!);
@@ -268,7 +264,6 @@ class _HomeScreen extends State<HomeScreen> {
 
   Future<void> fetchFood() async {
     var f = await getFood();
-    print(' đồ ăn nè ${f!.length}.');
     if (f != null) {
       foods.assignAll(f);
       foods.refresh();
@@ -352,7 +347,7 @@ class LatestFeedsTitle extends StatelessWidget {
       color: Colors.white,
       padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 6.h, bottom: 6.h),
       child: Text(
-        "Nhà hàng phổ biến",
+        "Danh sách quán ăn",
         style: TextStyle(
             fontSize: 18.sp,
             color: Color(0xFF3a3a3b),

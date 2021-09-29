@@ -4,7 +4,6 @@ class Apis {
 
   //auth
   static String getSignUpUrl = '$root/register';
-  static String getSignInUrl = '$root/login';
   static String getLogoutUrl = '$root/logout';
   static String getSignInSocialUrl = '$root/registerSocial';
   static String postloginAndRegisterPhone = '$root/loginAndRegisterPhone';
@@ -82,4 +81,5 @@ class Apis {
   //search
   static String searchRestaurantUrl = '$root/searchRestaurant';
   static String searchFoodUrl = '$root/searchFood';
+  static String searchUrl = '$root/search';
 }

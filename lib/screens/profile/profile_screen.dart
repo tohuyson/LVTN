@@ -43,14 +43,15 @@ class _ProfileScreen extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: fetchUsers(), // a previously-obtained Future<String> or null
+        future: fetchUsers(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
                   centerTitle: true,
-                  title: Text('Tôi'),
+                  title: Text('Thông tin'),
+                  backgroundColor: Theme.of(context).primaryColor,
                 ),
                 body: FutureBuilder(
                     future: fetchUsers(),
@@ -58,7 +59,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Loading();
                       } else {
-                        // return buildLoading();
                         return RefreshIndicator(
                           onRefresh: () => fetch(),
                           child: ListView(
@@ -107,7 +107,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       height: 5.h,
                                     ),
                                     Container(
-                                      // padding: EdgeInsets.only(top: 20.h),
                                       child: Text(
                                         lu.value!.username!,
                                         style: TextStyle(
@@ -137,13 +136,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         page: AddressScreen(),
                                       ),
                                     ),
-                                    // ItemProfile(
-                                    //   itemProfile: ItemProfileModel(
-                                    //     title: 'Người giao hàng',
-                                    //     description: '',
-                                    //     page: DeliveryScreen(),
-                                    //   ),
-                                    // ),
                                     Container(
                                       margin: EdgeInsets.only(
                                           left: 15.w, right: 10.w),
@@ -157,7 +149,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          // LineDecoration(),
                                           Container(
                                             child: Text(
                                               'Người giao hàng',
@@ -185,7 +176,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   lu.value!.id,
                                                             });
                                                         if (user != null) {
-                                                          showToast('Bạn đã đăng ký thành công. Nhận đơn hàng ngay!');
+                                                          showToast(
+                                                              'Bạn đã đăng ký thành công. Nhận đơn hàng ngay!');
                                                           fetchUsers();
                                                         }
                                                       } else if (lu
@@ -218,71 +210,54 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         ],
                                       ),
                                     ),
-                                    // lu.value!.roleId == 4
-                                        // ?
                                     Container(
-                                            margin: EdgeInsets.only(
-                                                left: 15.w, right: 10.w),
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    bottom: BorderSide(
-                                                        width: 0.3,
-                                                        color:
-                                                            Colors.black12))),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                // LineDecoration(),
-                                                Container(
-                                                  child: Text(
-                                                    'Lịch sử giao hàng',
-                                                    style: TextStyle(
-                                                        fontSize: 17.sp),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        '',
-                                                        style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            Get.to(
-                                                                HistoryDeliveryScreen(),
-                                                                arguments: {
-                                                                  'userId': lu
-                                                                      .value!.id
-                                                                });
-                                                          },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .arrow_forward_ios,
-                                                            size: 14,
-                                                          ))
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
+                                      margin: EdgeInsets.only(
+                                          left: 15.w, right: 10.w),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  width: 0.3,
+                                                  color: Colors.black12))),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              'Lịch sử giao hàng',
+                                              style: TextStyle(fontSize: 17.sp),
                                             ),
                                           ),
-                                        // : Container(),
-                                    // ItemProfile(
-                                    //   itemProfile: ItemProfileModel(
-                                    //     title: 'Đơn hàng của tôi',
-                                    //     description: '',
-                                    //     page: HomeScreen(),
-                                    //   ),
-                                    // ),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '',
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      Get.to(
+                                                          HistoryDeliveryScreen(),
+                                                          arguments: {
+                                                            'userId':
+                                                                lu.value!.id
+                                                          });
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 14,
+                                                    ))
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                     ItemProfile(
                                       itemProfile: ItemProfileModel(
                                         title: 'Tin nhắn',
@@ -298,14 +273,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 color: Color(0xFFFFFFFF),
                                 child: Column(
                                   children: [
-                                    // ColorLineBottom(),
-                                    // ItemProfile(
-                                    //   itemProfile: ItemProfileModel(
-                                    //     title: 'Trung tâm hỗ trợ',
-                                    //     description: '',
-                                    //     page: HomeScreen(),
-                                    //   ),
-                                    // ),
                                     ItemProfile(
                                       itemProfile: ItemProfileModel(
                                         title: 'Chính sách và quy định',
@@ -313,13 +280,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         page: Policy(),
                                       ),
                                     ),
-                                    //       ItemProfile(
-                                    //         itemProfile: ItemProfileModel(
-                                    //           title: 'Cài đặt',
-                                    //           description: '',
-                                    //           page: HomeScreen(),
-                                    //         ),
-                                    //       ),
                                   ],
                                 ),
                               ),
@@ -367,18 +327,14 @@ class _ProfileScreen extends State<ProfileScreen> {
   @override
   void initState() {
     lu = new Rx<Users>(new Users());
-    // fetchUsers();
     order = new Rx<Order>(new Order());
-    // fetch();
     super.initState();
   }
 
   Future<bool?> fetchUsers() async {
     var u = await getUser();
-    print(u);
     if (u != null) {
       lu = u.obs;
-      print(lu.value!.avatar);
     }
     fetch();
     return lu.isBlank;
@@ -386,7 +342,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   Future<bool?> fetch() async {
     var o = await isDelivery();
-    print(' vao ddaay ce $o');
     if (o != null) {
       order = o.obs;
     }
@@ -408,14 +363,10 @@ class _ProfileScreen extends State<ProfileScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users;
-        print(users);
         return users;
       }
-      if (response.statusCode == 401) {
-        showToast("Loading faild");
-      }
+      if (response.statusCode == 401) {}
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {
@@ -445,14 +396,10 @@ class _ProfileScreen extends State<ProfileScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         order = OrderJson.fromJson(parsedJson).order;
-        // print(users);
         return order;
       }
-      if (response.statusCode == 401) {
-        showToast("Loading faild");
-      }
+      if (response.statusCode == 401) {}
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {

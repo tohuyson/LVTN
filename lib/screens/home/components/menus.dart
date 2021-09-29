@@ -94,34 +94,34 @@ class _Menu extends State<Menu> {
     );
   }
 
-  Future<List<Food>> getRestaurants(String name) async {
-    List<Food> list = [];
-    String token = (await getToken())!;
-    print(token);
-    Map<String, String> queryParams = {
-      'name': name,
-    };
-    String queryString = Uri(queryParameters: queryParams).query;
-    print(queryString);
-    try {
-      http.Response response = await http.get(
-        Uri.parse(Apis.searchFoodUrl + '?' + queryString),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
-        list = ListFoods.fromJson(parsedJson).listFood!;
-        return list;
-      }
-    } on TimeoutException catch (e) {
-      showError(e.toString());
-    } on SocketException catch (e) {
-      showError(e.toString());
-    }
-    return list;
-  }
+  // Future<List<Food>> getRestaurants(String name) async {
+  //   List<Food> list = [];
+  //   String token = (await getToken())!;
+  //   print(token);
+  //   Map<String, String> queryParams = {
+  //     'name': name,
+  //   };
+  //   String queryString = Uri(queryParameters: queryParams).query;
+  //   print(queryString);
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse(Apis.searchFoodUrl + '?' + queryString),
+  //       headers: <String, String>{
+  //         "Accept": "application/json",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var parsedJson = jsonDecode(response.body);
+  //       list = ListFoods.fromJson(parsedJson).listFood!;
+  //       return list;
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     showError(e.toString());
+  //   } on SocketException catch (e) {
+  //     showError(e.toString());
+  //   }
+  //   return list;
+  // }
 }

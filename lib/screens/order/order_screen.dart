@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/screens/order/draft_order.dart';
 import 'package:fooddelivery/screens/order/order_coming.dart';
-import 'package:fooddelivery/screens/order/order_item.dart';
-import 'package:get/get.dart';
 
 import 'history_screen.dart';
 

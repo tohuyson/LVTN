@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,8 +48,7 @@ class _InformationUser extends State<InformationUser> {
                   centerTitle: true,
                   elevation: 0,
                   title: Text("Thông tin người dùng"),
-                  leading: BackButton(
-                  ),
+                  leading: BackButton(),
                 ),
                 body: Container(
                   padding: EdgeInsets.only(top: 5.h),
@@ -710,11 +711,13 @@ class _InformationUser extends State<InformationUser> {
   late TextEditingController phone;
   late TextEditingController gender;
 
-  // final ImageController controller = Get.put(ImageController());
+  User? userFirebase;
+
   @override
   void initState() {
-    // lu='';
     controller.image = null;
+    userFirebase = FirebaseAuth.instance.currentUser;
+    print(userFirebase);
     super.initState();
   }
 
@@ -751,9 +754,7 @@ class _InformationUser extends State<InformationUser> {
         print(users);
         return users;
       }
-      if (response.statusCode == 401) {
-        showToast("Loading faild");
-      }
+      if (response.statusCode == 401) {}
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {
@@ -781,18 +782,13 @@ class _InformationUser extends State<InformationUser> {
     } else {
       if (controller.imagePath != null) {
         print(controller.imagePath);
-        print('napf dâu k ma');
         int code =
             (await uploadAvatar(controller.image!, controller.imagePath!))!;
         if (code == 200) {
           nameImage = controller.imagePath!.split('/').last;
         }
       }
-      // else {
-      //   nameImage = lu.avatar.split('/').last;
-      // }
     }
-    // if (selected != null || selected != '') {
     try {
       EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
@@ -810,8 +806,13 @@ class _InformationUser extends State<InformationUser> {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['success']);
         Users users = Users.fromJson(parsedJson['user']);
+
+        userFirebase!.updatePhotoURL(Apis.baseURL + users.avatar!);
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userFirebase!.uid)
+            .update({'photoUrl': Apis.baseURL + users.avatar!});
         return users;
       }
     } on TimeoutException catch (e) {
@@ -819,9 +820,6 @@ class _InformationUser extends State<InformationUser> {
     } on SocketException catch (e) {
       showError(e.toString());
     }
-    // } else {
-    //   showToast('Vui lòng chọn giới tính');
-    // }
   }
 
   Future<Users?> changeName() async {
@@ -845,7 +843,6 @@ class _InformationUser extends State<InformationUser> {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['success']);
         Users users = Users.fromJson(parsedJson['user']);
         return users;
       }
@@ -942,7 +939,6 @@ class _InformationUser extends State<InformationUser> {
         if (response.statusCode == 200) {
           EasyLoading.dismiss();
           var parsedJson = jsonDecode(response.body);
-          // print(parsedJson['success']);
           Users users = Users.fromJson(parsedJson['user']);
           return users;
         }
@@ -1034,7 +1030,6 @@ class Date extends StatelessWidget {
               }),
               IconButton(
                 onPressed: () {
-                  print('dduj mas m');
                   controller.selectDateDob(context);
                 },
                 icon: Icon(

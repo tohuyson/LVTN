@@ -370,12 +370,6 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                                                               userChat.photoUrl ??
                                                                   "");
                                                         }
-                                                        String avatar =
-                                                            Apis.baseURL +
-                                                                restaurant
-                                                                    .value!
-                                                                    .user!
-                                                                    .avatar!;
                                                         Get.to(Chat(
                                                           peerId: restaurant
                                                               .value!
@@ -386,7 +380,15 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                                                                   .value!
                                                                   .user!
                                                                   .username!,
-                                                          peerAvatar: avatar,
+                                                          peerAvatar: restaurant
+                                                                  .value!
+                                                                  .user!.avatar != null
+                                                              ?Apis
+                                                              .baseURL +
+                                                              restaurant
+                                                                  .value!
+                                                                  .user!
+                                                                  .avatar!:"",
                                                         ));
                                                       }
                                                     }),
@@ -462,7 +464,9 @@ class _RestaurantsScreen extends State<RestaurantsScreen>
                             children: [
                               restaurant.value!.foods!.length > 0
                                   ? ListFoodRestaurant(
-                                      restaurant: restaurant.value!, distance: distance.value,)
+                                      restaurant: restaurant.value!,
+                                      distance: distance.value,
+                                    )
                                   // Container(
                                   //
                                   //         child: Column(

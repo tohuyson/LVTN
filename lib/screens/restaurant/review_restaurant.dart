@@ -49,12 +49,12 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
                 width: 390.w,
                 padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 1, color: Colors.black12))
-                ),
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.black12))),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    listReview[index].user!.avatar! != null
+                    listReview[index].user!.avatar != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(50.0),
                             child: Image.network(
@@ -64,7 +64,12 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : Image.asset('assets/images/user.png'),
+                        : Image.asset(
+                            'assets/images/user.png',
+                            width: 40.w,
+                            height: 40.h,
+                            fit: BoxFit.cover,
+                          ),
                     Container(
                       width: 340.w,
                       padding: EdgeInsets.only(left: 12.w),
@@ -76,7 +81,9 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
                             listReview[index].user!.username!,
                             style: TextStyle(fontSize: 18.sp),
                           ),
-                          SizedBox(height: 5.h,),
+                          SizedBox(
+                            height: 5.h,
+                          ),
                           RatingBar.builder(
                             ignoreGestures: true,
                             wrapAlignment: WrapAlignment.center,
@@ -94,9 +101,16 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
                             ),
                             onRatingUpdate: (double value) {},
                           ),
-                          SizedBox(height: 10.h,),
-                          Text(listReview[index].review!, style: TextStyle(fontSize: 16.w),),
-                          SizedBox(height: 10.h,),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            listReview[index].review!,
+                            style: TextStyle(fontSize: 16.w),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           listReview[index].image![0].url != null
                               ? Image.network(
                                   Apis.baseURL +
@@ -106,10 +120,11 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
                                   fit: BoxFit.cover,
                                 )
                               : Container(),
-                          SizedBox(height: 10.h,),
-                          Text(DateFormat('yyyy-MM-dd HH:mm')
-                              .format(DateTime.parse(
-                              listReview[index].updatedAt!))),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(DateFormat('yyyy-MM-dd HH:mm').format(
+                              DateTime.parse(listReview[index].updatedAt!))),
                         ],
                       ),
                     )

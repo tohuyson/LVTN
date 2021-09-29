@@ -44,16 +44,6 @@ class _NotifyScreen extends State<NotifyScreen> {
           'Thông báo',
           style: TextStyle(color: Colors.white),
         ),
-        // actions: [
-        //   IconButton(
-        //       icon: Icon(
-        //         Icons.settings,
-        //         color: Colors.white,
-        //         size: 24.sp,
-        //       ),
-        //       onPressed: () {
-        //       }),
-        // ],
       ),
       body: FutureBuilder(
         future: fetchNotify(),
@@ -65,8 +55,8 @@ class _NotifyScreen extends State<NotifyScreen> {
               return Container(
                 color: Color(0xFFEEEEEE),
                 height: 834.h,
-                child:Obx(
-                      () => ListView.builder(
+                child: Obx(
+                  () => ListView.builder(
                       itemCount: listNotify.length,
                       itemBuilder: (context, index) {
                         return NotifyItem(
@@ -74,23 +64,6 @@ class _NotifyScreen extends State<NotifyScreen> {
                         );
                       }),
                 ),
-                // Stack(
-                //   children: [
-                //     listNotify.length > 0
-                //         ? Obx(
-                //             () => ListView.builder(
-                //                 itemCount: listNotify.length,
-                //                 itemBuilder: (context, index) {
-                //                   return NotifyItem(
-                //                     notify: listNotify[index],
-                //                   );
-                //                 }),
-                //           )
-                //         : EmptyScreen(text: 'Bạn chưa có thông báo'),
-                //     Positioned.fill(
-                //         child: isLoading ? const Loading() : Container()),
-                //   ],
-                // ),
               );
             } else {
               return EmptyScreen(
@@ -104,15 +77,9 @@ class _NotifyScreen extends State<NotifyScreen> {
   }
 
   Future<bool> fetchNotify() async {
-    // setState(() {
-    //   isLoading = true;
-    // });
     var n = await getNotify();
     print(n);
     if (n != null) {
-      // setState(() {
-      //   isLoading = false;
-      // });
       listNotify.assignAll(n);
       listNotify.refresh();
     }

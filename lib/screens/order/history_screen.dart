@@ -3,18 +3,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/screens/review/review_screen.dart';
 import 'package:fooddelivery/screens/widget/empty_screen.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
+import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 
-import '../../apis.dart';
 import 'package:intl/intl.dart';
-
-import '../../utils.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -48,7 +47,6 @@ class _HistoryScreen extends State<HistoryScreen> {
               if (snapshot.hasError) {
                 return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
               } else {
-                // return buildLoading();
                 return RefreshIndicator(
                   onRefresh: fetch,
                   child: Obx(
@@ -215,12 +213,12 @@ class _HistoryScreen extends State<HistoryScreen> {
                                                     width: 0.5,
                                                     color: Colors
                                                         .grey.shade300)))),
+                                    order![index].orderStatusId == 4 ?
                                     Center(
                                       child: Container(
                                         height: 55.h,
-                                        child: InkWell(
+                                        child: GestureDetector(
                                           onTap: () {
-                                            print('ddaay laf danh gia');
                                             Get.to(ReviewScreen(), arguments: {
                                               'order': order![index]
                                             });
@@ -237,7 +235,7 @@ class _HistoryScreen extends State<HistoryScreen> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ):Container(),
                                   ],
                                 ),
                               );
@@ -275,7 +273,6 @@ class _HistoryScreen extends State<HistoryScreen> {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['food']);
         list = ListOrders.fromJson(parsedJson).order!;
         print(list);
         return list;

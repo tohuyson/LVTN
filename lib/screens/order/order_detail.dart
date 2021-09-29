@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,20 +9,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/card.dart';
 import 'package:fooddelivery/model/discount.dart';
-import 'package:fooddelivery/model/list_address.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/payment.dart';
-import 'package:fooddelivery/screens/address/address_screen.dart';
 import 'package:fooddelivery/screens/order/components/delivery_item.dart';
 import 'package:fooddelivery/screens/order/components/food_item.dart';
 import 'package:fooddelivery/screens/order/components/list_address_delivery.dart';
 import 'package:fooddelivery/screens/order/model/delivery_model.dart';
-import 'package:fooddelivery/screens/order/order_screen.dart';
-import 'package:fooddelivery/screens/restaurant/delivery.dart';
 import 'package:fooddelivery/screens/restaurant/payment.dart';
 import 'package:fooddelivery/screens/restaurant/voucher.dart';
 import 'package:fooddelivery/utils.dart';
@@ -41,7 +35,6 @@ class OrderDetail extends StatefulWidget {
 class _OrderDetail extends State<OrderDetail> {
   late Rx<Users> users;
 
-  // late String address = '';
   late Rx<CardModel> card;
 
   late RxString person;
@@ -60,6 +53,7 @@ class _OrderDetail extends State<OrderDetail> {
   RxString a = ''.obs;
   String longitude = '';
   String latitude = '';
+  RxInt time = 0.obs;
 
   @override
   void initState() {
@@ -69,9 +63,12 @@ class _OrderDetail extends State<OrderDetail> {
     person = 'Vui lòng chọn'.obs;
     voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: 0));
     payment = ''.obs;
-    delivery_fee = 10000;
+    delivery_fee = 5000;
     distance = Get.arguments['distance'];
+
     print('khoảng cách ${distance}');
+
+    time = timeDelivery().obs;
 
     if (Platform.isIOS) {
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
@@ -87,7 +84,6 @@ class _OrderDetail extends State<OrderDetail> {
 
     longitude = (await getValue('longitude'))!;
     latitude = (await getValue('latitude'))!;
-    print(a);
   }
 
   final myController = TextEditingController();
@@ -257,27 +253,6 @@ class _OrderDetail extends State<OrderDetail> {
                                                           fontWeight:
                                                               FontWeight.w500),
                                                     ),
-                                                    // Container(
-                                                    //   width: 65.w,
-                                                    //   padding: EdgeInsets.only(bottom: 4.h),
-                                                    //   child: Row(
-                                                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                    //     children: [
-                                                    //       Icon(
-                                                    //         iconData_1,
-                                                    //         size: 15.sp,
-                                                    //       ),
-                                                    //       Icon(
-                                                    //         iconData_2,
-                                                    //         size: 15.sp,
-                                                    //       ),
-                                                    //       Icon(
-                                                    //         iconData_3,
-                                                    //         size: 15.sp,
-                                                    //       ),
-                                                    //     ],
-                                                    //   ),
-                                                    // )
                                                   ],
                                                 ),
                                               ),
@@ -299,32 +274,49 @@ class _OrderDetail extends State<OrderDetail> {
                                         Container(
                                           width: 28.w,
                                           child: GestureDetector(
-                                              onTap: () async {
-                                                var result = await Get.to(
-                                                    ListAddressDelivery());
-                                                print(result);
-                                                if (result != null) {
-                                                  setState(() {
-                                                    getAd();
-                                                  });
-                                                }
-                                              },
-                                              child: Icon(
-                                                Icons.edit,
-                                                size: 28.sp,
-                                              )),
+                                            onTap: () async {
+                                              var result = await Get.to(
+                                                  ListAddressDelivery());
+                                              print(result);
+                                              if (result != null) {
+                                                String address = result;
+                                                List listAddress =
+                                                    address.split('|');
+                                                // print(listAddress[1]);
+                                                // print(listAddress[2]);
+                                                double
+                                                    d =
+                                                    await distanceRestaurant(
+                                                        double.parse(
+                                                            listAddress[2]),
+                                                        double
+                                                            .parse(listAddress[
+                                                                3]),
+                                                        double.parse(
+                                                            card
+                                                                .value
+                                                                .restaurant!
+                                                                .lattitude!),
+                                                        double.parse(card
+                                                            .value
+                                                            .restaurant!
+                                                            .longtitude!));
+                                                setState(() {
+                                                  getAd();
+                                                  distance = d;
+                                                  time = timeDelivery().obs;
+                                                });
+                                              }
+                                            },
+                                            child: Icon(
+                                              Icons.edit,
+                                              size: 28.sp,
+                                            ),
+                                          ),
                                         )
                                       ],
                                     ),
                                   ),
-                                  //     DeliveryItem(
-                                  //   iconData_4: Icons.edit,
-                                  //   page: ListAddressDelivery(),
-                                  //   deliveryModel: DeliveryModel(
-                                  //       iconData: Icons.location_on,
-                                  //       name: users.value.username,
-                                  //       address: a.value),
-                                  // ),
                                 ),
                               ),
                               Container(
@@ -338,13 +330,13 @@ class _OrderDetail extends State<OrderDetail> {
                                     right: 12.w,
                                     bottom: 4.h,
                                     top: 8.h),
-                                child: DeliveryItem(
-                                  // page: AddressScreen(),
-                                  deliveryModel: DeliveryModel(
-                                      iconData: Icons.timer_rounded,
-                                      name: 'Thời giao hàng dự kiến',
-                                      // address: 'Trong ${((distance / 5) * 60).round()} phút'),
-                                      address: 'Trong ${timeDelivery()} phút'),
+                                child: Obx(
+                                  () => DeliveryItem(
+                                    deliveryModel: DeliveryModel(
+                                        iconData: Icons.timer_rounded,
+                                        name: 'Thời giao hàng dự kiến',
+                                        address: 'Trong ${time.value} phút'),
+                                  ),
                                 ),
                               ),
                             ],
@@ -372,50 +364,6 @@ class _OrderDetail extends State<OrderDetail> {
                             ],
                           ),
                         ),
-                        // InkWell(
-                        //   onTap: () async {
-                        //     var result = await Get.to(() => Delivery());
-                        //     print(result);
-                        //     setState(() {
-                        //       person = result;
-                        //     });
-                        //   },
-                        //   child: Container(
-                        //     decoration: BoxDecoration(
-                        //         border: Border(
-                        //             bottom: BorderSide(
-                        //                 width: 2,
-                        //                 color: kPrimaryColorBackground))),
-                        //     padding: EdgeInsets.all(12.w),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         Text(
-                        //           'Giao hàng',
-                        //           style: TextStyle(
-                        //             fontSize: 18.sp,
-                        //           ),
-                        //         ),
-                        //         Row(
-                        //           children: [
-                        //             Obx(
-                        //               () => Text(
-                        //                 person.value,
-                        //                 style: TextStyle(
-                        //                     fontSize: 16.sp,
-                        //                     color: Colors.black38),
-                        //               ),
-                        //             ),
-                        //             Icon(
-                        //               Icons.arrow_forward_ios_outlined,
-                        //               size: 16.sp,
-                        //             ),
-                        //           ],
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                         GestureDetector(
                           onTap: () async {
                             var result = await Get.to(() => Voucher(),

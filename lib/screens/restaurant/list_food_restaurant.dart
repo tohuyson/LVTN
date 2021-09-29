@@ -85,23 +85,43 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                           style: TextStyle(
                               fontSize: 18.sp, fontWeight: FontWeight.w500),
                         ),
-                        Text(
-                          '10+ đã bán',
-                          style:
-                              TextStyle(fontSize: 14.sp, color: Colors.black38),
-                        ),
+                        // restaurant.foods![i].size! != null
+                        //     ? Text(
+                        //         '${restaurant.foods![i].size!}',
+                        //         style: TextStyle(
+                        //             fontSize: 14.sp, color: Colors.black38),
+                        //       )
+                        //     : Text(''),
                         SizedBox(
                           height: 10.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // restaurant.foods![i].d  ?
                             Text(
                               NumberFormat.currency(locale: 'vi')
                                   .format(restaurant.foods![i].price),
                               style: TextStyle(
                                   fontSize: 18.sp, fontWeight: FontWeight.w500),
                             ),
+                            //     :Row(
+                            //   children: [
+                            //     Text(
+                            //         'Giá :  ${NumberFormat.currency(locale: 'vi').format((item.price - item.price * (double.parse(item.discount.percent) / 100)).round())}',
+                            //         style: TextStyle(
+                            //             fontWeight: FontWeight.w500)),
+                            //     SizedBox(
+                            //       width: 5.w,
+                            //     ),
+                            //     Text(
+                            //       '${NumberFormat.currency(locale: 'vi').format(item.price)}',
+                            //       style: TextStyle(
+                            //           decoration:
+                            //           TextDecoration.lineThrough),
+                            //     )
+                            //   ],
+                            // ),
                             GestureDetector(
                               onTap: () async {
                                 print('add');
@@ -221,7 +241,8 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(OrderDetail(), arguments: {
-                                            'card_id': card.value.id, 'distance': distance
+                                            'card_id': card.value.id,
+                                            'distance': distance
                                           });
                                         },
                                         child: Container(

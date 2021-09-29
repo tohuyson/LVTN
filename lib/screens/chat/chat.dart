@@ -13,30 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'const.dart';
 
-// class Chat extends StatelessWidget {
-//   final String peerId;
-//   final String peerAvatar;
-//
-//   Chat({required this.peerId, required this.peerAvatar});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           'CHAT',
-//           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-//         ),
-//         // centerTitle: true,
-//       ),
-//       body: ChatScreen(
-//         peerId: peerId,
-//         peerAvatar: peerAvatar,
-//       ),
-//     );
-//   }
-// }
-
 class Chat extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
@@ -139,7 +115,6 @@ class ChatScreenState extends State<Chat> {
   }
 
   void getSticker() {
-    // Hide keyboard when sticker appear
     focusNode.unfocus();
     setState(() {
       isShowSticker = !isShowSticker;
@@ -167,7 +142,6 @@ class ChatScreenState extends State<Chat> {
   }
 
   void onSendMessage(String content, int type) {
-    // type: 0 = text, 1 = image, 2 = sticker
     if (content.trim() != '') {
       textEditingController.clear();
 
@@ -549,9 +523,6 @@ class ChatScreenState extends State<Chat> {
                 // List of messages
                 buildListMessage(),
 
-                // Sticker
-                // isShowSticker ? buildSticker() : Container(),
-
                 // Input content
                 buildInput(),
               ],
@@ -566,118 +537,6 @@ class ChatScreenState extends State<Chat> {
     );
   }
 
-  // Widget buildSticker() {
-  //   return Expanded(
-  //     child: Container(
-  //       child: Column(
-  //         children: <Widget>[
-  //           Row(
-  //             children: <Widget>[
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi1', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi1.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi2', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi2.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi3', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi3.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               )
-  //             ],
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           ),
-  //           Row(
-  //             children: <Widget>[
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi4', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi4.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi5', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi5.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi6', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi6.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               )
-  //             ],
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           ),
-  //           Row(
-  //             children: <Widget>[
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi7', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi7.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi8', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi8.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () => onSendMessage('mimi9', 2),
-  //                 child: Image.asset(
-  //                   'images/mimi9.gif',
-  //                   width: 50.0,
-  //                   height: 50.0,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               )
-  //             ],
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           )
-  //         ],
-  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //       ),
-  //       decoration: BoxDecoration(
-  //           border: Border(top: BorderSide(color: greyColor2, width: 0.5)),
-  //           color: Colors.white),
-  //       padding: EdgeInsets.all(5.0),
-  //       height: 180.0,
-  //     ),
-  //   );
-  // }
 
   Widget buildLoading() {
     return Positioned(
@@ -701,17 +560,6 @@ class ChatScreenState extends State<Chat> {
             ),
             color: Colors.white,
           ),
-          // Material(
-          //   child: Container(
-          //     margin: EdgeInsets.symmetric(horizontal: 1.0),
-          //     child: IconButton(
-          //       icon: Icon(Icons.face),
-          //       onPressed: getSticker,
-          //       color: primaryColor,
-          //     ),
-          //   ),
-          //   color: Colors.white,
-          // ),
 
           // Edit text
           Flexible(

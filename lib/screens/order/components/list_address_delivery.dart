@@ -8,8 +8,6 @@ import 'package:fooddelivery/components/bottom_navigation_bar.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/list_address.dart';
-import 'package:fooddelivery/screens/address/address_screen.dart';
-import 'package:fooddelivery/screens/order/order_detail.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -134,6 +132,9 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
                // await setValue('longitude', chooseAddress.longtitude!);
                // Get.back(result: group);
                Get.to(BottomNavigation(selectedIndex: 1));
+               setState(() {
+                 fetchAddress();
+               });
              },
              child: Container(
                margin: EdgeInsets.only(

@@ -1,58 +1,79 @@
-import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/screens/address/address_screen.dart';
+import 'package:fooddelivery/screens/home/home_screen.dart';
+import 'package:fooddelivery/screens/notify/notify_screen.dart';
+import 'package:fooddelivery/screens/order/order_screen.dart';
+import 'package:fooddelivery/screens/profile/profile_screen.dart';
 
-class BottomNavigation extends StatelessWidget {
-  int selectedIndex=2;
+class BottomNavigation extends StatefulWidget {
+  final int selectedIndex;
+
+  BottomNavigation({required this.selectedIndex});
+
+  @override
+  State<BottomNavigation> createState() =>
+      _BottomNavigation(selectedIndex: selectedIndex);
+}
+
+class _BottomNavigation extends State<BottomNavigation> {
+  late int selectedIndex;
+
+  _BottomNavigation({required this.selectedIndex});
+
+  static List<Widget> widgetOptions = <Widget>[
+    OrderScreen(),
+    AddressScreen(),
+    HomeScreen(),
+    NotifyScreen(),
+    ProfileScreen(),
+  ];
+
+  void onItemTapped(int index) {
+    setState(() {
+          selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FFNavigationBar(
-      theme: FFNavigationBarTheme(
-        barBackgroundColor: Colors.white,
-        selectedItemBorderColor: Colors.transparent,
-        selectedItemBackgroundColor: Colors.blueAccent,
-        selectedItemIconColor: Colors.white,
-        selectedItemLabelColor: Colors.black,
-        showSelectedItemShadow: false,
-        selectedItemTextStyle: TextStyle(fontSize: 12.5),
-        unselectedItemTextStyle: TextStyle(fontSize: 11),
-        barHeight: 52,
+    return Scaffold(
+      body: Center(
+        child: widgetOptions.elementAt(selectedIndex),
+        // child: controller.widgetOptions.elementAt(controller.tabIndex.value),
       ),
-      selectedIndex: selectedIndex,
-      // onSelectTab: (index) {
-      //   setState(() {
-      //     selectedIndex = index;
-      //     // tabController.index = index;
-      //   });
-      // },
-      onSelectTab: (index) {
-        // setState(() {
-        selectedIndex = index;
-        // });
-      },
-      items: [
-        FFNavigationBarItem(
-          iconData: Icons.article_outlined,
-          label: 'Menu',
-        ),
-        FFNavigationBarItem(
-          iconData: Icons.location_on,
-          label: 'Map',
-        ),
-        FFNavigationBarItem(
-          iconData: Icons.home,
-          label: 'Home',
-        ),
-        FFNavigationBarItem(
-          iconData: Icons.notifications,
-          label: 'Notify',
-        ),
-        FFNavigationBarItem(
-          iconData: Icons.person,
-          label: 'Person',
-        ),
-      ],
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.article),
+            label: 'Đơn hàng',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.location_on),
+            label: 'Địa chỉ',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.home),
+            label: 'Trang chủ',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.notifications),
+            label: 'Thông báo',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.person),
+            label: 'Tôi',
+          ),
+        ],
+        currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Theme.of(context).primaryColor,
+        onTap: onItemTapped,
+      ),
     );
   }
-
 }

@@ -85,57 +85,44 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                           style: TextStyle(
                               fontSize: 18.sp, fontWeight: FontWeight.w500),
                         ),
-                        // restaurant.foods![i].size! != null
-                        //     ? Text(
-                        //         '${restaurant.foods![i].size!}',
-                        //         style: TextStyle(
-                        //             fontSize: 14.sp, color: Colors.black38),
-                        //       )
-                        //     : Text(''),
                         SizedBox(
                           height: 10.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // restaurant.foods![i].d  ?
-                            Text(
-                              NumberFormat.currency(locale: 'vi')
-                                  .format(restaurant.foods![i].price),
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w500),
-                            ),
-                            //     :Row(
-                            //   children: [
-                            //     Text(
-                            //         'Giá :  ${NumberFormat.currency(locale: 'vi').format((item.price - item.price * (double.parse(item.discount.percent) / 100)).round())}',
-                            //         style: TextStyle(
-                            //             fontWeight: FontWeight.w500)),
-                            //     SizedBox(
-                            //       width: 5.w,
-                            //     ),
-                            //     Text(
-                            //       '${NumberFormat.currency(locale: 'vi').format(item.price)}',
-                            //       style: TextStyle(
-                            //           decoration:
-                            //           TextDecoration.lineThrough),
-                            //     )
-                            //   ],
-                            // ),
+                            restaurant.foods![i].discountId == null
+                                ? Text(
+                                    'Giá : ${NumberFormat.currency(locale: 'vi').format(restaurant.foods![i].price)}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  )
+                                : Row(
+                                    children: [
+                                      Text(
+                                          'Giá :  ${NumberFormat.currency(locale: 'vi').format((restaurant.foods![i].price! - restaurant.foods![i].price! * (double.parse(restaurant.foods![i].discount!.percent!) / 100)).round())}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500)),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Text(
+                                        '${NumberFormat.currency(locale: 'vi').format(restaurant.foods![i].price)}',
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      )
+                                    ],
+                                  ),
                             GestureDetector(
                               onTap: () async {
-                                print('add');
                                 var result = await Get.to(FoodDetail(
                                   food: restaurant.foods![i],
                                 ));
-                                print(result);
                                 if (result != null) {
-                                  // setState(() {
-                                  // CardModel c = result;
                                   await fetchCard();
                                   // });
                                 }
-                                // showPicker(context, food![i]!);
                               },
                               child: Icon(
                                 Icons.add_circle,
@@ -310,7 +297,6 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      print('xoa heet');
                                       await deleteCard();
                                     },
                                     child: Text(
@@ -400,14 +386,13 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                                     itemCount: card
                                                         .value
                                                         .cardOrder![index]
-                                                        .food!
                                                         .toppings!
                                                         .length,
                                                     itemBuilder: (context, i) {
                                                       return Row(
                                                         children: [
                                                           Text(
-                                                            '${card.value.cardOrder![index].food!.toppings![i].name}',
+                                                            '${card.value.cardOrder![index].toppings![i].name}',
                                                             style: TextStyle(
                                                                 fontSize: 14.sp,
                                                                 color: Colors
@@ -417,12 +402,16 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                                                           .value
                                                                           .cardOrder![
                                                                               index]
-                                                                          .food!
                                                                           .toppings!
                                                                           .length -
                                                                       1 !=
                                                                   i
-                                                              ? Text(', ')
+                                                              ? Text(', ',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: Colors
+                                                                          .black38))
                                                               : Text(''),
                                                         ],
                                                       );
@@ -498,10 +487,6 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
                                                           ),
                                                           GestureDetector(
                                                             onTap: () async {
-                                                              // setState(() {
-                                                              //   isLoading =
-                                                              //       true;
-                                                              // });
                                                               var cardOrder =
                                                                   await increaseQuantity(card
                                                                       .value
@@ -574,14 +559,12 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
           'cart_id': card.value.id,
         }),
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         setState(() {
           isLoading = false;
         });
         Get.back();
         var c = await getCard(restaurant.id!);
-        print(c!.id);
         if (c == null) {
           setState(() {
             card = new CardModel().obs;
@@ -615,15 +598,11 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print('đasakjd');
 
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['cardOrder']);
         CardOrder? cardOrder = CardOrderJson.fromJson(parsedJson).cardOrder;
         var c = await getCard(restaurant.id!);
-        print(c!.id);
         if (c != null) {
           setState(() {
             card = c.obs;
@@ -658,15 +637,11 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print('đasakjd');
 
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['cardOrder']);
         CardOrder? cardOrder = CardOrderJson.fromJson(parsedJson).cardOrder;
         var c = await getCard(restaurant.id!);
-        print(c!.id);
         if (c != null) {
           setState(() {
             card = c.obs;
@@ -688,13 +663,10 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
   }
 
   Future<void> fetchCard() async {
-    print('chayj ddaay vaayj  banj ');
     var c = await getCard(restaurant.id!);
-    print(c);
     if (c != null) {
       card = c.obs;
     }
-    print('card ${card.value.id}');
   }
 
   Future<CardModel?> getCard(int restaurant_id) async {
@@ -711,13 +683,9 @@ class _ListFoodRestaurant extends State<ListFoodRestaurant> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
-      print('lỗi ở đây à');
       if (response.statusCode == 200) {
-        print(response.body);
         var parsedJson = jsonDecode(response.body);
         CardModel card = CardJson.fromJson(parsedJson).card!;
-        print(card);
         return card;
       }
       if (response.statusCode == 401) {

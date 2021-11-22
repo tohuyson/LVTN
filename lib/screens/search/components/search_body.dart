@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/constants.dart';
-import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/screens/restaurant/restaurant_screen.dart';

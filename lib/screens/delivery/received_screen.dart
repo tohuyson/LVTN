@@ -57,17 +57,11 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                           order: order,
                         ),
                         Container(
-                          // height: 450.h,
                           width: double.infinity,
                           color: Colors.white,
                           child: Column(
                             children: [
                               Container(
-                                // margin: EdgeInsets.only(
-                                //   left: 10.w,
-                                //   right: 10.w,
-                                //   top: 6.h,
-                                // ),
                                 padding: EdgeInsets.only(
                                     bottom: 12.h,
                                     top: 12.h,
@@ -97,8 +91,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                 ),
                               ),
                               Container(
-                                // margin: EdgeInsets.only(
-                                //     top: 6.h, left: 10.w),
                                 padding:
                                     EdgeInsets.only(bottom: 6.h, left: 12.w),
                                 decoration: BoxDecoration(
@@ -151,14 +143,11 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                               prefs =
                                                               await SharedPreferences
                                                                   .getInstance();
-                                                          print('chát');
                                                           User? user =
                                                               FirebaseAuth
                                                                   .instance
                                                                   .currentUser!;
-                                                          print(user);
                                                           if (user != null) {
-                                                            // Check is already sign up
                                                             final querySnapshotresult =
                                                                 await FirebaseFirestore
                                                                     .instance
@@ -168,15 +157,10 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                         isEqualTo:
                                                                             user.uid)
                                                                     .get();
-                                                            print(
-                                                                querySnapshotresult
-                                                                    .docs);
-                                                            // final List<DocumentSnapshot>documents = result.docs;
                                                             if (querySnapshotresult
                                                                     .docs
                                                                     .length ==
                                                                 0) {
-                                                              // Update data to server if new user
                                                               FirebaseFirestore
                                                                   .instance
                                                                   .collection(
@@ -201,9 +185,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                     .uid!
                                                               });
 
-                                                              // Write data to local
-                                                              // currentUser = user;
-                                                              // print(currentUser.uid);
                                                               await prefs
                                                                   .setString(
                                                                       'id',
@@ -225,9 +206,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                   userChat =
                                                                   UserChat.fromDocument(
                                                                       documentSnapshot);
-                                                              // Write data to local
-                                                              print(
-                                                                  userChat.id);
                                                               await prefs
                                                                   .setString(
                                                                       'id',
@@ -394,7 +372,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                             Radius.circular(
                                                                 50)),
                                                   ),
-                                                  //image
                                                   child: Container(
                                                       width: 50.w,
                                                       height: 50.h,
@@ -436,7 +413,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                 fit: BoxFit
                                                                     .cover,
                                                               )))),
-                                              //user name
                                               Container(
                                                 padding:
                                                     EdgeInsets.only(left: 5.w),
@@ -471,7 +447,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                           .currentUser!;
                                                       print(user);
                                                       if (user != null) {
-                                                        // Check is already sign up
                                                         final querySnapshotresult =
                                                             await FirebaseFirestore
                                                                 .instance
@@ -481,14 +456,9 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                     isEqualTo:
                                                                         user.uid)
                                                                 .get();
-                                                        print(
-                                                            querySnapshotresult
-                                                                .docs);
-                                                        // final List<DocumentSnapshot>documents = result.docs;
                                                         if (querySnapshotresult
                                                                 .docs.length ==
                                                             0) {
-                                                          // Update data to server if new user
                                                           FirebaseFirestore
                                                               .instance
                                                               .collection(
@@ -508,9 +478,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                                 order.user!.uid,
                                                           });
 
-                                                          // Write data to local
-                                                          // currentUser = user;
-                                                          // print(currentUser.uid);
                                                           await prefs.setString(
                                                               'id', user.uid);
                                                           await prefs.setString(
@@ -529,8 +496,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                           UserChat userChat =
                                                               UserChat.fromDocument(
                                                                   documentSnapshot);
-                                                          // Write data to local
-                                                          print(userChat.id);
                                                           await prefs.setString(
                                                               'id',
                                                               userChat.id!);
@@ -876,7 +841,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                   await changeDelivery(
                                                       order.id);
                                                   Get.back();
-                                                  // bool isNotify =
                                                   await notification(
                                                       order
                                                           .foodOrder![0]
@@ -892,20 +856,12 @@ class _ReceivedScreen extends State<ReceivedScreen> {
                                                       'Giao hàng',
                                                       'Đơn hàng #${order.id} đã giao thành công bởi ${order.userDelivery!.username}',
                                                       3);
-                                                  // if (isNotify == true) {
-                                                  //   await saveNotification(
-                                                  //       'Giao hàng',
-                                                  //       'Đơn hàng #${order.id} đã giao thành công bởi ${order.userDelivery!.username}',
-                                                  //       '${order.foodOrder![0].food!.restaurant!.user!.id}',
-                                                  //       3);
-                                                  // }
                                                   await Get.off(
                                                       () =>
                                                           HistoryDeliveryScreen(),
                                                       arguments: {
                                                         'userId': userId
                                                       });
-                                                  // Get.back();
                                                 },
                                                 child: const Text(
                                                   'Xác nhận',
@@ -961,14 +917,11 @@ class _ReceivedScreen extends State<ReceivedScreen> {
   void initState() {
     order = new Order();
     userId = Get.arguments['userId'];
-    print(userId);
-    // fetch();
     super.initState();
   }
 
   Future<bool?> fetch() async {
     var o = await isDeliverys();
-    print(' vao ddaay ce $o');
     if (o != null) {
       order = o;
     }
@@ -984,7 +937,6 @@ class _ReceivedScreen extends State<ReceivedScreen> {
 
     String queryString = Uri(queryParameters: queryParams).query;
     try {
-      print(Apis.isDeliveryUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.isDeliveryUrl + '?' + queryString),
         headers: <String, String>{
@@ -992,12 +944,9 @@ class _ReceivedScreen extends State<ReceivedScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['odrer']);
         order = OrderJson.fromJson(parsedJson).order;
-        // print(users);
         return order;
       }
       if (response.statusCode == 401) {}
@@ -1005,19 +954,13 @@ class _ReceivedScreen extends State<ReceivedScreen> {
       showError(e.toString());
     } on SocketException catch (e) {
       showError(e.toString());
-      print(e.toString());
     }
     return null;
   }
 
   Future<void> changeDelivery(int? id) async {
     String? token = await getToken();
-    print(token);
-    print(id);
-    print(userId);
     try {
-      // EasyLoading.show(status: 'Loading...');
-      print(Apis.changeDeliveryUrl);
       http.Response response = await http.post(
         Uri.parse(Apis.changeDeliveryUrl),
         headers: <String, String>{
@@ -1029,12 +972,7 @@ class _ReceivedScreen extends State<ReceivedScreen> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        // EasyLoading.dismiss();
-        var parsedJson = jsonDecode(response.body);
-        print(parsedJson['order']);
-        // Order order = Order.fromJson(parsedJson);
       }
     } on TimeoutException catch (e) {
       showError(e.toString());

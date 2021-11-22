@@ -142,15 +142,12 @@ class _AddAddress extends State<AddAddress> {
                                   controller: a,
                                   maxLines: null,
                                   readOnly: true,
-                                  // enabled: false,
                                   decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                       onPressed: () async {
-                                        print('vào đây');
                                         var result =
                                             await Get.to(AddAddressItem());
                                         setState(() {
-                                          print(address.value);
                                           if (result != null) {
                                             address = result;
                                             address.refresh();
@@ -193,35 +190,6 @@ class _AddAddress extends State<AddAddress> {
                               ],
                             ),
                           ),
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //       border: Border(
-                          //           bottom: BorderSide(
-                          //               color: kPrimaryColorBackground,
-                          //               width: 2))),
-                          //   padding: EdgeInsets.only(left: 12.w),
-                          //   width: 414.w,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       Text(
-                          //         'Đặt làm địa chỉ mặc định',
-                          //         style: TextStyle(fontSize: 18.sp),
-                          //       ),
-                          //       new Radio(
-                          //         toggleable: true,
-                          //         value: '1',
-                          //         groupValue: group.toString(),
-                          //         onChanged: (val) {
-                          //           setState(() {
-                          //             group = val.toString();
-                          //             print(group);
-                          //           });
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                           GestureDetector(
                             onTap: () {
                               addLocationAddress(ctx);
@@ -262,7 +230,6 @@ class _AddAddress extends State<AddAddress> {
 
   Future<bool?> fetchUsers() async {
     var u = await getUser();
-    print(u);
     if (u != null) {
       user = u;
     }
@@ -281,12 +248,9 @@ class _AddAddress extends State<AddAddress> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users;
-        print(users);
         return users;
       }
       if (response.statusCode == 401) {
@@ -306,7 +270,6 @@ class _AddAddress extends State<AddAddress> {
       String add = address[2] + ', ' + address[1] + ', ' + address[0];
       String a = addressDetail.text + ',' + add;
       List<Location> locations = await locationFromAddress(a);
-      print(locations);
       Location position = locations.first;
       String token = (await getToken())!;
       try {
@@ -324,7 +287,6 @@ class _AddAddress extends State<AddAddress> {
             'status': group,
           }),
         );
-        print(response.statusCode);
         if (response.statusCode == 200) {
           var parsedJson = jsonDecode(response.body);
           var address = AddressJson.fromJson(parsedJson).address;

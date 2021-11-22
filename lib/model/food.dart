@@ -1,4 +1,5 @@
 import 'package:fooddelivery/model/category.dart';
+import 'package:fooddelivery/model/discount.dart';
 import 'package:fooddelivery/model/image.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/model/topping.dart';
@@ -19,24 +20,28 @@ class Food {
   Restaurant? restaurant;
   Category? category;
   Pivot? pivot;
+  int? discountId;
+  Discount? discount;
 
-  Food(
-      {this.id,
-      this.name,
-      this.size,
-      this.price,
-      this.weight,
-      this.ingredients,
-      this.status,
-      this.note,
-      this.restaurantId,
-      this.categoryId,
-      this.images,
-      this.toppings,
-      this.restaurant,
-      this.category,
-      this.pivot
-      });
+  Food({
+    this.id,
+    this.name,
+    this.size,
+    this.price,
+    this.weight,
+    this.ingredients,
+    this.status,
+    this.note,
+    this.restaurantId,
+    this.categoryId,
+    this.images,
+    this.toppings,
+    this.restaurant,
+    this.category,
+    this.pivot,
+    this.discountId,
+    this.discount,
+  });
 
   Food.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -68,6 +73,10 @@ class Food {
         ? new Category.fromJson(json['category'])
         : null;
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    discountId = json['discount_id'];
+    discount = json['discount'] != null
+        ? new Discount.fromJson(json['discount'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -97,9 +106,14 @@ class Food {
     if (this.pivot != null) {
       data['pivot'] = this.pivot!.toJson();
     }
+    data['discount_id'] = this.discountId;
+    if (this.discount != null) {
+      data['discount'] = this.discount!.toJson();
+    }
     return data;
   }
 }
+
 class Pivot {
   int? orderId;
   int? foodId;

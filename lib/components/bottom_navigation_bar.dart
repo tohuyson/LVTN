@@ -39,7 +39,6 @@ class _BottomNavigation extends State<BottomNavigation> {
     return Scaffold(
       body: Center(
         child: widgetOptions.elementAt(selectedIndex),
-        // child: controller.widgetOptions.elementAt(controller.tabIndex.value),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

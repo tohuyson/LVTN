@@ -36,12 +36,9 @@ class _AddressMapNow extends State<AddressMapNow> {
           markerId: MarkerId('myMarker'),
           draggable: true,
           onTap: () {
-            print('Marker Tapped');
           },
           position: center,
           onDragEnd: ((newPosition) {
-            print(newPosition.latitude);
-            print(newPosition.longitude);
             setState(() {
               newLocation =
                   new LatLng(newPosition.latitude, newPosition.longitude);
@@ -149,11 +146,9 @@ class _AddressMapNow extends State<AddressMapNow> {
   }
 
   Future<String> getAddress(List<Placemark> placemarks) async {
-    // List<String> address = [];
     String address = '';
 
     for (int i = 0; i < placemarks.length; i++) {
-      print(placemarks[i]);
       if (placemarks[i].administrativeArea!.isNotEmpty &&
           placemarks[i].subAdministrativeArea!.isNotEmpty &&
           placemarks[i].country!.isNotEmpty) {

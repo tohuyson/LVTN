@@ -15,6 +15,4 @@ List<ItemCategory> listItemCategory = [
   ItemCategory(name: 'Coffee', url: 'hot-cup.png'),
   ItemCategory(name: 'Trà Sữa', url: 'iced-tea.png'),
   ItemCategory(name: 'Bánh tráng', url: 'cake_mix.png'),
-  // ItemCategory(name: 'Quán yêu thích', url: 'like.png'),
-  // ItemCategory(name: 'Giao Hàng', url: 'delivery-man.png'),
 ];

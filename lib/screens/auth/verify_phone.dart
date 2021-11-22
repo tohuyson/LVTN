@@ -8,9 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/authservice.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
-import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/auth/signup.dart';
-import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:fooddelivery/screens/widget/loading.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -106,15 +104,10 @@ class _VerifyPhone extends State<VerifyPhone> {
                     child: TextButton(
                       onPressed: () async {
                         if (isLoading == false) {
-                          print(code!.text);
-                          print(verificationId);
                           var isSignSMS = await AuthService().signInWithOTP(
                               code!.text.trim(), verificationId.trim());
-                          print(isSignSMS);
 
                           if (isSignSMS == true) {
-                            //   print("vào ddaa7f true đi bạn $isSignSMS");
-                            //check user đã có tồn tại hay chưa
                             bool isCheckUser = await checkUser();
                             if (isCheckUser) {
                               await loginUser();
@@ -123,7 +116,6 @@ class _VerifyPhone extends State<VerifyPhone> {
                                   arguments: {'numberPhone': numberPhone});
                             }
                           }
-                          // await AuthService().loginAndRegisterPhone(numberPhone);
                         }
                       },
                       child: Text(
@@ -208,12 +200,10 @@ class _VerifyPhone extends State<VerifyPhone> {
           'phone': numberPhone,
         }),
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         setState(() {
           isLoading = false;
         });
-        print(jsonDecode(response.body)['token']);
         await saveToken(jsonDecode(response.body)['token']);
         Get.offAll(BottomNavigation(selectedIndex: 2));
       }
@@ -236,8 +226,6 @@ class _VerifyPhone extends State<VerifyPhone> {
     });
     final PhoneVerificationCompleted verified =
         (AuthCredential authResult) async {
-      //login với firebase
-      // await AuthService().signIn(authResult);
     };
 
     final PhoneVerificationFailed verificationfailed =
@@ -246,12 +234,10 @@ class _VerifyPhone extends State<VerifyPhone> {
         isLoading = false;
       });
       showToast('Số điện thoại không chính xác');
-      print('${authException.message}');
     };
 
     final PhoneCodeSent smsSent = (String? verId, [int? forceResend]) {
       this.verificationId = verId!;
-      print(verId);
       setState(() {
         this.codeSent = true;
         isLoading = false;

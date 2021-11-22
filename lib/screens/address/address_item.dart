@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/controllers/address_controller.dart';
-import 'package:fooddelivery/model/address.dart';
-import 'package:fooddelivery/model/users.dart';
 import 'package:get/get.dart';
 
 class AddressItem extends GetView<AddressController> {
@@ -36,7 +34,6 @@ class AddressItem extends GetView<AddressController> {
                                 size: 28.sp,
                               ),
                               onPressed: () {
-                                print("Map");
                               }),
                           Container(
                             width: 290.w,
@@ -46,7 +43,6 @@ class AddressItem extends GetView<AddressController> {
                               children: [
                                 Text(
                                   controller.listAddress[index].address!,
-                                  // address.addressDetail!,
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       fontSize: 16.sp,

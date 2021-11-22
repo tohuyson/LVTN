@@ -17,11 +17,8 @@ class DateController extends GetxController {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101)))!;
     if (picked != null && picked != selectedDate) {
-      print('vo dday ah');
-      print(picked);
       selectedDate = picked;
       dob = DateFormat('yyyy-MM-dd').format(picked);
-      print('vo dday ah ' + selectedDate.toString());
     }
     update();
   }

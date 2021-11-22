@@ -7,13 +7,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
-import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/address.dart';
 import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/address/address_map.dart';
 import 'package:fooddelivery/utils.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -149,7 +146,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                             child: Column(
                               children: [
                                 TextFormField(
-                                  // initialValue: address.address,
                                   validator: (val) {
                                     if (val!.length == 0) {
                                       return 'Vui lòng chọn Địa chỉ';
@@ -159,15 +155,12 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                                   controller: a,
                                   maxLines: null,
                                   readOnly: true,
-                                  // enabled: false,
                                   decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                       onPressed: () async {
-                                        print('vào đây');
                                         var result =
                                             await Get.to(AddAddressItem());
                                         setState(() {
-                                          print(listAddress.value);
                                           if (result != null) {
                                             listAddress = result;
                                             listAddress.refresh();
@@ -195,7 +188,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                                           width: 1, color: Colors.black12)),
                                 ),
                                 TextFormField(
-                                  // initialValue: address.detail,
                                   validator: (val) {
                                     if (val!.length == 0) {
                                       return 'Vui lòng nhập Địa chỉ cụ thể';
@@ -211,35 +203,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                               ],
                             ),
                           ),
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //       border: Border(
-                          //           bottom: BorderSide(
-                          //               color: kPrimaryColorBackground,
-                          //               width: 2))),
-                          //   padding: EdgeInsets.only(left: 12.w),
-                          //   width: 414.w,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       Text(
-                          //         'Đặt làm địa chỉ mặc định',
-                          //         style: TextStyle(fontSize: 18.sp),
-                          //       ),
-                          //       new Radio(
-                          //         toggleable: true,
-                          //         value: '1',
-                          //         groupValue: group.toString(),
-                          //         onChanged: (val) {
-                          //           setState(() {
-                          //             group = val.toString();
-                          //             print(group);
-                          //           });
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                           Container(
                             height: 280.h,
                             width: 414.w,
@@ -287,7 +250,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
                                   height: 240.h,
                                   child: GoogleMap(
                                     mapType: MapType.normal,
-                                    // myLocationEnabled: true,
                                     initialCameraPosition: CameraPosition(
                                       target: LatLng(
                                           double.parse(
@@ -368,15 +330,11 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
 
     addressDetail = new TextEditingController(text: address.detail);
     a = new TextEditingController(text: address.address);
-    // print(address.longtitude);
-    // center = LatLng(double.parse(address.lattitude.toString()),
-    //     double.parse(address.longtitude.toString()));
     return user.isBlank;
   }
 
   Future<void> fetchUsers() async {
     var u = await getUser();
-    print(u);
     if (u != null) {
       user = u;
     }
@@ -386,7 +344,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
     Users? users;
     String? token = (await getToken());
     try {
-      print(Apis.getUsersUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getUsersUrl),
         headers: <String, String>{
@@ -394,12 +351,9 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users;
-        print(users);
         return users;
       }
       if (response.statusCode == 401) {
@@ -416,10 +370,8 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
 
   Future<void> fetchAddress() async {
     var a = await getAddress();
-    print(a);
     if (a != null) {
       address = a;
-      print(address);
     }
   }
 
@@ -438,7 +390,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         a = AddressJson.fromJson(parsedJson).address!;
@@ -468,9 +419,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
       }
 
       String a = addressDetail.text + ',' + add;
-      // List<Location> locations = await locationFromAddress(a);
-      // print(locations);
-      // Location position = locations.first;
       String token = (await getToken())!;
       try {
         http.Response response = await http.post(
@@ -488,7 +436,6 @@ class _EditAddress extends State<EditAddress> with WidgetsBindingObserver {
             'status': group,
           }),
         );
-        print(response.statusCode);
         if (response.statusCode == 200) {
           Get.back();
         }

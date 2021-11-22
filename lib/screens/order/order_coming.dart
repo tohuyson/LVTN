@@ -66,8 +66,6 @@ class _OrderDetail extends State<OrderComing> {
               return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
             } else {
               return order.value.id != null
-                  // && order.value.orderStatusId != 5 &&
-                  //     order.value.orderStatusId != 4
                   ? SingleChildScrollView(
                       child: Column(
                         children: [
@@ -77,7 +75,6 @@ class _OrderDetail extends State<OrderComing> {
                             order: order.value,
                           ),
                           Container(
-                            // height: 450.h,
                             width: double.infinity,
                             color: Colors.white,
                             child: Column(
@@ -130,7 +127,6 @@ class _OrderDetail extends State<OrderComing> {
                                     children: [
                                       Container(
                                         width: 290.w,
-                                        // height: 65.h,
                                         padding: EdgeInsets.only(
                                             top: 4.h, bottom: 4.h),
                                         child: Column(
@@ -144,9 +140,6 @@ class _OrderDetail extends State<OrderComing> {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            // SizedBox(
-                                            //   height: 4.h,
-                                            // ),
                                             Text(
                                               'Tổng: ${NumberFormat.currency(locale: 'vi').format(order.value.price)}',
                                               style: TextStyle(fontSize: 14),
@@ -447,29 +440,12 @@ class _OrderDetail extends State<OrderComing> {
                                                                 'Đơn hàng',
                                                                 'Quán ăn có một đơn hàng bị hủy từ ${order.value.user!.username}',
                                                                 4);
-                                                            // if (isNotify ==
-                                                            //     true) {
-                                                            //   await saveNotification(
-                                                            //       'Đơn hàng',
-                                                            //       'Quán ăn có một đơn hàng bị hủy từ ${order.value.user!.username}',
-                                                            //       '${order.value.food![0].restaurant!.user!.id}',
-                                                            //       1);
-                                                            // }
-                                                            // var isNotifyPerson =
                                                             await notification(
                                                                 order.value
                                                                     .user!.uid!,
                                                                 'Đơn hàng',
                                                                 'Bạn đã hủy đơn hàng từ quán ăn ${order.value.food![0].restaurant!.name}',
                                                                 4);
-                                                            // if (isNotifyPerson ==
-                                                            //     true) {
-                                                            //   await saveNotification(
-                                                            //       'Đơn hàng',
-                                                            //       'Bạn đã hủy đơn hàng từ quán ăn ${order.value.food![0].restaurant!.name}',
-                                                            //       '${order.value.user!.id}',
-                                                            //       1);
-                                                            // }
                                                             Get.back();
                                                             setState(() {
                                                               fetchOrder();
@@ -527,7 +503,6 @@ class _OrderDetail extends State<OrderComing> {
   Future<bool?> fetchOrder() async {
     var o = await getOrder();
     if (o != null) {
-      print(o);
       order = o.obs;
       order.refresh();
     } else {
@@ -539,9 +514,7 @@ class _OrderDetail extends State<OrderComing> {
   Future<Order?> getOrder() async {
     Order order;
     String token = (await getToken())!;
-    print(token);
     try {
-      print(Apis.getOrderComingUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getOrderComingUrl),
         headers: <String, String>{
@@ -549,11 +522,9 @@ class _OrderDetail extends State<OrderComing> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['order']);
 
         order = OrderJson.fromJson(parsedJson).order!;
 
@@ -589,13 +560,7 @@ class _OrderDetail extends State<OrderComing> {
         }),
       );
 
-      print(response.statusCode);
       return response.statusCode;
-      // if (response.statusCode == 200) {
-      //   var parsedJson = jsonDecode(response.body);
-      //   Order order = Order.fromJson(parsedJson['order']);
-      //   return order;
-      // }
     } on TimeoutException catch (e) {
       showError(e.toString());
     } on SocketException catch (e) {

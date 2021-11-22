@@ -303,12 +303,10 @@ class _HomeScreen extends State<HomeScreen> {
   Future<List<Restaurant>?> getRestaurants() async {
     List<Restaurant> list;
     String token = (await getToken())!;
-    print(token);
     Map<String, String> queryParams = {
       'limit': '40',
     };
     String queryString = Uri(queryParameters: queryParams).query;
-    print(queryString);
     try {
       http.Response response = await http.get(
         Uri.parse(Apis.getRestaurantsUrl + '?' + queryString),

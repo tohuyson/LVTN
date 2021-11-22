@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/model/users.dart';
-import 'package:fooddelivery/screens/widget/empty_screen.dart';
+import 'package:fooddelivery/screens/delivery/confirm_code.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -83,8 +84,15 @@ class _RegisterDelivery extends State<RegisterDelivery> {
                             ),
                             TextButton(
                               onPressed: () async {
+                                EasyLoading.show();
+                                var code = await sendMailCode();
                                 Get.back();
-                                await updateDelivery();
+                                if (code == 200) {
+                                  EasyLoading.dismiss();
+                                  Get.to(ConfirmCode());
+                                } else if (code == 401) {
+                                  showToast('Đăng ký không thành công!');
+                                }
                               },
                               child: const Text(
                                 'Đăng ký',
@@ -117,9 +125,27 @@ class _RegisterDelivery extends State<RegisterDelivery> {
     );
   }
 
+  Future<int?> sendMailCode() async {
+    String? token = await getToken();
+    try {
+      http.Response response = await http.post(
+        Uri.parse(Apis.registerDeliveryUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token",
+        },
+      );
+
+      return response.statusCode;
+    } on TimeoutException catch (e) {
+      showError(e.toString());
+    } on SocketException catch (e) {
+      showError(e.toString());
+    }
+  }
+
   Future<void> updateDelivery() async {
     String? token = await getToken();
-    print(user_id);
     try {
       http.Response response = await http.post(
         Uri.parse(Apis.updateDeliveryUrl),
@@ -132,7 +158,6 @@ class _RegisterDelivery extends State<RegisterDelivery> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         Users? users = UsersJson.fromJson(parsedJson).users;

@@ -59,14 +59,11 @@ class _OrderDetail extends State<OrderDetail> {
   void initState() {
     card = Rx<CardModel>(new CardModel());
     card_id = Get.arguments['card_id'];
-    print('card_id $card_id');
     person = 'Vui lòng chọn'.obs;
-    voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: 0));
+    voucher = new Rx<Discount>(new Discount(name: '', image: '', percent: '0'));
     payment = ''.obs;
     delivery_fee = 5000;
     distance = Get.arguments['distance'];
-
-    print('khoảng cách ${distance}');
 
     time = timeDelivery().obs;
 
@@ -101,7 +98,6 @@ class _OrderDetail extends State<OrderDetail> {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
@@ -282,8 +278,6 @@ class _OrderDetail extends State<OrderDetail> {
                                                 String address = result;
                                                 List listAddress =
                                                     address.split('|');
-                                                // print(listAddress[1]);
-                                                // print(listAddress[2]);
                                                 double
                                                     d =
                                                     await distanceRestaurant(
@@ -370,7 +364,6 @@ class _OrderDetail extends State<OrderDetail> {
                                 arguments: {
                                   'restaurant_id': card.value.restaurantId
                                 });
-                            print(result);
                             setState(() {
                               if (result != null) {
                                 voucher.value = result;
@@ -399,7 +392,6 @@ class _OrderDetail extends State<OrderDetail> {
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        // width: 150.w,
                                         height: 30.h,
                                         padding: EdgeInsets.only(
                                             left: 16.sp, right: 16.sp),
@@ -408,7 +400,6 @@ class _OrderDetail extends State<OrderDetail> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(40)),
                                         ),
-
                                         child: Text(
                                           voucher.value.percent == 0
                                               ? 'Chọn voucher'
@@ -581,7 +572,7 @@ class _OrderDetail extends State<OrderDetail> {
                                       ),
                                     ),
                                     Text(
-                                      '-${NumberFormat.currency(locale: 'vi').format(priceVocher().round())}',
+                                      '-${NumberFormat.currency(locale: 'vi').format(priceVocher()!.round())}',
                                       style: TextStyle(
                                         fontSize: 18.sp,
                                       ),
@@ -624,7 +615,6 @@ class _OrderDetail extends State<OrderDetail> {
                           padding: EdgeInsets.all(12.w),
                           child: GestureDetector(
                             onTap: () async {
-                              print('Thanh toán');
                               if (payment.value == 'Zalopay') {
                                 var result = await createOrder(sumPrice());
                                 String response = "";
@@ -633,9 +623,7 @@ class _OrderDetail extends State<OrderDetail> {
                                       'payOrder',
                                       {"zptoken": result!.zptranstoken});
                                   response = r;
-                                  print("payOrder Result: '$result'.");
                                 } on PlatformException catch (e) {
-                                  print("Failed to Invoke: '${e.message}'.");
                                   response = "Thanh toán thất bại";
                                 }
                                 print(response);
@@ -647,10 +635,8 @@ class _OrderDetail extends State<OrderDetail> {
                                     payResult = response;
                                 });
                                 if (payResult != 'User Canceled') {
-                                  // addOrder();
                                   showToast('Người dùng chưa thanh toán!');
                                 } else if (payResult != 'Payment failed') {
-                                  // addOrder();
                                   showToast('Thanh toán thất bại!');
                                 }
                               } else {
@@ -707,18 +693,17 @@ class _OrderDetail extends State<OrderDetail> {
   }
 
   void _onError(Object error) {
-    print("_onError: '$error'.");
     setState(() {
       payResult = "Giao dịch thất bại";
     });
   }
 
-  double priceVocher() {
-    return card.value.sumPrice! * (voucher.value.percent! / 100);
+  double? priceVocher() {
+    return card.value.sumPrice! * (double.parse(voucher.value.percent!) / 100);
   }
 
   int sumPrice() {
-    return card.value.sumPrice! + delivery_fee - priceVocher().round();
+    return card.value.sumPrice! + delivery_fee - priceVocher()!.round();
   }
 
   int timeDelivery() {
@@ -729,12 +714,6 @@ class _OrderDetail extends State<OrderDetail> {
     await fetchCard();
     await fetchUser();
 
-    // for (int i = 0; i < users.value.address!.length; i++) {
-    //   if (users.value.address![i].status == 1) {
-    //     print(users.value.address![i].address!);
-    //     // address = users.value.address![i].address!;
-    //   }
-    // }
     return users.isBlank;
   }
 
@@ -760,7 +739,6 @@ class _OrderDetail extends State<OrderDetail> {
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         users = UsersJson.fromJson(parsedJson).users!;
-        print(users.username);
         return users;
       }
     } on TimeoutException catch (e) {
@@ -781,7 +759,6 @@ class _OrderDetail extends State<OrderDetail> {
   Future<CardModel?> getCard() async {
     CardModel card = new CardModel();
     String token = (await getToken())!;
-    print(card_id);
     try {
       Map<String, String> queryParams = {
         'card_id': card_id.toString(),
@@ -799,7 +776,6 @@ class _OrderDetail extends State<OrderDetail> {
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         card = CardJson.fromJson(parsedJson).card!;
-        print(card);
         return card;
       }
     } on TimeoutException catch (e) {
@@ -812,7 +788,6 @@ class _OrderDetail extends State<OrderDetail> {
 
   Future<void> addOrder() async {
     var token = await getToken();
-    print(' trang thái  $payResult');
     EasyLoading.show();
     if (a.isNotEmpty) {
       if (payment.value.isNotEmpty) {
@@ -824,8 +799,6 @@ class _OrderDetail extends State<OrderDetail> {
           } else {
             discount_id = voucher.value.id!;
           }
-          print(sumprice);
-          print(payment.value);
           int card_id = card.value.id!;
           http.Response response = await http.post(
             Uri.parse(Apis.postOrderUrl),
@@ -847,41 +820,20 @@ class _OrderDetail extends State<OrderDetail> {
               'time_delivery': timeDelivery(),
             }),
           );
-          print(response.statusCode);
           if (response.statusCode == 200) {
             var parsedJson = jsonDecode(response.body);
-            // print(parsedJson['order']);
-            // showToast('Mua hàng thành công');
             Order order = OrderJson.fromJson(parsedJson).order!;
-
-            print(order);
-
-            print(order.food![0].restaurant!.user!.uid!);
 
             await notification(
                 order.food![0].restaurant!.user!.uid!,
                 'Đơn hàng',
                 'Quán ăn có một đơn hàng mới từ ${users.value.username}',
                 1);
-            // if (isNotify == true) {
-            //   await saveNotification(
-            //       'Đơn hàng',
-            //       'Quán ăn có một đơn hàng mới từ ${users.value.username}',
-            //       '${order.food![0].restaurant!.user!.id}',
-            //       1);
-            // }
             await notification(
                 users.value.uid!,
                 'Đơn hàng',
                 'Đơn hàng đang được xử lí bời quán ăn ${order.food![0].restaurant!.name}',
                 1);
-            // if (isNotifyPerson == true) {
-            //   await saveNotification(
-            //       'Đơn hàng',
-            //       'Đơn hàng đang được xử lí bời quán ăn ${order.food![0].restaurant!.name}',
-            //       '${users.value.id}',
-            //       1);
-            // }
             EasyLoading.dismiss();
 
             Get.off(

@@ -29,7 +29,6 @@ class _MenuScreen extends State<MenuScreen> {
   void initState() {
     menuName = Get.arguments['menuName'];
     listRestaurant = new RxList<Restaurant>();
-    // fetchRestaurant();
 
     super.initState();
   }
@@ -64,7 +63,6 @@ class _MenuScreen extends State<MenuScreen> {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               width: 414.w,
-                              // height: 200.h,
 
                               padding: EdgeInsets.only(
                                   left: 12.w,
@@ -76,7 +74,6 @@ class _MenuScreen extends State<MenuScreen> {
                                   top: 4.h,
                                   left: 12.w,
                                   right: 12.w),
-                              // height: 96.h,
                               child: Column(
                                 children: [
                                   Row(
@@ -110,13 +107,6 @@ class _MenuScreen extends State<MenuScreen> {
                                                         FontWeight.w500),
                                               ),
                                             ),
-                                            // Container(
-                                            //     width: 300.w,
-                                            //     child: Text(
-                                            //       'Giá: ' + food.price.toString() + 'đ',
-                                            //       style: TextStyle(
-                                            //           fontSize: 16.sp, fontWeight: FontWeight.w400),
-                                            //     )),
                                             SizedBox(
                                               height: 5.h,
                                             ),
@@ -174,7 +164,6 @@ class _MenuScreen extends State<MenuScreen> {
       'name': menuName,
     };
     String queryString = Uri(queryParameters: queryParams).query;
-    print(queryString);
     try {
       http.Response response = await http.get(
         Uri.parse(Apis.searchRestaurantUrl + '?' + queryString),
@@ -183,15 +172,12 @@ class _MenuScreen extends State<MenuScreen> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         list = ListRestaurants.fromJson(parsedJson).listRestaurants!;
         return list;
       }
       if (response.statusCode == 204) {
-        // var parsedJson = jsonDecode(response.body);
-        // list = ListRestaurants.fromJson(parsedJson).listRestaurants!;
         return new List.empty();
       }
     } on TimeoutException catch (e) {

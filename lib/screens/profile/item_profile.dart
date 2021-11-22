@@ -19,7 +19,6 @@ class ItemProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // LineDecoration(),
           Container(
             child: Text(
               itemProfile!.title!,

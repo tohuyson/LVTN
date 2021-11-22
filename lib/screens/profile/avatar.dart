@@ -56,7 +56,6 @@ class Avatar extends GetView<ProfileController> {
                   ),
                   IconButton(
                     onPressed: () {
-                      // controller.getImage();
                     },
                     icon: Icon(
                       Icons.arrow_forward_ios,

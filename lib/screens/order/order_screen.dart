@@ -71,7 +71,6 @@ class _OrderScreen extends State<OrderScreen>
             children: [
               Container(
                 color: Colors.white,
-                // constraints: BoxConstraints.expand(height: 50.h),
                 child: TabBar(
                   unselectedLabelColor: Colors.black87,
                   indicatorColor: Colors.blue,
@@ -86,19 +85,8 @@ class _OrderScreen extends State<OrderScreen>
                   controller: tabController,
                   children: [
                     OrderComing(
-                        // order: order_1,
                         ),
                     HistoryScreen(),
-                    // order_1.status == false
-                    //     ? OrderComing(
-                    //         order: order_1,
-                    //       )
-                    //     : Text('Không có đơn hàng'),
-                    // listOrder.isNotEmpty
-                    //     ? OrderItem(
-                    //         listOrder: listOrder,
-                    //       )
-                    //     : Text('Không có đơn hàng'),
                     DraftOrder(),
                   ],
                 ),

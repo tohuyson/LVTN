@@ -95,10 +95,6 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
             ),
            address.length>0? GestureDetector(
               onTap: () async {
-                print(group);
-
-                print(chooseAddress.detail);
-
                 await setValue('street', chooseAddress.detail!);
                 await setValue('address', chooseAddress.address!);
                 await setValue('latitude', chooseAddress.lattitude!);
@@ -122,15 +118,6 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
               ),
             ):GestureDetector(
              onTap: () async {
-               // print(group);
-               //
-               // print(chooseAddress.detail);
-               //
-               // await setValue('street', chooseAddress.detail!);
-               // await setValue('address', chooseAddress.address!);
-               // await setValue('latitude', chooseAddress.lattitude!);
-               // await setValue('longitude', chooseAddress.longtitude!);
-               // Get.back(result: group);
                Get.to(BottomNavigation(selectedIndex: 1));
                setState(() {
                  fetchAddress();
@@ -160,11 +147,9 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
 
   Future<void> fetchAddress() async {
     var a = await getAddress();
-    print(a);
     if (a != null) {
       address.assignAll(a);
       address.refresh();
-      print(address.length);
     }
   }
 
@@ -179,7 +164,6 @@ class _ListAddressDelivery extends State<ListAddressDelivery> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         list = ListAddress.fromJson(parsedJson).listAddress!;

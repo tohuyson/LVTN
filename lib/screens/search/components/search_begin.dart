@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/screens/search/search_screens.dart';
-import 'package:get/get.dart';
 
 class SearchBegin extends StatelessWidget {
 
@@ -27,7 +25,6 @@ class SearchBegin extends StatelessWidget {
               child: InputChip(
                 label: Text('Cơm Số 1'),
                 onPressed: () {
-                  print('dnhanhvaof');
                 },
               ),
             ),

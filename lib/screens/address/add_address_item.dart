@@ -2,7 +2,6 @@ import 'package:address_picker_vn/address_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/utils.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -104,10 +103,7 @@ class _AddAddressItem extends State<AddAddressItem> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    // List<Location> locations =  await locationFromAddress('58/3 QL1A, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam');
-    // print(locations.first);
     Position position = await Geolocator.getCurrentPosition();
-    print(position);
 
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
@@ -115,7 +111,6 @@ class _AddAddressItem extends State<AddAddressItem> {
       if (placemarks[i].administrativeArea!.isNotEmpty &&
           placemarks[i].subAdministrativeArea!.isNotEmpty &&
           placemarks[i].locality!.isNotEmpty) {
-        print(placemarks[i]);
         address.add(placemarks[i].administrativeArea!);
         address.add(placemarks[i].subAdministrativeArea!);
         address.add(placemarks[i].locality!);

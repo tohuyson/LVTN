@@ -58,6 +58,7 @@ class _NotifyScreen extends State<NotifyScreen> {
                 child: Obx(
                   () => ListView.builder(
                       itemCount: listNotify.length,
+                      reverse: true,
                       itemBuilder: (context, index) {
                         return NotifyItem(
                           notify: listNotify[index],
@@ -78,7 +79,6 @@ class _NotifyScreen extends State<NotifyScreen> {
 
   Future<bool> fetchNotify() async {
     var n = await getNotify();
-    print(n);
     if (n != null) {
       listNotify.assignAll(n);
       listNotify.refresh();

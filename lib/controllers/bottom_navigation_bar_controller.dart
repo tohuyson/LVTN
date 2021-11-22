@@ -18,7 +18,5 @@ class BottomNavigationBarController extends GetxController {
 
   void setPage(int index) {
     tabIndex.value = index;
-
-    // tabIndex(index);
   }
 }

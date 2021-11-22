@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
-import 'package:fooddelivery/controllers/home_controller.dart';
 import 'package:fooddelivery/model/list_sliders.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -41,7 +40,6 @@ class _SlideBannerWidget extends State<SlideBannerWidget> {
               indicatorColor: Theme.of(context).primaryColor,
               indicatorBackgroundColor: Colors.white,
               children: [
-                // controller.listSliders.forEach((element) { })
                 for (Sliders slider in sliders)
                   Image.network(
                     Apis.baseURL + slider.url!,
@@ -49,7 +47,6 @@ class _SlideBannerWidget extends State<SlideBannerWidget> {
                   ),
               ],
               onPageChanged: (value) {
-                // print('Page changed: $value');
               },
               autoPlayInterval: 3000,
             )

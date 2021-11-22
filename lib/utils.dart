@@ -16,13 +16,11 @@ import 'networking.dart';
 
 String keyGoogleMap = 'AIzaSyBFRhlxolpDTOnWONYQ-VdctzKzlsN5hAY';
 
-/// Function Format DateTime to String with layout string
 String formatNumber(double value) {
   final f = new NumberFormat("#,###", "vi_VN");
   return f.format(value);
 }
 
-/// Function Format DateTime to String with layout string
 String formatDateTime(DateTime dateTime, String layout) {
   return DateFormat(layout).format(dateTime).toString();
 }
@@ -81,7 +79,6 @@ Future<String?> getValue(String key) async {
 
 Future<int?> uploadImage(File file, String filename) async {
   String? token = await getToken();
-  print(token);
   try {
     var request =
         await http.MultipartRequest('POST', Uri.parse(Apis.uploadImage));
@@ -89,7 +86,6 @@ Future<int?> uploadImage(File file, String filename) async {
         'image', file.readAsBytesSync(),
         filename: filename.split('/').last));
     var response = await request.send();
-    print(response.statusCode);
     return response.statusCode;
   } on TimeoutException catch (e) {
     showError(e.toString());
@@ -100,7 +96,6 @@ Future<int?> uploadImage(File file, String filename) async {
 
 Future<int?> uploadAvatar(File file, String filename) async {
   String? token = await getToken();
-  print(token);
   try {
     var request =
         await http.MultipartRequest('POST', Uri.parse(Apis.uploadAvatar));
@@ -108,7 +103,6 @@ Future<int?> uploadAvatar(File file, String filename) async {
         'image', file.readAsBytesSync(),
         filename: filename.split('/').last));
     var response = await request.send();
-    print(response.statusCode);
     return response.statusCode;
   } on TimeoutException catch (e) {
     showError(e.toString());
@@ -117,7 +111,8 @@ Future<int?> uploadAvatar(File file, String filename) async {
   }
 }
 
-Future<bool> notification(String uid, String title, String body,int notification_type_id) async {
+Future<bool> notification(
+    String uid, String title, String body, int notification_type_id) async {
   try {
     http.Response response = await http.post(
       Uri.parse(Apis.postNotificationUrl),
@@ -131,7 +126,6 @@ Future<bool> notification(String uid, String title, String body,int notification
         'notification_type_id': notification_type_id,
       }),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     }
@@ -147,8 +141,6 @@ Future<void> saveNotification(
     String title, String body, String user_id, int notification_type_id) async {
   var token = await getToken();
   try {
-    print(title);
-    print(body);
     http.Response response = await http.post(
       Uri.parse(Apis.saveNotificationUrl),
       headers: <String, String>{
@@ -162,7 +154,6 @@ Future<void> saveNotification(
         'notification_type_id': notification_type_id,
       }),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {}
   } on TimeoutException catch (e) {
     showError(e.toString());
@@ -180,14 +171,13 @@ Future<double> distanceRestaurant(
     endLng: endLng,
   );
   var data = await distance.postData();
-  // print(data);
 
   if (data != 404) {
     var arrarDistance = data['distances'][0];
-    print(arrarDistance);
-    if(arrarDistance[1]!= null)
-    return arrarDistance[1];
-    else return 0.0;
+    if (arrarDistance[1] != null)
+      return arrarDistance[1];
+    else
+      return 0.0;
   }
   return 0.0;
 }

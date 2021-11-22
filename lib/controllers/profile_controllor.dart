@@ -14,21 +14,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileController extends GetxController {
   late Users? users;
 
-  // var user = Users(avatar: 'assets/images/user.png').obs;
   late Rx<Users> user;
 
   @override
   void onInit() {
     image = new File('');
-    // getUser();
     fetchUsers();
-    // users = (getUser().obs) as Users?;
     super.onInit();
   }
 
   @override
   void onReady() {
-    // getRestaurants();
     super.onReady();
   }
 
@@ -37,7 +33,6 @@ class ProfileController extends GetxController {
     if (u != null) {
       user = u.obs;
     }
-    // update();
   }
 
   late File? image;
@@ -50,7 +45,6 @@ class ProfileController extends GetxController {
     if (pickedFile != null) {
       image = File(pickedFile.path);
       imagePath = pickedFile.path;
-      print(imagePath);
       update();
     } else {
       print('No image selected.');
@@ -61,7 +55,6 @@ class ProfileController extends GetxController {
     Users? users;
     String token = (await getToken())!;
     try {
-      print(Apis.getUsersUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getUsersUrl),
         headers: <String, String>{
@@ -69,12 +62,9 @@ class ProfileController extends GetxController {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users!;
-        print(users);
         return users;
       }
       if (response.statusCode == 401) {
@@ -96,9 +86,7 @@ class ProfileController extends GetxController {
 
   Future<void> logout() async {
     String token = (await getToken())!;
-    print(token);
     try {
-      print(Apis.getLogoutUrl);
       http.Response response = await http.post(
         Uri.parse(Apis.getLogoutUrl),
         headers: <String, String>{
@@ -106,7 +94,6 @@ class ProfileController extends GetxController {
           'Authorization': "Bearer $token",
         },
       ).timeout(Duration(seconds: 10));
-      print(response.statusCode);
       if (response.statusCode == 200) {
         _removeToken();
         Get.offAll(SignIn());

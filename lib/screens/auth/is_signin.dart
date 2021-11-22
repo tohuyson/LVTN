@@ -1,8 +1,6 @@
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
-import 'package:fooddelivery/controllers/auth_controller.dart';
 import 'package:fooddelivery/screens/auth/signin.dart';
 import 'package:fooddelivery/utils.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class IsSignIn extends StatelessWidget {

@@ -6,8 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/components/bottom_navigation_bar.dart';
-import 'package:fooddelivery/controllers/auth_controller.dart';
-import 'package:fooddelivery/model/users.dart';
 import 'package:fooddelivery/screens/auth/widgets/input_field.dart';
 import 'package:fooddelivery/utils.dart';
 import 'package:get/get.dart';
@@ -22,8 +20,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUp extends State<SignUp> {
-  // AuthController controller = Get.put(AuthController());
   late TextEditingController? email;
+  late TextEditingController? mssv;
   late TextEditingController? username;
 
   var confirmPass = null;
@@ -33,6 +31,7 @@ class _SignUp extends State<SignUp> {
   void initState() {
     numberPhone = Get.arguments['numberPhone'];
     email = new TextEditingController();
+    mssv = new TextEditingController();
     username = new TextEditingController();
     super.initState();
   }
@@ -40,6 +39,7 @@ class _SignUp extends State<SignUp> {
   @override
   void dispose() {
     email!.dispose();
+    mssv!.dispose();
     username!.dispose();
     super.dispose();
   }
@@ -106,7 +106,7 @@ class _SignUp extends State<SignUp> {
                           if (val!.length == 0) return "Vui lòng nhập tên";
                         },
                         hintText: 'Tên người dùng',
-                        icon: Icons.person,
+                        icon: Icons.perm_identity,
                         controller: username,
                       ),
                       SizedBox(
@@ -115,67 +115,33 @@ class _SignUp extends State<SignUp> {
                       InputField(
                         validator: (val) {
                           if (val!.length == 0)
+                            return "Vui lòng nhập mã số sinh viên";
+                          else
+                            return null;
+                        },
+                        controller: mssv,
+                        hintText: 'MSSV',
+                        icon: Icons.perm_identity,
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      InputField(
+                        validator: (val) {
+                          if (val!.length == 0)
                             return "Vui lòng nhập Email";
-                          else if (val.isEmail)
-                            return "Sai định dạng Email";
+                          else if (val.endsWith('@st.hcmuaf.edu.vn') == false)
+                            return "Sai định dạng Email sinh viên";
                           else
                             return null;
                         },
                         controller: email,
                         hintText: 'Email',
-                        icon: Icons.email,
+                        icon: Icons.email_outlined,
                       ),
                       SizedBox(
                         height: 20.h,
                       ),
-                      // InputField(
-                      //   validator: (val) {
-                      //     if (val!.length == 0)
-                      //       return "Vui lòng nhập số điện thoại";
-                      //     else if (!val.isNum) {
-                      //       return 'Vui lòng nhập số điện thoại';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   controller: controller.phone,
-                      //   hintText: 'Số điện thoại',
-                      //   icon: Icons.phone,
-                      // ),
-                      // SizedBox(
-                      //   height: 20.h,
-                      // ),
-                      // InputField(
-                      //   obscureText: true,
-                      //   validator: (val) {
-                      //     confirmPass = val!;
-                      //     if (val.length == 0)
-                      //       return "Vui lòng nhập mật khẩu";
-                      //     else if (val.length < 8)
-                      //       return "Mật khẩu lớn hơn 8 ký tự";
-                      //     else
-                      //       return null;
-                      //   },
-                      //   controller: controller.password,
-                      //   hintText: 'Mật khẩu',
-                      //   icon: Icons.vpn_key,
-                      // ),
-                      // SizedBox(
-                      //   height: 20.h,
-                      // ),
-                      // InputField(
-                      //   obscureText: true,
-                      //   validator: (val) {
-                      //     if (val!.length == 0)
-                      //       return "Vui lòng nhập mật khẩu";
-                      //     else if (val.length < 8)
-                      //       return "Mật khẩu lớn hơn 8 ký tự";
-                      //     else if (confirmPass != val)
-                      //       return 'Không khớp mật khẩu';
-                      //     return null;
-                      //   },
-                      //   hintText: 'Xác nhận mật khẩu',
-                      //   icon: Icons.vpn_key,
-                      // ),
                       SizedBox(
                         height: 40.h,
                       ),
@@ -189,9 +155,10 @@ class _SignUp extends State<SignUp> {
                                 BorderRadius.all(Radius.circular(10))),
                         child: TextButton(
                           onPressed: () {
-                            // controller.register(ctx);
-                            loginAndRegisterPhone(
-                                numberPhone, username!.text, email!.text);
+                            if (Form.of(ctx)!.validate()) {
+                              loginAndRegisterPhone(numberPhone, username!.text,
+                                  email!.text, mssv!.text);
+                            }
                           },
                           child: Text(
                             'Tiếp tục'.toUpperCase(),
@@ -205,24 +172,6 @@ class _SignUp extends State<SignUp> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: 30.h,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     Text("Bạn đã có tài khoản? "),
-              //     TextButton(
-              //       onPressed: () {
-              //         Get.back();
-              //       },
-              //       child: Text(
-              //         "Đăng nhập",
-              //         style: TextStyle(color: Color(0xff47A4FF)),
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -231,9 +180,8 @@ class _SignUp extends State<SignUp> {
   }
 
   Future<void> loginAndRegisterPhone(
-      String phone, String username, String email) async {
+      String phone, String username, String email, String mssv) async {
     User user = FirebaseAuth.instance.currentUser!;
-    print(phone);
     try {
       http.Response response = await http.post(
         Uri.parse(Apis.postloginAndRegisterPhone),
@@ -244,16 +192,14 @@ class _SignUp extends State<SignUp> {
           'phone': phone,
           'username': username,
           'email': email,
+          'mssv': mssv,
           'uid': user.uid,
         }),
       );
-      print(response.statusCode);
       if (response.statusCode == 201) {
         var token = jsonDecode(response.body)["token"];
 
         await saveToken(token);
-
-        print(user);
 
         user.updateDisplayName(username);
         user.updateEmail(email);

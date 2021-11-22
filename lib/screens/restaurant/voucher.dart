@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/constants.dart';
@@ -33,7 +32,6 @@ class _Voucher extends State<Voucher> {
     percent = '';
     list = RxList<Discount>();
     restaurant_id = Get.arguments['restaurant_id'];
-    print(restaurant_id);
     fetchDiscount();
     super.initState();
   }
@@ -162,7 +160,6 @@ class _Voucher extends State<Voucher> {
                                         discount = new Discount();
                                       } else
                                         discount = list[index];
-                                      print(percent);
                                     });
                                   },
                                 ),
@@ -216,7 +213,6 @@ class _Voucher extends State<Voucher> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          print('Sử dụng');
           Get.back(result: discount);
         },
         label: Container(
@@ -264,10 +260,8 @@ class _Voucher extends State<Voucher> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['discounts']);
         list = ListDiscount.fromJson(parsedJson).discounts!;
         return list;
       }

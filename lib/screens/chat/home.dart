@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +51,6 @@ class _HomeScreenState extends State<ChatHomeScreen> {
     firebaseMessaging.requestPermission();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('onMessage: $message');
       if (message.notification != null) {
         showNotification(message.notification!);
       }
@@ -60,7 +58,6 @@ class _HomeScreenState extends State<ChatHomeScreen> {
     });
 
     firebaseMessaging.getToken().then((token) {
-      print('token: $token');
       FirebaseFirestore.instance
           .collection('users')
           .doc(currentUserId)
@@ -90,22 +87,10 @@ class _HomeScreenState extends State<ChatHomeScreen> {
     }
   }
 
-  // void onItemMenuPress(Choice choice) {
-  //   if (choice.title == 'Log out') {
-  //     handleSignOut();
-  //   } else {
-  //     Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => ChatSettings()));
-  //   }
-  // }
-
   void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'com.nlu.fooddelivery',
-      // Platform.isAndroid
-      //     ? 'com.example.app_delivery'
-      //     : 'com.example.app_delivery',
       'Flutter chat demo',
       'your channel description',
       playSound: true,
@@ -118,8 +103,6 @@ class _HomeScreenState extends State<ChatHomeScreen> {
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-
-    print(remoteNotification);
 
     await flutterLocalNotificationsPlugin.show(
       0,

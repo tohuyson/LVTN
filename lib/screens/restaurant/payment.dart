@@ -80,7 +80,6 @@ class _Payment extends State<Payment> {
                         onChanged: (val) {
                           setState(() {
                             group = val.toString();
-                            print(group);
                           });
                         },
                       ),
@@ -126,7 +125,6 @@ class _Payment extends State<Payment> {
                         onChanged: (val) {
                           setState(() {
                             group = val.toString();
-                            print(group);
                           });
                         },
                       ),
@@ -141,7 +139,6 @@ class _Payment extends State<Payment> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          print('Sử dụng');
           if (group != null || group != '') {
             Get.back(result: new RxString(group));
           } else

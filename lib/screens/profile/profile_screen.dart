@@ -15,7 +15,6 @@ import 'package:fooddelivery/screens/chat/home.dart';
 import 'package:fooddelivery/screens/delivery/delivery_screen.dart';
 import 'package:fooddelivery/screens/delivery/history_delivery_screen.dart';
 import 'package:fooddelivery/screens/delivery/received_screen.dart';
-import 'package:fooddelivery/screens/home/home_screen.dart';
 import 'package:fooddelivery/screens/profile/information_user.dart';
 import 'package:fooddelivery/screens/profile/item_profile.dart';
 import 'package:fooddelivery/screens/profile/policy.dart';
@@ -32,8 +31,6 @@ class ProfileScreen extends StatefulWidget {
     return _ProfileScreen();
   }
 }
-
-// late Rx<>Users? lu;
 
 class _ProfileScreen extends State<ProfileScreen> {
   ProfileController controller = Get.put(ProfileController());
@@ -70,7 +67,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () async {
                                     await Get.to(InformationUser());
-                                    print('voo ddaay nafo');
                                     setState(() {
                                       fetchUsers();
                                     });
@@ -169,21 +165,15 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     onPressed: () async {
                                                       if (lu.value!.roleId ==
                                                           1) {
-                                                        var user = await Get.to(
+                                                        await Get.to(
                                                             RegisterDelivery(),
                                                             arguments: {
                                                               'user_id':
                                                                   lu.value!.id,
                                                             });
-                                                        if (user != null) {
-                                                          showToast(
-                                                              'Bạn đã đăng ký thành công. Nhận đơn hàng ngay!');
-                                                          fetchUsers();
-                                                        }
                                                       } else if (lu
                                                               .value!.roleId ==
                                                           4) {
-                                                        print(order.value.id);
                                                         order.value.id == null
                                                             ? Get.to(
                                                                 DeliveryScreen(),
@@ -352,7 +342,6 @@ class _ProfileScreen extends State<ProfileScreen> {
     Users? users;
     String? token = (await getToken());
     try {
-      print(Apis.getUsersUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getUsersUrl),
         headers: <String, String>{
@@ -360,7 +349,6 @@ class _ProfileScreen extends State<ProfileScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         users = UsersJson.fromJson(parsedJson).users;
@@ -385,7 +373,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
     String queryString = Uri(queryParameters: queryParams).query;
     try {
-      print(Apis.isDeliveryUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.isDeliveryUrl + '?' + queryString),
         headers: <String, String>{
@@ -393,7 +380,6 @@ class _ProfileScreen extends State<ProfileScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         order = OrderJson.fromJson(parsedJson).order;

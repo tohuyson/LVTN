@@ -160,7 +160,6 @@ class _ReviewRestaurant extends State<ReviewRestaurant> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
         var parsedJson = jsonDecode(response.body);
         List<Review> listReview = ListReview.fromJson(parsedJson).review!;
         return listReview;

@@ -262,7 +262,6 @@ class _HistoryScreen extends State<HistoryScreen> {
     List<Order> list;
     String? token = (await getToken());
     try {
-      print(Apis.getHistoryUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getHistoryUrl),
         headers: <String, String>{
@@ -270,11 +269,9 @@ class _HistoryScreen extends State<HistoryScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         list = ListOrders.fromJson(parsedJson).order!;
-        print(list);
         return list;
       }
       if (response.statusCode == 401) {
@@ -307,7 +304,6 @@ class OrderHistoryCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(8.sp)),
         color: Colors.white,
       ),
-      // height: 100.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -403,7 +399,6 @@ class OrderHistoryCard extends StatelessWidget {
               height: 55.h,
               child: InkWell(
                 onTap: () {
-                  print('ddaay laf danh gia');
                   Get.to(ReviewScreen(), arguments: {'order': item});
                 },
                 child: Container(

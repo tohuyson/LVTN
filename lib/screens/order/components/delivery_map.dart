@@ -1,16 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/model/order.dart';
 import 'package:fooddelivery/model/restaurant.dart';
 import 'package:fooddelivery/networking.dart';
-import 'package:fooddelivery/utils.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DeliveryMap extends StatefulWidget {
@@ -35,8 +30,6 @@ class _DeliveryMap extends State<DeliveryMap> {
   _DeliveryMap(
       {required this.height, required this.restaurant, required this.order});
 
-  //draw line
-
   late GoogleMapController mapController;
 
   final List<LatLng> polyPoints = []; // For holding Co-ordinates as LatLng
@@ -44,7 +37,6 @@ class _DeliveryMap extends State<DeliveryMap> {
   final Set<Marker> markers = {}; // For holding instance of Marker
   late var data;
 
-  // Dummy Start and Destination Points
   late double startLat;
 
   late double startLng;
@@ -83,9 +75,6 @@ class _DeliveryMap extends State<DeliveryMap> {
   }
 
   void getJsonData() async {
-    // Create an instance of Class NetworkHelper which uses http package
-    // for requesting data to the server and receiving response as JSON format
-
     NetworkHelper network = NetworkHelper(
       startLat: startLat,
       startLng: startLng,
@@ -94,10 +83,8 @@ class _DeliveryMap extends State<DeliveryMap> {
     );
 
     try {
-      // getData() returns a json Decoded data
       data = await network.getData();
 
-      // We can reach to our desired JSON data manually as following
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
@@ -111,7 +98,6 @@ class _DeliveryMap extends State<DeliveryMap> {
         setPolyLines();
       }
     } catch (e) {
-      print(e);
     }
   }
 
@@ -135,33 +121,17 @@ class _DeliveryMap extends State<DeliveryMap> {
     currentPostion = LatLng(double.parse(restaurant.lattitude!),
         double.parse(restaurant.longtitude!));
 
-    // _getUserLocation();
     getJsonData();
     super.initState();
   }
 
   @override
   void dispose() {
-    // locateUser();
     super.dispose();
   }
 
   LatLng currentPostion = new LatLng(10.873286, 106.7914436);
   late Position currentLocation;
-
-  // Future<Position> locateUser() async {
-  //   return Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-  // }
-
-  // _getUserLocation() async {
-  //   currentLocation = await locateUser();
-  //   setState(() {
-  //     startLat = currentLocation.latitude;
-  //     startLng = currentLocation.longitude;
-  //   });
-  //   print('center $currentPostion');
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -187,35 +157,6 @@ class _DeliveryMap extends State<DeliveryMap> {
               () => VerticalDragGestureRecognizer())),
       ),
     );
-    // FutureBuilder(
-    //   future: _getUserLocation(),
-    //   builder: (context, snapshot) {
-    //     return Container(
-    //       height: height!.h,
-    //       width: double.infinity,
-    //       color: Colors.white,
-    //       child: GoogleMap(
-    //         myLocationEnabled: true,
-    //         onMapCreated: _onMapCreated,
-    //         initialCameraPosition: CameraPosition(
-    //           target: currentPostion,
-    //           zoom: 16,
-    //         ),
-    //         markers: markers,
-    //         polylines: polyLines,
-    //         mapType: MapType.normal,
-    //         gestureRecognizers: Set()
-    //           ..add(
-    //               Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-    //           ..add(Factory<ScaleGestureRecognizer>(
-    //               () => ScaleGestureRecognizer()))
-    //           ..add(
-    //               Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
-    //           ..add(Factory<VerticalDragGestureRecognizer>(
-    //               () => VerticalDragGestureRecognizer())),
-    //       ),
-    //     );
-    //   });
   }
 }
 

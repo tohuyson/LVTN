@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/constants.dart';
 import 'package:fooddelivery/model/item_category.dart';
-import 'package:fooddelivery/screens/restaurant/restaurant_screen.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MenuItem extends StatefulWidget {
@@ -26,7 +24,6 @@ class _MenuItem extends State<MenuItem> {
         color: kPrimaryColorBackground,
         child: GestureDetector(
           onTap: () {
-            // Get.to(RestaurantsScreen(),);
           },
           child: Container(
             width: 414.w,

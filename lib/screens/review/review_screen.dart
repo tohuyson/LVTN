@@ -283,7 +283,6 @@ class _ReviewScreen extends State<ReviewScreen> {
               InkWell(
                 onTap: () async {
                   await addReview();
-                  // showToast('Đánh giá thành công');
                 },
                 child: Container(
                   height: 45.h,
@@ -326,8 +325,6 @@ class _ReviewScreen extends State<ReviewScreen> {
     String? token = await getToken();
     String nameImage = '';
     int? restaurantId = o.value.foodOrder![0].food!.restaurant!.id;
-    print('res ssss $restaurantId');
-    print('rate $rate');
 
     int? code = await uploadImage(controller.image!, controller.imagePath!);
     if (code == 200) {
@@ -349,22 +346,11 @@ class _ReviewScreen extends State<ReviewScreen> {
           }),
         );
 
-        print(response.statusCode);
         if (response.statusCode == 200) {
-          // EasyLoading.dismiss();
           var parsedJson = jsonDecode(response.body);
-          print(parsedJson['success']);
           Get.back();
-          // Food food = Food.fromJson(parsedJson['food']);
-          // // Get.back(result: food);
-          // Get.off(ListProduct(),
-          //     arguments: {'food': food, 'category_id': category_id});
-          // showToast("Tạo thành công");
         }
         if (response.statusCode == 404) {
-          // EasyLoading.dismiss();
-          // var parsedJson = jsonDecode(response.body);
-          // print(parsedJson['error']);
         }
       } on TimeoutException catch (e) {
         showError(e.toString());
@@ -399,7 +385,6 @@ class _ListImages extends State<ListImages> {
             child: RaisedButton(
               onPressed: () {
                 controller.getImage();
-                // img = controller.imagePath;
               },
               color: Colors.white,
               shape: new RoundedRectangleBorder(
@@ -422,8 +407,6 @@ class _ListImages extends State<ListImages> {
                                   BorderRadius.all(Radius.circular(5)),
                               child: Image.file(
                                 controller.image!,
-                                // width: 90.w,
-                                // height: 90.h,
                                 fit: BoxFit.cover,
                               ),
                             ),

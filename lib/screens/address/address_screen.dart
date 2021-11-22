@@ -472,15 +472,12 @@ class _AddressScreen extends State<AddressScreen> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         Address address = AddressJson.fromJson(parsedJson).address!;
         return address;
       }
       if (response.statusCode == 404) {
-        var parsedJson = jsonDecode(response.body);
-        print(parsedJson['error']);
       }
     } on TimeoutException catch (e) {
       showError(e.toString());
@@ -498,7 +495,6 @@ class _AddressScreen extends State<AddressScreen> {
 
   Future<void> fetchUsers() async {
     var u = await getUser();
-    print(u);
     if (u != null) {
       user = u;
     }
@@ -508,7 +504,6 @@ class _AddressScreen extends State<AddressScreen> {
     Users? users;
     String? token = (await getToken());
     try {
-      print(Apis.getUsersUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getUsersUrl),
         headers: <String, String>{
@@ -516,12 +511,9 @@ class _AddressScreen extends State<AddressScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users;
-        print(users);
         return users;
       }
       if (response.statusCode == 401) {
@@ -538,11 +530,9 @@ class _AddressScreen extends State<AddressScreen> {
 
   Future<void> fetchAddress() async {
     var a = await getAddress();
-    print(a);
     if (a != null) {
       address.assignAll(a);
       address.refresh();
-      print(address.length);
     }
   }
 
@@ -557,7 +547,6 @@ class _AddressScreen extends State<AddressScreen> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         list = ListAddress.fromJson(parsedJson).listAddress!;

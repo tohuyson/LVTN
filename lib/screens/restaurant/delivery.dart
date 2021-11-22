@@ -95,7 +95,6 @@ class _Delivery extends State<Delivery> {
                 if (_character == SingingCharacter.student) {
                   Get.back(result: new RxString('Sinh Viên'));
                 }
-                print('Xác nhận');
               },
               child: Container(
                 height: 46.h,

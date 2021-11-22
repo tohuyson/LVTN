@@ -9,10 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/controllers/date_controller.dart';
 import 'package:fooddelivery/controllers/profile_controllor.dart';
-import 'package:fooddelivery/model/item_profile.dart';
 import 'package:fooddelivery/model/users.dart';
-import 'package:fooddelivery/screens/profile/avatar.dart';
-import 'package:fooddelivery/screens/profile/item_profile.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +20,6 @@ late Rx<Users?> user;
 late Users? lu;
 final DateController controllerDate = Get.put(DateController());
 
-// final DiscountController controllerDate = Get.put(DiscountController());
 class InformationUser extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -91,12 +87,8 @@ class _InformationUser extends State<InformationUser> {
                                                     Radius.circular(50)),
                                                 child: Image.file(
                                                   controller.image!,
-                                                  // width: 90.w,
-                                                  // height: 90.h,
                                                   fit: BoxFit.cover,
                                                 ),
-                                                // ),
-                                                // ),
                                               )
                                         : controller.image == null
                                             ? Icon(
@@ -109,12 +101,8 @@ class _InformationUser extends State<InformationUser> {
                                                     Radius.circular(50)),
                                                 child: Image.file(
                                                   controller.image!,
-                                                  // width: 90.w,
-                                                  // height: 90.h,
                                                   fit: BoxFit.cover,
                                                 ),
-                                                // ),
-                                                // ),
                                               );
                                   },
                                 )),
@@ -130,7 +118,6 @@ class _InformationUser extends State<InformationUser> {
                                   ),
                                   IconButton(
                                       onPressed: () async {
-                                        print('ưefjwefjwehf');
                                         await controller.getImage();
                                         await changeAvatar();
                                       },
@@ -154,8 +141,6 @@ class _InformationUser extends State<InformationUser> {
                                       top: BorderSide(
                                           width: 0.2, color: Colors.black12))),
                             ),
-                            // Obx(
-                            //   () =>
                             Container(
                               margin: EdgeInsets.only(top: 0.2.h),
                               color: Color(0xFFFFFFFF),
@@ -211,8 +196,6 @@ class _InformationUser extends State<InformationUser> {
                         color: Color(0xFFFFFFFF),
                         child: Column(
                           children: [
-                            // Obx(
-                            //   () =>
                             Container(
                               margin: EdgeInsets.only(left: 15.w, right: 10.w),
                               decoration: BoxDecoration(
@@ -224,7 +207,6 @@ class _InformationUser extends State<InformationUser> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // LineDecoration(),
                                   Container(
                                     child: Text(
                                       'Tên',
@@ -258,7 +240,6 @@ class _InformationUser extends State<InformationUser> {
                                                                     username,
                                                                 hintText:
                                                                     "Tên người dùng",
-                                                                // controller: quantity,
                                                                 type:
                                                                     TextInputType
                                                                         .text,
@@ -311,52 +292,7 @@ class _InformationUser extends State<InformationUser> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.only(top: 0.2.h),
-                      //   color: Color(0xFFFFFFFF),
-                      //   child: Column(
-                      //     children: [
-                      //       Container(
-                      //         margin: EdgeInsets.only(left: 15.w, right: 10.w),
-                      //         decoration: BoxDecoration(
-                      //             border: Border(
-                      //                 bottom: BorderSide(
-                      //                     width: 0.3, color: Colors.black12))),
-                      //         width: MediaQuery.of(context).size.width,
-                      //         child: Row(
-                      //           mainAxisAlignment:
-                      //               MainAxisAlignment.spaceBetween,
-                      //           children: [
-                      //             Container(
-                      //               child: Text(
-                      //                 'Email',
-                      //                 style: TextStyle(fontSize: 17.sp),
-                      //               ),
-                      //             ),
-                      //             Container(
-                      //               height: 55.h,
-                      //               margin: EdgeInsets.only(right: 20.w),
-                      //               child: Center(
-                      //                 child: user.value!.email == null
-                      //                     ? Text('')
-                      //                     : Text(
-                      //                         user.value!.email!,
-                      //                         softWrap: true,
-                      //                         style: TextStyle(
-                      //                           fontSize: 16.sp,
-                      //                           color: Colors.grey,
-                      //                         ),
-                      //                       ),
-                      //               ),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                       Container(
-                        // margin: EdgeInsets.only(top: 5.h),
                         color: Color(0xFFFFFFFF),
                         child: Column(
                           children: [
@@ -371,7 +307,6 @@ class _InformationUser extends State<InformationUser> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // LineDecoration(),
                                   Container(
                                     child: Text(
                                       'Email',
@@ -464,8 +399,6 @@ class _InformationUser extends State<InformationUser> {
                         color: Color(0xFFFFFFFF),
                         child: Column(
                           children: [
-                            // Obx(
-                            //   () =>
                             Container(
                               margin: EdgeInsets.only(left: 15.w, right: 10.w),
                               decoration: BoxDecoration(
@@ -477,7 +410,6 @@ class _InformationUser extends State<InformationUser> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // LineDecoration(),
                                   Container(
                                     child: Text(
                                       'Giới tính',
@@ -544,7 +476,6 @@ class _InformationUser extends State<InformationUser> {
                                                                                   onChanged: (value) {
                                                                                     setState(() {
                                                                                       selected = value!;
-                                                                                      print(selected);
                                                                                     });
                                                                                   },
                                                                                 );
@@ -604,8 +535,6 @@ class _InformationUser extends State<InformationUser> {
                         color: Color(0xFFFFFFFF),
                         child: Column(
                           children: [
-                            // Obx(
-                            //   () =>
                             Container(
                               margin: EdgeInsets.only(left: 15.w, right: 10.w),
                               decoration: BoxDecoration(
@@ -617,7 +546,6 @@ class _InformationUser extends State<InformationUser> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // LineDecoration(),
                                   Container(
                                     child: Text(
                                       'Ngày sinh',
@@ -645,12 +573,10 @@ class _InformationUser extends State<InformationUser> {
                                               ),
                                         IconButton(
                                             onPressed: () {
-                                              // controller.selectDateDob(context);
                                               showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
-                                                        // title: Text('Tên'),
                                                         content: Date(),
                                                         actions: <Widget>[
                                                           TextButton(
@@ -717,7 +643,6 @@ class _InformationUser extends State<InformationUser> {
   void initState() {
     controller.image = null;
     userFirebase = FirebaseAuth.instance.currentUser;
-    print(userFirebase);
     super.initState();
   }
 
@@ -738,7 +663,6 @@ class _InformationUser extends State<InformationUser> {
     Users? users;
     String? token = (await getToken());
     try {
-      print(Apis.getUsersUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getUsersUrl),
         headers: <String, String>{
@@ -746,12 +670,9 @@ class _InformationUser extends State<InformationUser> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['users']);
         users = UsersJson.fromJson(parsedJson).users;
-        print(users);
         return users;
       }
       if (response.statusCode == 401) {}
@@ -759,16 +680,13 @@ class _InformationUser extends State<InformationUser> {
       showError(e.toString());
     } on SocketException catch (e) {
       showError(e.toString());
-      print(e.toString());
     }
     return null;
   }
 
   Future<Users?> changeAvatar() async {
     String? token = await getToken();
-    print(token);
     String? nameImage;
-    print(lu!.avatar);
     if (lu!.avatar != null) {
       if (controller.imagePath != null) {
         int code =
@@ -781,7 +699,6 @@ class _InformationUser extends State<InformationUser> {
       }
     } else {
       if (controller.imagePath != null) {
-        print(controller.imagePath);
         int code =
             (await uploadAvatar(controller.image!, controller.imagePath!))!;
         if (code == 200) {
@@ -802,7 +719,6 @@ class _InformationUser extends State<InformationUser> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
@@ -824,8 +740,6 @@ class _InformationUser extends State<InformationUser> {
 
   Future<Users?> changeName() async {
     String? token = await getToken();
-    print(token);
-    print(username.text);
     try {
       EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
@@ -839,7 +753,6 @@ class _InformationUser extends State<InformationUser> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
@@ -855,7 +768,6 @@ class _InformationUser extends State<InformationUser> {
 
   Future<Users?> changeEmail() async {
     String? token = await getToken();
-    print(token);
     try {
       EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
@@ -869,11 +781,9 @@ class _InformationUser extends State<InformationUser> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['success']);
         Users users = Users.fromJson(parsedJson['user']);
         return users;
       }
@@ -886,10 +796,7 @@ class _InformationUser extends State<InformationUser> {
 
   Future<Users?> changeDob() async {
     String? token = await getToken();
-    print(token);
-    // print(username.text);
     String? dob = controllerDate.dob;
-    print(dob);
     try {
       EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
@@ -903,11 +810,9 @@ class _InformationUser extends State<InformationUser> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['success']);
         Users users = Users.fromJson(parsedJson['user']);
         return users;
       }
@@ -920,7 +825,6 @@ class _InformationUser extends State<InformationUser> {
 
   Future<Users?> changeGender() async {
     String? token = await getToken();
-    print(token);
     if (selected != null || selected != '') {
       try {
         EasyLoading.show(status: 'Loading...');
@@ -935,7 +839,6 @@ class _InformationUser extends State<InformationUser> {
           }),
         );
 
-        print(response.statusCode);
         if (response.statusCode == 200) {
           EasyLoading.dismiss();
           var parsedJson = jsonDecode(response.body);
@@ -988,7 +891,6 @@ class ItemInfor extends StatelessWidget {
                 ),
                 IconButton(
                     onPressed: () {
-                      // Get.to(itemProfile!.page);
                     },
                     icon: Icon(
                       Icons.check,
@@ -1077,7 +979,6 @@ class ItemField extends StatelessWidget {
           contentPadding:
               EdgeInsets.only(top: 20.h, bottom: 20.h, left: 12.w, right: 15.w),
           hintText: hintText,
-          // border: InputBorder.none,
           border: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(5.0.w),
             borderSide: const BorderSide(color: Colors.black12, width: 0.1),

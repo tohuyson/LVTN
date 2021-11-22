@@ -38,12 +38,9 @@ class _AddressMap extends State<AddressMap> {
           markerId: MarkerId('myMarker'),
           draggable: true,
           onTap: () {
-            print('Marker Tapped');
           },
           position: center,
           onDragEnd: ((newPosition) {
-            print(newPosition.latitude);
-            print(newPosition.longitude);
             setState(() {
               newLocation =
                   new LatLng(newPosition.latitude, newPosition.longitude);
@@ -112,9 +109,7 @@ class _AddressMap extends State<AddressMap> {
   }
 
   Future<void> updateLocationAddress() async {
-    print(newLocation);
     String token = (await getToken())!;
-    print(address.id);
     try {
       http.Response response = await http.post(
         Uri.parse(Apis.updateLocationUrl),
@@ -128,7 +123,6 @@ class _AddressMap extends State<AddressMap> {
           'lattitude': newLocation.latitude,
         }),
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         Address a = AddressJson.fromJson(parsedJson).address!;

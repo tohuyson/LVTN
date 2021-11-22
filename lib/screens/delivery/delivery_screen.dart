@@ -47,7 +47,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                 if (snapshot.hasError) {
                   return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
                 } else {
-                  // return buildLoading();
                   return RefreshIndicator(
                     onRefresh: () => fetch(),
                     child: Obx(
@@ -79,7 +78,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  //img user
                                                   Container(
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
@@ -91,7 +89,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                 Radius.circular(
                                                                     50)),
                                                       ),
-                                                      //image
                                                       child: Container(
                                                           width: 50.w,
                                                           height: 50.h,
@@ -138,7 +135,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                     fit: BoxFit
                                                                         .cover,
                                                                   )))),
-                                                  //user name
                                                   Container(
                                                     padding: EdgeInsets.only(
                                                         left: 10.w),
@@ -176,14 +172,11 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                               prefs =
                                                               await SharedPreferences
                                                                   .getInstance();
-                                                          print('chát');
                                                           User? user =
                                                               FirebaseAuth
                                                                   .instance
                                                                   .currentUser!;
-                                                          print(user);
                                                           if (user != null) {
-                                                            // Check is already sign up
                                                             final querySnapshotresult =
                                                                 await FirebaseFirestore
                                                                     .instance
@@ -193,15 +186,10 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                         isEqualTo:
                                                                             user.uid)
                                                                     .get();
-                                                            print(
-                                                                querySnapshotresult
-                                                                    .docs);
-                                                            // final List<DocumentSnapshot>documents = result.docs;
                                                             if (querySnapshotresult
                                                                     .docs
                                                                     .length ==
                                                                 0) {
-                                                              // Update data to server if new user
                                                               FirebaseFirestore
                                                                   .instance
                                                                   .collection(
@@ -224,9 +212,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                         .uid,
                                                               });
 
-                                                              // Write data to local
-                                                              // currentUser = user;
-                                                              // print(currentUser.uid);
                                                               await prefs
                                                                   .setString(
                                                                       'id',
@@ -248,9 +233,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                   userChat =
                                                                   UserChat.fromDocument(
                                                                       documentSnapshot);
-                                                              // Write data to local
-                                                              print(
-                                                                  userChat.id);
                                                               await prefs
                                                                   .setString(
                                                                       'id',
@@ -529,7 +511,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                         await received(
                                                                             listOrder[index].id);
                                                                         Get.back();
-                                                                        // bool isNotify =
                                                                         await notification(
                                                                             listOrder[index].foodOrder![0].food!.restaurant!.user!.uid!,
                                                                             'Nhận đơn',
@@ -540,14 +521,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
                                                                             'Nhận đơn',
                                                                             'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
                                                                             2);
-                                                                        // if (isNotify ==
-                                                                        //     true) {
-                                                                        //   await saveNotification(
-                                                                        //       'Nhận đơn',
-                                                                        //       'Đơn hàng #${listOrder[index].id} đã được nhận bởi ${user.username}',
-                                                                        //       '${listOrder[index].foodOrder![0].food!.restaurant!.user!.id}',
-                                                                        //       2);
-                                                                        // }
                                                                         await Get.off(
                                                                             () =>
                                                                                 ReceivedScreen(),
@@ -608,10 +581,8 @@ class _DeliveryScreen extends State<DeliveryScreen> {
   @override
   void initState() {
     listOrder = new RxList<Order>();
-    // fetch();
     fetch();
     user = Get.arguments['user'];
-    print(user);
     super.initState();
   }
 
@@ -627,7 +598,6 @@ class _DeliveryScreen extends State<DeliveryScreen> {
     List<Order> list;
     String? token = (await getToken());
     try {
-      print(Apis.getDeliveryUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getDeliveryUrl),
         headers: <String, String>{
@@ -635,12 +605,9 @@ class _DeliveryScreen extends State<DeliveryScreen> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['food']);
         list = ListOrders.fromJson(parsedJson).order!;
-        print(list);
         return list;
       }
       if (response.statusCode == 401) {
@@ -657,10 +624,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
 
   Future<void> received(int? id) async {
     String? token = await getToken();
-    print(token);
-    print(id);
     try {
-      // EasyLoading.show(status: 'Loading...');
       http.Response response = await http.post(
         Uri.parse(Apis.receivedUrl),
         headers: <String, String>{
@@ -673,11 +637,7 @@ class _DeliveryScreen extends State<DeliveryScreen> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        // EasyLoading.dismiss();
-        // var parsedJson = jsonDecode(response.body);
-        // Order order = Order.fromJson(parsedJson['order']);
       }
     } on TimeoutException catch (e) {
       showError(e.toString());

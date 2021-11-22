@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/apis.dart';
 import 'package:fooddelivery/model/card.dart';
-import 'package:fooddelivery/model/food.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fooddelivery/model/toppings.dart';
 import 'package:intl/intl.dart';
 
 class FoodItem extends StatelessWidget {
@@ -17,7 +15,6 @@ class FoodItem extends StatelessWidget {
     return Container(
       child: ListView.builder(
         shrinkWrap: true,
-        // physics: NeverScrollableScrollPhysics(),
         itemCount: cardModel!.cardOrder!.length,
         itemBuilder: (context, index) {
           return Container(

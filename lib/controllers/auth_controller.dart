@@ -58,8 +58,6 @@ class AuthController extends GetxController {
           password!.text.isNotEmpty) {
         try {
           EasyLoading.show(status: 'Loading...');
-          print(username!.text);
-          print(email!.text);
           http.Response response = await http.post(
             Uri.parse(Apis.getSignUpUrl),
             headers: <String, String>{

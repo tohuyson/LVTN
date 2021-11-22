@@ -2,7 +2,7 @@ class Discount {
   int? id;
   String? name;
   String? code;
-  int? percent;
+  String? percent;
   String? image;
   int? status;
   String? startDate;

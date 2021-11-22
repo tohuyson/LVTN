@@ -18,7 +18,6 @@ class AddressController extends GetxController {
   @override
   void onInit() {
     listAddress = List?.generate(0, (index) => new Address()).obs;
-    // fetchAddress();
     getAddress();
     super.onInit();
   }
@@ -27,13 +26,6 @@ class AddressController extends GetxController {
   void onReady() {
     super.onReady();
   }
-
-  // Future<void> fetchAddress() async {
-  //   var address = await getAddress();
-  //   if (address != null) {
-  //     listAddress.value = address;
-  //   }
-  // }
 
   Future<void> getAddress() async {
     String token = (await getToken())!;
@@ -50,9 +42,6 @@ class AddressController extends GetxController {
         var parsedJson = jsonDecode(response.body);
         listAddress.value = ListAddress.fromJson(parsedJson).listAddress!;
         users = UsersJson.fromJson(parsedJson).users!.obs;
-        print(listAddress);
-        print(users);
-        // return address;
       }
       if (response.statusCode == 401) {
         showToast("Load failed");

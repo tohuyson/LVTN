@@ -96,14 +96,12 @@ class _VoucherRestaurant extends State<VoucherRestaurant> {
   Future<void> fetchDiscount() async {
     var discount = await getDiscount();
     if (discount != null) {
-      print('vày đay k');
       listDiscount.assignAll(discount);
       listDiscount.refresh();
     }
   }
 
   Future<List<Discount>?> getDiscount() async {
-    print(restaurantId);
     List<Discount> list;
     var token = await getToken();
     try {
@@ -118,10 +116,8 @@ class _VoucherRestaurant extends State<VoucherRestaurant> {
           "Authorization": "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
-        print(parsedJson['discounts']);
         list = ListDiscount.fromJson(parsedJson).discounts!;
         return list;
       }

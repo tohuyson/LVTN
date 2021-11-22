@@ -74,7 +74,6 @@ class ChatScreenState extends State<Chat> {
 
   void onFocusChange() {
     if (focusNode.hasFocus) {
-      // Hide sticker when keyboard appear
       setState(() {
         isShowSticker = false;
       });
@@ -89,7 +88,6 @@ class ChatScreenState extends State<Chat> {
     } else {
       groupChatId = '$peerId-$id';
     }
-    print('Id của yui nè ${id}');
     FirebaseFirestore.instance
         .collection('users')
         .doc(id)
@@ -176,11 +174,9 @@ class ChatScreenState extends State<Chat> {
   Widget buildItem(int index, DocumentSnapshot document) {
     if (document != null) {
       if (document.get('idFrom') == id) {
-        // Right (my message)
         return Row(
           children: <Widget>[
             document.get('type') == 0
-                // Text
                 ? Container(
                     child: Text(
                       document.get('content'),
@@ -196,7 +192,6 @@ class ChatScreenState extends State<Chat> {
                         right: 10.0),
                   )
                 : document.get('type') == 1
-                    // Image
                     ? Container(
                         child: OutlinedButton(
                           child: Material(
@@ -273,7 +268,6 @@ class ChatScreenState extends State<Chat> {
                             bottom: isLastMessageRight(index) ? 20.0 : 10.0,
                             right: 10.0),
                       )
-                    // Sticker
                     : Container(
                         child: Image.asset(
                           'images/${document.get('content')}.gif',
@@ -289,7 +283,6 @@ class ChatScreenState extends State<Chat> {
           mainAxisAlignment: MainAxisAlignment.end,
         );
       } else {
-        // Left (peer message)
         return Container(
           child: Column(
             children: <Widget>[
@@ -444,7 +437,6 @@ class ChatScreenState extends State<Chat> {
                 ],
               ),
 
-              // Time
               isLastMessageLeft(index)
                   ? Container(
                       child: Text(
@@ -520,10 +512,7 @@ class ChatScreenState extends State<Chat> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                // List of messages
                 buildListMessage(),
-
-                // Input content
                 buildInput(),
               ],
             ),
@@ -548,7 +537,6 @@ class ChatScreenState extends State<Chat> {
     return Container(
       child: Row(
         children: <Widget>[
-          // Button send image
           Material(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),
@@ -561,7 +549,6 @@ class ChatScreenState extends State<Chat> {
             color: Colors.white,
           ),
 
-          // Edit text
           Flexible(
             child: Container(
               child: TextField(
@@ -579,7 +566,6 @@ class ChatScreenState extends State<Chat> {
             ),
           ),
 
-          // Button send message
           Material(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 8.0),

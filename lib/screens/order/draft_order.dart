@@ -47,7 +47,6 @@ class _DraftOrder extends State<DraftOrder> {
               if (snapshot.hasError) {
                 return EmptyScreen(text: 'Bạn chưa có đơn hàng nào.');
               } else {
-                // return buildLoading();
                 return card.length != 0
                     ? ListView.builder(
                         shrinkWrap: true,
@@ -131,7 +130,6 @@ class _DraftOrder extends State<DraftOrder> {
                                             width: 290.w,
                                             padding: EdgeInsets.only(
                                                 left: 10.w, right: 10.w),
-                                            // height: 92.h,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -236,7 +234,6 @@ class _DraftOrder extends State<DraftOrder> {
     List<CardModel> list;
     String? token = (await getToken());
     try {
-      print(Apis.getdraftOrderUrl);
       http.Response response = await http.get(
         Uri.parse(Apis.getdraftOrderUrl),
         headers: <String, String>{
@@ -244,11 +241,9 @@ class _DraftOrder extends State<DraftOrder> {
           'Authorization': "Bearer $token",
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var parsedJson = jsonDecode(response.body);
         list = ListCardModel.fromJson(parsedJson).card!;
-        print(list);
         return list;
       }
       if (response.statusCode == 401) {
@@ -280,18 +275,14 @@ class _DraftOrder extends State<DraftOrder> {
         }),
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         var parsedJson = jsonDecode(response.body);
-        // print(parsedJson['success']);
         CardModel? card = CardJson.fromJson(parsedJson).card;
         return card;
       }
       if (response.statusCode == 404) {
         EasyLoading.dismiss();
-        var parsedJson = jsonDecode(response.body);
-        print(parsedJson['error']);
       }
     } on TimeoutException catch (e) {
       showError(e.toString());
